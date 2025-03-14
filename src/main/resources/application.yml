@@ -1,0 +1,43 @@
+server:
+  port: 8090
+
+spring:
+
+  application:
+    name: aio
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+
+jwt:
+  header: Authorization
+  #HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
+  #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  access-token-validity-in-seconds: 60 #60 * 30 (30분 = 1800)
+  refresh-token-validity-in-seconds: 1800 #60 * 60 * 24 (1일 = 86400)
+
+aes:
+  key: 123456789ABCDEF!
+  algorithm: AES/CBC/PKCS5Padding
+
+logging:
+  level:
+    com.idt: DEBUG
