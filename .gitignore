@@ -2,9 +2,10 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
+!**/src/main/generated/
 !**/src/test/**/build/
-
+# QueryDSL generated classes
+src/main/generated/**
 ### STS ###
 .apt_generated
 .classpath
