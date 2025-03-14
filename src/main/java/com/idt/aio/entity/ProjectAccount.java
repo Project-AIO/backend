@@ -1,28 +1,28 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "tb_project_account")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "tb_project_account")
 public class ProjectAccount {
 
     @Id
-    @Column(name = "project_account_id", length = 100, unique = true)
-    private String projectAccountId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_account_id")
+    private Long projectAccountId;
 
     @Column(name = "project_id")
-    private String projectId;
+    private Long projectId;
 
     @Column(name = "account_id")
-    private String accountId;
+    private Long accountId;
 
 }

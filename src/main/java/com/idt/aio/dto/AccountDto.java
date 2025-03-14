@@ -1,19 +1,11 @@
 package com.idt.aio.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.idt.aio.entity.Account;
-import com.idt.aio.entity.User;
 import com.idt.aio.util.StringListConverter;
-import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

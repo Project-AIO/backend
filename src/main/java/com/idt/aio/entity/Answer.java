@@ -1,28 +1,27 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
-@Entity
-@Table(name = "tb_answer")
+import java.time.LocalDateTime;
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Answer {
+@Entity
+@Table(name = "tb_answer")
+public class Answer extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
-    private int answerId;
+    private Long answerId;
 
     @Column(name = "question_id")
-    private int questionId;
+    private Long questionId;
 
     @Column(name = "message")
     private String message;
@@ -30,10 +29,11 @@ public class Answer {
     @Column(name = "pipeline_log")
     private String pipelineLog;
 
-    @Column(name = "create_dt")
-    private Date createDt;
+    @Column(name = "done_dt", updatable = false)
+    private LocalDateTime doneDt;
 
-    @Column(name = "done_dt")
-    private Date doneDt;
-
+    @Override
+    protected void prePersistChild() {
+        this.doneDt = LocalDateTime.now();
+    }
 }

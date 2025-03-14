@@ -1,28 +1,25 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "tb_project")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
+@Entity
+@Table(name = "tb_project")
+public class Project extends BaseEntity{
 
     @Id
-    @Column(name = "project_id", length = 100, unique = true)
-    private String projectId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_id")
+    private Long projectId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
-
-    @Column(name = "create_dt")
-    private String createDt;
 
 }

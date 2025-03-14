@@ -11,18 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_question")
-public class Question extends BaseEntity {
-
+@Table(name = "tb_doc_account")
+public class DocumentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "question_id")
-    private Long questionId;
+    @Column(name = "doc_account_id")
+    private Long docAccountId;
 
-    @Column(name = "conversation_id")
-    private Long conversationId;
+    @Column(name = "doc_id")
+    private Long docId;
 
-    @Column(name = "message")
-    private String message;
-
+    @Column(name = "account_id")
+    private String accountId;
 }

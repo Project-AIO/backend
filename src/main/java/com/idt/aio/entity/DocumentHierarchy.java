@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,12 +14,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_doc_attr_hierarchy")
-public class DocAttrHierarchy {
-    @EmbeddedId
-    private DocAttrHierarchyId id;
+@Table(name = "tb_doc_hierarchy")
+public class DocumentHierarchy {
 
-    @NotNull
-    @Column(name = "depth")
-    private Integer depth;
+    @EmbeddedId
+    private DocHierarchyId id;
+
+    @Column(name = "edge")
+    private String edge;
+
+    @Column(name = "weight", nullable = false)
+    private Integer weight;
+
 }

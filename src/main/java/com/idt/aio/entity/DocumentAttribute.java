@@ -11,17 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_project_folder")
-public class ProjectFolder extends BaseEntity{
+@Table(name = "tb_doc_attr")
+public class DocumentAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_folder_id")
-    private Long projectFolderId;  // PK
+    @Column(name = "doc_attr_id")
+    private Long docAttrId;
 
-    @Column(name = "project_id")
-    private Long projectId;        // 논리적 FK -> tb_project.project_id
+    @Column(name = "doc_id")
+    private Long docId;   // 논리적 FK → tb_doc.doc_id
 
-    @Column(name = "name", length = 255)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
-
 }

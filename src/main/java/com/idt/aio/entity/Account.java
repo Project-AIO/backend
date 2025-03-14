@@ -1,38 +1,32 @@
 package com.idt.aio.entity;
 
-import com.idt.aio.util.StringListConverter;
+import com.idt.aio.entity.constant.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Entity
-@Table(name = "tb_account")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "tb_account")
 public class Account {
 
     @Id
-    @Column(name = "account_id", length = 100, unique = true)
+    @Column(name = "account_id")
     private String accountId;
 
     @Column(name = "admin_id")
     private String adminId;
 
-    @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
-    @Column(name = "name", length = 50, unique = true)
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
-
-    public void AccountEntity(String accountId, String adminId, String role, String name) {
-        this.accountId = accountId;
-        this.adminId = adminId;
-        this.role = role;
-        this.name = name;
-    }
 
 }
