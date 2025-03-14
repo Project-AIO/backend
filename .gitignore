@@ -2,9 +2,9 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
+!**/src/main/generated/
 !**/src/test/**/build/
-
+*Q.class
 ### STS ###
 .apt_generated
 .classpath
