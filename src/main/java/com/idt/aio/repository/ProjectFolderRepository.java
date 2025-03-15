@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProjectFolderRepository extends JpaRepository<ProjectFolder, Long> {
-    List<ProjectFolder> findAllByProjectId(final Long projectId);
+public interface ProjectFolderRepository extends JpaRepository<ProjectFolder, Integer> {
+    List<ProjectFolder> findAllByProjectProjectId(final Integer projectId);
 }
