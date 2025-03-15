@@ -1,13 +1,12 @@
 package com.idt.aio.dto;
 
-import com.idt.aio.entity.User;
-import jakarta.validation.Valid;
-import lombok.*;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -39,7 +38,9 @@ public class LoginDto {
     }*/
 
     public static LoginDto from(LoginDto loginDto) {
-        if(loginDto == null) return null;
+        if (loginDto == null) {
+            return null;
+        }
 
         return LoginDto.builder()
                 .username(loginDto.getUsername())

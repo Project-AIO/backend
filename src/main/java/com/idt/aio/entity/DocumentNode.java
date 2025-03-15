@@ -25,10 +25,9 @@ public class DocumentNode {
     @Column(name = "doc_node_id")
     private Integer docNodeId;
 
-    @JoinColumn (name = "doc_attr_id")
+    @JoinColumn(name = "doc_attr_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private DocumentAttribute documentAttributeId;
-
 
 
 }

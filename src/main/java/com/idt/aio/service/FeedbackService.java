@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
+
     @Transactional(readOnly = true)
     public List<FeedbackDto> fetchFeedbacksByProjectId(final Integer projectId) {
         return feedbackRepository.fetchFeedbacksByProjectId(projectId);

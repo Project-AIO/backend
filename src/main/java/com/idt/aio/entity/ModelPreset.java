@@ -1,6 +1,11 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,9 +34,9 @@ public class ModelPreset {
 
     @Builder.Default
     @Column(name = "top_p", nullable = false)
-    private Float topP=1.0f;
+    private Float topP = 1.0f;
 
     @Builder.Default
     @Column(name = "top_k", nullable = false)
-    private Integer topK =1;
+    private Integer topK = 1;
 }

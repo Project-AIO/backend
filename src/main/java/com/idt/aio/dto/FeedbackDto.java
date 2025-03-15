@@ -2,8 +2,6 @@ package com.idt.aio.dto;
 
 import com.idt.aio.entity.constant.FeedbackType;
 import com.querydsl.core.annotations.QueryProjection;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +21,9 @@ public class FeedbackDto {
     private Float similarityDocScore;
 
     @QueryProjection
-    public FeedbackDto(String accountId, Integer questionId, String questionMessage, Integer answerId, String answerMessage, FeedbackType feedbackType, String feedbackComment, String documentName, Float similarityDocScore) {
+    public FeedbackDto(String accountId, Integer questionId, String questionMessage, Integer answerId,
+                       String answerMessage, FeedbackType feedbackType, String feedbackComment, String documentName,
+                       Float similarityDocScore) {
         this.accountId = accountId;
         this.questionId = questionId;
         this.questionMessage = questionMessage;

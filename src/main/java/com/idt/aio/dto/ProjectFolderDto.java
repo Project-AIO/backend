@@ -1,13 +1,12 @@
 package com.idt.aio.dto;
 
 import com.idt.aio.entity.ProjectFolder;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -19,9 +18,9 @@ public class ProjectFolderDto {
     private String name;
     private LocalDateTime createdDt;
 
-    public static List<ProjectFolderDto> from(final List<ProjectFolder> projectFolders){
+    public static List<ProjectFolderDto> from(final List<ProjectFolder> projectFolders) {
         return projectFolders.stream()
-                .map(e ->{
+                .map(e -> {
                     return ProjectFolderDto.builder()
                             .projectFolderId(e.getProjectFolderId())
                             .projectId(e.getProject().getProjectId())

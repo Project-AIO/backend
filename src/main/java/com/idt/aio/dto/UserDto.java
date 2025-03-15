@@ -1,13 +1,16 @@
 package com.idt.aio.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
 import com.idt.aio.entity.User;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -33,7 +36,9 @@ public class UserDto {
     private Set<AuthorityDto> authorityDtoSet;
 
     public static UserDto from(User user) {
-        if(user == null) return null;
+        if (user == null) {
+            return null;
+        }
 
         return UserDto.builder()
                 .userId(user.getUserId())
