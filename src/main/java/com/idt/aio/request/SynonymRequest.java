@@ -5,7 +5,8 @@ import lombok.Builder;
 @Builder
 public record SynonymRequest(
         Integer projectId,
-        int page,
-        int size
+        Integer synonymId,
+        String source,
+        String match
 ) {
 }
