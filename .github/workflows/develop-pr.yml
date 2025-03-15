@@ -20,6 +20,11 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      ## docker compose up (docker-compose 기반)
+      - name: Build and run Docker Compose
+        run: |
+          docker-compose up -d
+          docker image prune -f
 
       - name: Build with Gradle
         run: ./gradlew clean build

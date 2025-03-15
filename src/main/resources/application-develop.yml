@@ -5,21 +5,32 @@ spring:
 
   application:
     name: aio
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
 
   h2:
     console:
       enabled: true
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    #    profileSQL=true: Driver 에서 전송하는 쿼리를 출력합니다.
+    #    logger=Slf4JLogger: Driver 에서 쿼리 출력시 사용할 로거를 설정합니다.
+    #    MySQL 드라이버: 기본값은 System.err 로 출력하도록 설정되어 있기 때문에 필수로 지정해 줘야 합니다.
+    #    MariaDB 드라이버: Slf4j 를 이용하여 로그를 출력하기 때문에 설정할 필요가 없습니다.
+    #    maxQuerySizeToLog=999999: 출력할 쿼리 길이
+    url: jdbc:mysql://localhost:3306/aio?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&maxQuerySizeToLog=999999
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    hikari:
+      connection-timeout: 300000
+
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true

@@ -8,12 +8,31 @@ CREATE TABLE `tb_admin` (
                             PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
 -- 2. tb_project (프로젝트 - 데이터 관리 최상단 레벨)
 CREATE TABLE `tb_project` (
                               `project_id` INT NOT NULL AUTO_INCREMENT,
                               `name` VARCHAR(100) NOT NULL,
                               `create_dt` DATETIME DEFAULT CURRENT_TIMESTAMP,
                               PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- 10. tb_homonym (이의어)
+CREATE TABLE `tb_homonym` (
+                              `homonym_id` INT NOT NULL AUTO_INCREMENT,
+                              `project_id` INT NOT NULL,
+                              `source` VARCHAR(25) NOT NULL,
+                              `match` VARCHAR(25) NOT NULL,
+                              PRIMARY KEY (`homonym_id`),
+                              FOREIGN KEY (`project_id`) REFERENCES `tb_project`(`project_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- 9. tb_synonym (동의어)
+CREATE TABLE `tb_synonym` (
+                              `synonym_id` INT NOT NULL AUTO_INCREMENT,
+                              `project_id` INT NOT NULL,
+                              `source` VARCHAR(25) NOT NULL,
+                              `match` VARCHAR(25) NOT NULL,
+                              PRIMARY KEY (`synonym_id`),
+                              FOREIGN KEY (`project_id`) REFERENCES `tb_project`(`project_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 3. tb_account (관리자가 생성한 계정)
@@ -85,25 +104,9 @@ CREATE TABLE `tb_conf_knowledge` (
                                      FOREIGN KEY (`project_id`) REFERENCES `tb_project`(`project_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 9. tb_synonym (동의어)
-CREATE TABLE `tb_synonym` (
-                              `synonym_id` INT NOT NULL AUTO_INCREMENT,
-                              `project_id` INT NOT NULL,
-                              `source` VARCHAR(25) NOT NULL,
-                              `match` VARCHAR(25) NOT NULL,
-                              PRIMARY KEY (`synonym_id`),
-                              FOREIGN KEY (`project_id`) REFERENCES `tb_project`(`project_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 10. tb_homonym (이의어)
-CREATE TABLE `tb_homonym` (
-                              `homonym_id` INT NOT NULL AUTO_INCREMENT,
-                              `project_id` INT NOT NULL,
-                              `source` VARCHAR(25) NOT NULL,
-                              `match` VARCHAR(25) NOT NULL,
-                              PRIMARY KEY (`homonym_id`),
-                              FOREIGN KEY (`project_id`) REFERENCES `tb_project`(`project_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 -- 11. tb_conversation (질의응답을 진행한 대화 세션)
 CREATE TABLE `tb_conversation` (
