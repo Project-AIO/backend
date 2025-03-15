@@ -4,8 +4,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `tb_admin`;
 CREATE TABLE IF NOT EXISTS `tb_admin` (
     `admin_id` VARCHAR(255) NOT NULL,
-    `pw` VARCHAR(30),
-    `license_key` INT,
+    `pw` VARCHAR(100),
+    `license_key` VARCHAR(100),
     PRIMARY KEY (`admin_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

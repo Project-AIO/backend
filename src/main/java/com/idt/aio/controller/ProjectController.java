@@ -25,7 +25,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
 
-    
+
     @Operation(summary = "프로젝트 ID로 프로젝트 폴더 정보 가져오는 API", description = """
            프로젝트 ID로 프로젝트 폴더 정보 가져오기
         """)

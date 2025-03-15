@@ -21,8 +21,9 @@ public class Answer extends BaseEntity {
     @Column(name = "answer_id")
     private Integer answerId;
 
-    @Column(name = "question_id")
-    private Integer questionId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
 
     @Column(name = "message")
     private String message;
