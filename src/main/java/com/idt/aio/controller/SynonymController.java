@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,8 +40,8 @@ public class SynonymController {
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 페이징 조회 API", description = """
            프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
         """)
-    @GetMapping("/synonym")
-    public List<SynonymDto> getSynonym(@RequestParam("projectId") final Integer projectId) {
+    @GetMapping("/project/{project_id}/synonyms")
+    public List<SynonymDto> getSynonym(@PathVariable("project_id") final Integer projectId) {
 
         return synonymService.fetchSynonymsByProjectId(projectId);
     }

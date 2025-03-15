@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,8 @@ public class FeedbackController {
     @Operation(summary = "피드백을 프로젝트 ID 기준으로 가져오는 API", description = """
            프로젝트 ID로 피드백 가져오기
         """)
-    @GetMapping("/feedback")
-    public List<FeedbackDto> getFeedbackByProjectId(@RequestParam("project_id") final Integer project_id) {
+    @GetMapping("project/{project_id}/feedbacks")
+    public List<FeedbackDto> getFeedbackByProjectId(@PathVariable("project_id") final Integer project_id) {
 
         return feedbackService.fetchFeedbacksByProjectId(project_id);
     }
@@ -32,8 +33,8 @@ public class FeedbackController {
     @Operation(summary = "피드백ID에 해당하는 피드백 제거 API", description = """
            피드백 제거
         """)
-    @DeleteMapping("/feedback")
-    public ResponseEntity<?> deleteFeedback(@RequestParam("feedback_id") final Integer feedback_id) {
+    @DeleteMapping("/feedback/{feedback_id}")
+    public ResponseEntity<?> deleteFeedback(@PathVariable("feedback_id") final Integer feedback_id) {
         feedbackService.deleteFeedback(feedback_id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
