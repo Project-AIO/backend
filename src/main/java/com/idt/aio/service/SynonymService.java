@@ -45,4 +45,14 @@ public class SynonymService {
 
         synonymRepository.save(synonym);
     }
+
+    @Transactional
+    public void updateSynonymById(final Integer synonymId, final String source, final String match){
+        synonymRepository.updateSynonymById(synonymId, source, match);
+    }
+
+    @Transactional
+    public void deleteSynonymById(final Integer synonymId){
+        synonymRepository.deleteById(synonymId);
+    }
 }
