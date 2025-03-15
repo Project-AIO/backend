@@ -2,7 +2,6 @@ package com.idt.aio.dto;
 
 import com.idt.aio.entity.Synonym;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,8 @@ public class SynonymDto {
     private Integer projectId;
     private String source;
     private String match;
-    public static SynonymDto from(Synonym synonym){
+
+    public static SynonymDto from(Synonym synonym) {
         return SynonymDto.builder()
                 .synonymId(synonym.getSynonymId())
                 .projectId(synonym.getProject().getProjectId())
@@ -25,6 +25,7 @@ public class SynonymDto {
                 .match(synonym.getMatch())
                 .build();
     }
+
     public static List<SynonymDto> from(List<Synonym> synonym) {
         return synonym.stream().map(SynonymDto::from).toList();
     }

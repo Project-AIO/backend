@@ -1,11 +1,5 @@
 package com.idt.aio.service;
 
-import java.lang.reflect.Member;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.idt.aio.dto.UserDto;
 import com.idt.aio.entity.Authority;
 import com.idt.aio.entity.User;
@@ -13,8 +7,7 @@ import com.idt.aio.exception.DuplicateMemberException;
 import com.idt.aio.exception.NotFoundMemberException;
 import com.idt.aio.repository.UserRepository;
 import com.idt.aio.util.SecurityUtil;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collections;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,7 +72,8 @@ public class UserService {
                 //.authorities(Collections.singleton(authority))
                 //.activated(true)
                 .build();*/
-        User user = userRepository.findByUsername(userDto.getUsername()).orElseThrow(() -> new NotFoundMemberException("가입안된 아이디입니다."));
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new NotFoundMemberException("가입안된 아이디입니다."));
         user.update(user.getUserId(), userDto.getLicenseKey());
 
         return userDto;
@@ -87,7 +81,8 @@ public class UserService {
 
     @Transactional
     public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
         return user;
     }
 

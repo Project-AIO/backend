@@ -4,9 +4,8 @@ package com.idt.aio.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 @Getter
 @MappedSuperclass
@@ -19,5 +18,8 @@ public class BaseEntity {
         createDt = LocalDateTime.now();
         prePersistChild();
     }
-    protected void prePersistChild(){};
+
+    protected void prePersistChild() {
+    }
+
 }

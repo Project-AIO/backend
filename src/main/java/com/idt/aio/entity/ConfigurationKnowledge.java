@@ -1,6 +1,14 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,17 +48,17 @@ public class ConfigurationKnowledge {
 
     @Builder.Default
     @Column(name = "rerk_top_n", nullable = false)
-    private Integer rerktopN=3;
+    private Integer rerktopN = 3;
 
     @Builder.Default
     @Column(name = "retv_threshold_score", nullable = false)
-    private Float retvThreshholdScore=80f;
+    private Float retvThreshholdScore = 80f;
 
     @Builder.Default
     @Column(name = "retv_top_k", nullable = false)
-    private Integer retvTopK=50;
+    private Integer retvTopK = 50;
 
     @Builder.Default
     @Column(name = "keyword_weight", nullable = false)
-    private Float keywordWeight =0f;
+    private Float keywordWeight = 0f;
 }

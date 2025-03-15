@@ -5,13 +5,13 @@ import lombok.Builder;
 
 @Builder
 public record FeedbackResponse(
-    Integer questionId,
-    String questionMessage,
-    Integer answerId,
-    String answerMessage,
-    FeedbackType feedbackType,
-    String feedbackComment,
-    String documentName,
-    Float similarityDocScore
+        Integer questionId,
+        String questionMessage,
+        Integer answerId,
+        String answerMessage,
+        FeedbackType feedbackType,
+        String feedbackComment,
+        String documentName,
+        Float similarityDocScore
 ) {
 }

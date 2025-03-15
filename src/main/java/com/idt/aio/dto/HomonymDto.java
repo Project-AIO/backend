@@ -1,7 +1,6 @@
 package com.idt.aio.dto;
 
 import com.idt.aio.entity.Homonym;
-import com.idt.aio.entity.Synonym;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,8 @@ public class HomonymDto {
     private Integer projectId;
     private String source;
     private String match;
-    public static HomonymDto from(Homonym homonym){
+
+    public static HomonymDto from(Homonym homonym) {
         return HomonymDto.builder()
                 .homonymId(homonym.getHomonymId())
                 .projectId(homonym.getProject().getProjectId())
@@ -25,6 +25,7 @@ public class HomonymDto {
                 .match(homonym.getMatch())
                 .build();
     }
+
     public static List<HomonymDto> from(List<Homonym> homonym) {
         return homonym.stream().map(HomonymDto::from).toList();
     }

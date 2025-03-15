@@ -33,7 +33,7 @@ public class DocumentHierarchy {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("toNodeId")
     @JoinColumn(name = "to_node_id")
-    private DocumentNode toNodeId ;
+    private DocumentNode toNodeId;
 
     @Column(name = "edge")
     private String edge;
