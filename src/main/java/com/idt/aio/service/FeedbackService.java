@@ -15,4 +15,9 @@ public class FeedbackService {
     public List<FeedbackDto> fetchFeedbacksByProjectId(final Integer projectId) {
         return feedbackRepository.fetchFeedbacksByProjectId(projectId);
     }
+
+    @Transactional
+    public void deleteFeedback(final Integer feedbackId) {
+        feedbackRepository.deleteById(feedbackId);
+    }
 }
