@@ -2,6 +2,7 @@ package com.idt.aio.entity;
 
 import com.idt.aio.entity.constant.State;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +11,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_doc")
 public class Document {
@@ -19,10 +20,11 @@ public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_id")
-    private Long docId;
+    private Integer docId;
 
-    @Column(name = "project_folder_id")
-    private Long projectFolderId;
+    @JoinColumn(name = "project_folder_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProjectFolder projectFolder;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;

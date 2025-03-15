@@ -1,13 +1,15 @@
 package com.idt.aio.entity;
 import jakarta.persistence.*;
+import javax.print.Doc;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_similarity_doc")
 public class SimilarityDoc {
@@ -15,13 +17,16 @@ public class SimilarityDoc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "similarity_doc_id")
-    private Long similarityDocId;
+    private Integer similarityDocId;
 
-    @Column(name = "answer_id")
-    private Long answerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 
-    @Column(name = "doc_id")
-    private Long docId;
+    //1:다 인거 같은데 확인 필요
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doc_id")
+    private Document document;
 
     @Column(name = "page", nullable = false)
     private Integer page;

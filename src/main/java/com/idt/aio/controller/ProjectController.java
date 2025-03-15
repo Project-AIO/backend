@@ -37,7 +37,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/project_folder")
-    public List<ProjectFolderDto> getProjectFolder(@RequestParam("project_id") final Long project_id) {
+    public List<ProjectFolderDto> getProjectFolder(@RequestParam("project_id") final Integer project_id) {
         return projectService.fetchProjectFoldersById(project_id);
     }
 }

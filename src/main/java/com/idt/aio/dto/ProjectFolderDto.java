@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectFolderDto {
-    private Long projectFolderId;
-    private Long projectId;
+    private Integer projectFolderId;
+    private Integer projectId;
     private String name;
     private LocalDateTime createdDt;
 
@@ -24,7 +24,7 @@ public class ProjectFolderDto {
                 .map(e ->{
                     return ProjectFolderDto.builder()
                             .projectFolderId(e.getProjectFolderId())
-                            .projectId(e.getProjectId())
+                            .projectId(e.getProject().getProjectId())
                             .name(e.getName())
                             .build();
                 })

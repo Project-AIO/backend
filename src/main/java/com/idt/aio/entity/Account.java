@@ -2,6 +2,7 @@ package com.idt.aio.entity;
 
 import com.idt.aio.entity.constant.Role;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_account")
 public class Account {
@@ -19,8 +20,11 @@ public class Account {
     @Column(name = "account_id")
     private String accountId;
 
-    @Column(name = "admin_id")
-    private String adminId;
+
+    @JoinColumn(name = "admin_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Admin admin;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)

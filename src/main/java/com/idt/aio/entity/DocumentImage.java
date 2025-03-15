@@ -1,6 +1,7 @@
 package com.idt.aio.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,18 +9,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_doc_image")
 public class DocumentImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_image_id")
-    private Long docImageId;
+    private Integer docImageId;
 
-    @Column(name = "doc_id")
-    private Long docId;
+    @JoinColumn(name = "doc_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Document document;
 
     @Column(name = "page", nullable = false)
     private Integer page;
