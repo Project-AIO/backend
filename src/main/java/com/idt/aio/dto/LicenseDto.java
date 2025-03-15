@@ -10,7 +10,7 @@ import lombok.*;
 public class LicenseDto {
 
     @NonNull
-    private Long userId;
+    private Integer userId;
     @NonNull
     private String username;
     private String licenseKey;
