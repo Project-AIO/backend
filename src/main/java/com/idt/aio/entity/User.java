@@ -16,7 +16,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Integer userId;
 
     @Column(name = "username", length = 50, unique = true)
     private String username;
@@ -42,7 +42,7 @@ public class User {
     }*/
 
     @Builder
-    public User(Long userId, String username, String password, String licenseKey, boolean activated) {
+    public User(Integer userId, String username, String password, String licenseKey, boolean activated) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -50,12 +50,12 @@ public class User {
         this.activated = activated;
     }
 
-    public void update(Long userId, String licenseKey) {
+    public void update(Integer userId, String licenseKey) {
         this.userId = userId;
         this.licenseKey = licenseKey;
     }
 
-    public void UserEntity(Long userId, String username, String password, String licenseKey, boolean activated) {
+    public void UserEntity(Integer userId, String username, String password, String licenseKey, boolean activated) {
         this.userId = userId;
         this.username = username;
         this.password = password;

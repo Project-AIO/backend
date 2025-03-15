@@ -230,7 +230,7 @@ public class AuthController {
     @PostMapping("/v1/license-issue")
     public ResponseEntity<LicenseDto> licenseIssue(@Valid @RequestBody LicenseDto licenseDto) throws Exception {
 
-        Long userId = licenseDto.getUserId();
+        Integer userId = licenseDto.getUserId();
         String username = licenseDto.getUsername();
         String licenseKey = licenseDto.getLicenseKey();
         String encryptKeyStr = "";
@@ -252,7 +252,7 @@ public class AuthController {
             계정 검증
          */
         User user = userService.findByUsername(username);
-        Long dbId = user.getUserId();
+        Integer dbId = user.getUserId();
         if (!userId.equals(dbId)) {
             logger.debug("userId 검증 실패");
             encryptKeyStr = "";
@@ -294,7 +294,7 @@ public class AuthController {
         String username = licenseReIssueDto.getUsername();
 
         User user = userService.findByUsername(username);
-        Long userId = user.getUserId();
+        Integer userId = user.getUserId();
 
         String newLicenseKey = encryptUtil.genLicenseKey(username);
 

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserDto {
 
-    private Long userId;
+    private Integer userId;
 
     @NotNull
     @Size(min = 3, max = 50)
