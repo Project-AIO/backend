@@ -1,5 +1,6 @@
 package com.idt.aio.service;
 
+import com.idt.aio.dto.ProjectDto;
 import com.idt.aio.dto.ProjectFolderDto;
 import com.idt.aio.entity.Project;
 import com.idt.aio.entity.ProjectFolder;
@@ -34,10 +35,17 @@ public class ProjectService {
     @Transactional
     public void createProjectFolder(final ProjectFolderRequest request){
 
-        Project project = projectRepository.findById(request.projectId())
+        final Project project = projectRepository.findById(request.projectId())
                 .orElseThrow(DomainExceptionCode.PROJECT_NOT_FOUND::newInstance);
 
-        ProjectFolder entity = ProjectFolderRequest.from(request, project);
+        final ProjectFolder entity = ProjectFolderRequest.from(request, project);
         projectFolderRepository.saveAndFlush(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public ProjectDto findProjectById(final Integer projectId){
+        final Project project = projectRepository.findById(projectId)
+                .orElseThrow(DomainExceptionCode.PROJECT_NOT_FOUND::newInstance);
+        return ProjectDto.from(project);
     }
 }
