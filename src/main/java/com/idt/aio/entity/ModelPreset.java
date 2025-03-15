@@ -1,6 +1,7 @@
 package com.idt.aio.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,19 +9,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_model_preset")
 public class ModelPreset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_preset_id")
-    private Long modelPresetId;
+    private Integer modelPresetId;
 
     // 논리적 FK
     @Column(name = "lang_model_id")
-    private Long langModelId;
+    private Integer langModelId;
 
     @Builder.Default
     @Column(name = "temperature", nullable = false)

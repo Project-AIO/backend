@@ -2,6 +2,7 @@ package com.idt.aio.entity;
 
 import com.idt.aio.entity.constant.PartType;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,18 +10,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_doc_part")
-public class DocumentPart {
+public class  DocumentPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_part_id")
-    private Long docPartId;
+    private Integer docPartId;
 
-    @Column(name = "doc_id")
-    private Long docId;
+    @JoinColumn(name = "doc_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Document document;
 
     @Column(name = "title", length = 100)
     private String title;

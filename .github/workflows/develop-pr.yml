@@ -16,10 +16,19 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Build and run Docker Compose
+        run: |
+          docker-compose up -d
+          docker image prune -f
 
       - name: Build with Gradle
         run: ./gradlew clean build

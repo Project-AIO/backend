@@ -9,14 +9,10 @@ import com.idt.aio.util.EncryptUtil;
 @SpringBootTest
 class AioApplicationTests {
 
-	private EncryptUtil encryptUtil;
 
 	@Test
-	public void aesTest() throws Exception {
-		String str = "AES 암호화 테스트";
+	public void aesTest(){
 
-		//System.out.println("암호화 : "+ encryptUtil.aesEncode(str));
-		//System.out.println("복호화 : "+ encryptUtil.aesDecode(encryptUtil.aesEncode(str)));
 	}
 
 }

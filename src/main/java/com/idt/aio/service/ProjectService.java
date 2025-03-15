@@ -16,8 +16,8 @@ import java.util.List;
 public class ProjectService {
     private final ProjectFolderRepository projectFolderRepository;
     @Transactional(readOnly = true)
-    public List<ProjectFolderDto> fetchProjectFoldersById(final Long projectId){
-        final List<ProjectFolderDto> dto = ProjectFolderDto.from(projectFolderRepository.findAllByProjectId(projectId));
+    public List<ProjectFolderDto> fetchProjectFoldersById(final Integer projectId){
+        final List<ProjectFolderDto> dto = ProjectFolderDto.from(projectFolderRepository.findAllByProjectProjectId(projectId));
 
         if(dto.isEmpty()){
             throw DomainExceptionCode.PROJECT_FOLDER_NOT_FOUND.newInstance();

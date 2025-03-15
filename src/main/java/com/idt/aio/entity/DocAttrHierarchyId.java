@@ -8,14 +8,14 @@ import java.io.Serializable;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @Embeddable
 public class DocAttrHierarchyId implements Serializable {
     @Column(name = "ancestor_id", nullable = false)
-    private Long ancestorId;
+    private Integer ancestorId;
 
     @Column(name = "descendant_id", nullable = false)
-    private Long descendantId;
+    private Integer descendantId;
 }

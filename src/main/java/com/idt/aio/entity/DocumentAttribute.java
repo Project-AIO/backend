@@ -1,6 +1,7 @@
 package com.idt.aio.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,18 +9,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_doc_attr")
 public class DocumentAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doc_attr_id")
-    private Long docAttrId;
+    private Integer docAttrId;
 
-    @Column(name = "doc_id")
-    private Long docId;   // 논리적 FK → tb_doc.doc_id
+    @JoinColumn(name = "doc_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Document document;
 
     @Column(name = "name", length = 100, nullable = false)
     private String name;

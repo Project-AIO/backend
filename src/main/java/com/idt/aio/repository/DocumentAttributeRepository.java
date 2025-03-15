@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DocumentAttributeRepository extends JpaRepository<DocumentAttribute, Long> {
+public interface DocumentAttributeRepository extends JpaRepository<DocumentAttribute, Integer> {
 }

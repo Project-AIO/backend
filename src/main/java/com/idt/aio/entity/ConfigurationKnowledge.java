@@ -1,6 +1,7 @@
 package com.idt.aio.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,19 +9,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_conf_knowledge")
 public class ConfigurationKnowledge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "conf_knowledge_id")
-    private Long confKnowledgeId;
+    private Integer confKnowledgeId;
 
 
-    @Column(name = "project_id")
-    private Long projectId;
+    //1:n인지 1:1인지 확인 필요
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
 
     @Column(name = "chk_token_size", nullable = false)
