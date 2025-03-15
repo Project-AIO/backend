@@ -18,7 +18,7 @@ public class Admin {
     @Column(name = "admin_id")
     private String admin_id;
 
-    @Column(name = "pw", length = 30)
+    @Column(name = "pw", length = 100)
     private String pw;
 
     @Column(name = "license_key", length = 100)

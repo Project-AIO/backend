@@ -9,6 +9,10 @@ spring:
   h2:
     console:
       enabled: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
 
   datasource:
     #    profileSQL=true: Driver 에서 전송하는 쿼리를 출력합니다.
@@ -25,7 +29,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
