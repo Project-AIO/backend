@@ -20,13 +20,13 @@ public class ProjectFolderDto {
 
     public static List<ProjectFolderDto> from(final List<ProjectFolder> projectFolders) {
         return projectFolders.stream()
-                .map(e -> {
-                    return ProjectFolderDto.builder()
+                .map(e -> ProjectFolderDto.builder()
                             .projectFolderId(e.getProjectFolderId())
                             .projectId(e.getProject().getProjectId())
                             .name(e.getName())
-                            .build();
-                })
+                            .createdDt(e.getCreateDt())
+                            .build()
+                )
                 .toList();
     }
 }

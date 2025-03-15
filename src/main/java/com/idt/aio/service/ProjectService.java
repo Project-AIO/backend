@@ -49,4 +49,12 @@ public class ProjectService {
                 .orElseThrow(DomainExceptionCode.PROJECT_NOT_FOUND::newInstance);
         return ProjectDto.from(project);
     }
+
+    @Transactional
+    public void createProject(final String name) {
+        final Project project = Project.builder()
+                .name(name)
+                .build();
+        projectRepository.save(project);
+    }
 }
