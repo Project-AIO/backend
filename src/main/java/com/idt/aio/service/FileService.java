@@ -1,6 +1,8 @@
 package com.idt.aio.service;
 
 import com.idt.aio.exception.DomainExceptionCode;
+import com.idt.aio.response.ImageFileResponse;
+import com.idt.aio.service.DocumentService.ImageData;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FileService {
     static final String PROJECT_ROOT = "/aio";
+    static final String DOCUMENT_IMAGE_NAME = "image_%d";
     static final String ROOT_PATH = System.getProperty("user.dir");
 
     @Transactional
@@ -61,15 +64,15 @@ public class FileService {
     }
 
     @Transactional
-    public void saveResourceToFolder(final List<Resource> files, final String filePath) {
+    public void saveResourceToFolder(final ImageFileResponse imageFiles, final String filePath) {
         final String rootPath = ROOT_PATH + PROJECT_ROOT + filePath;
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
             Path targetDir = Paths.get(rootPath);
 
             // 리스트에 담긴 각 Resource 처리
-            for (Resource file : files) {
-                String filename = file.getFilename();
+            for (ImageData data : imageFiles.imageData()) {
+                String filename = String.format(DOCUMENT_IMAGE_NAME,data.docImageId());
                 if (filename == null) {
                     // 파일명이 없으면 건너뜁니다.
                     continue;
@@ -77,7 +80,7 @@ public class FileService {
                 // 대상 파일 경로 생성
                 Path targetFile = targetDir.resolve(filename);
                 // 파일 복사 (기존 파일이 있으면 교체)
-                Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(data.imageFile().getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             e.printStackTrace();

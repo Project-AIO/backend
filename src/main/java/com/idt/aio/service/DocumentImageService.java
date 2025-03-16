@@ -26,10 +26,7 @@ public class DocumentImageService {
 
 
     @Transactional
-    public List<ImageDto> saveDocumentImage(final List<DocumentImageDto> documentImageDtos,
-                                  final Integer projectFolderId,
-                                  final List<ImageFileDto> imageFileDtos,
-                                  final Integer projectId) {
+    public List<ImageDto> saveDocumentImage(final List<DocumentImageDto> documentImageDtos) {
 
         Integer docId = documentImageDtos.get(0).getDocId();
 
@@ -40,11 +37,6 @@ public class DocumentImageService {
         final Document referenceById = documentRepository.getReferenceById(docId);
         final List<DocumentImage> documentImages = DocumentImage.from(documentImageDtos, referenceById);
         final List<DocumentImage> save = documentImageRepository.saveAll(documentImages);
-
-        final String folderPath = Folder.DOCUMENT.getDocumentName(projectId, projectFolderId, docId);
-
-        final List<Resource> resources = imageFileDtos.stream().map(ImageFileDto::getImageFile).toList();
-        fileService.saveResourceToFolder(resources, folderPath);
 
 
         return ImageDto.from(save);
