@@ -37,7 +37,8 @@ public class DocumentImage {
     private Integer page;
 
 
-    public static List<DocumentImage> from(final List<DocumentImageDto> documentImageDtos, final Document referenceById) {
+    public static List<DocumentImage> from(final List<DocumentImageDto> documentImageDtos,
+                                           final Document referenceById) {
         return documentImageDtos.stream()
                 .map(documentImageDto -> DocumentImage.builder()
                         .document(referenceById)

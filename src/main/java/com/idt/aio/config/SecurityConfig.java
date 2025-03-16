@@ -1,10 +1,9 @@
 package com.idt.aio.config;
 
-import com.idt.aio.jwt.JwtSecurityConfig;
 import com.idt.aio.jwt.JwtAccessDeniedHandler;
 import com.idt.aio.jwt.JwtAuthenticationEntryPoint;
+import com.idt.aio.jwt.JwtSecurityConfig;
 import com.idt.aio.jwt.TokenProvider;
-
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,7 +76,8 @@ public class SecurityConfig {
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
 
-                .with(new JwtSecurityConfig(tokenProvider), customizer -> {});
+                .with(new JwtSecurityConfig(tokenProvider), customizer -> {
+                });
         return http.build();
     }
 }

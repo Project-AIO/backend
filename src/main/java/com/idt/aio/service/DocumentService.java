@@ -1,6 +1,5 @@
 package com.idt.aio.service;
 
-import com.idt.aio.dto.DocumentData;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentImageDto;
 import com.idt.aio.dto.FileDto;
@@ -11,7 +10,6 @@ import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.response.ImageFileResponse;
 import com.idt.aio.response.ImageResponse;
 import com.idt.aio.service.DocumentImageService.ImageDto;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +64,6 @@ public class DocumentService {
 
         final Integer docId = imageDtos.get(0).docImageId();
 
-
         final ImageFileResponse response = ImageFileResponse.builder()
                 .docId(docId)
                 .imageData(imageData)
@@ -74,9 +71,8 @@ public class DocumentService {
 
         //폴더에 이미지 저장
         Integer projectFolderId = fileDto.getProjectFolderId();
-        final String folderPath = Folder.DOCUMENT.getDocumentName(projectId,   projectFolderId, docId);
+        final String folderPath = Folder.DOCUMENT.getDocumentName(projectId, projectFolderId, docId);
         fileService.saveResourceToFolder(response, folderPath);
-
 
         return response;
     }

@@ -2,12 +2,16 @@ package com.idt.aio.controller;
 
 import com.idt.aio.dto.UserDto;
 import com.idt.aio.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -31,7 +35,7 @@ public class UserController {
 
     @GetMapping("/v1/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<UserDto> getUserInfo(@PathVariable(value="username") String username) {
+    public ResponseEntity<UserDto> getUserInfo(@PathVariable(value = "username") String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username));
     }
 }

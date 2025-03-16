@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -21,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class FeedbackController {
     private final FeedbackService feedbackService;
+
     @Operation(summary = "피드백을 프로젝트 ID 기준으로 가져오는 API", description = """
-           프로젝트 ID로 피드백 가져오기
-        """)
+               프로젝트 ID로 피드백 가져오기
+            """)
     @GetMapping("project/{project_id}/feedbacks")
     public List<FeedbackDto> getFeedbackByProjectId(@PathVariable("project_id") final Integer project_id) {
 
@@ -31,8 +31,8 @@ public class FeedbackController {
     }
 
     @Operation(summary = "피드백ID에 해당하는 피드백 제거 API", description = """
-           피드백 제거
-        """)
+               피드백 제거
+            """)
     @DeleteMapping("/feedback/{feedback_id}")
     public ResponseEntity<?> deleteFeedback(@PathVariable("feedback_id") final Integer feedback_id) {
         feedbackService.deleteFeedback(feedback_id);

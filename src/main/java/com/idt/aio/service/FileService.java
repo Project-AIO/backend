@@ -9,10 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +23,10 @@ public class FileService {
     static final String ROOT_PATH = System.getProperty("user.dir");
 
     @Transactional
-    public void createFolder(final String folderName)  {
+    public void createFolder(final String folderName) {
         // 루트에 폴더 생성
         // 루트 디렉토리 경로 설정
-        final String rootPath = ROOT_PATH+PROJECT_ROOT;
+        final String rootPath = ROOT_PATH + PROJECT_ROOT;
 
         // 새 폴더 경로 설정
         final File newFolder = new File(rootPath, folderName);
@@ -46,9 +44,9 @@ public class FileService {
     }
 
     @Transactional
-    public void deleteFolder(final String folderName){
+    public void deleteFolder(final String folderName) {
         // 루트 디렉토리 경로 설정
-        final String rootPath = System.getProperty("user.dir")+PROJECT_ROOT;
+        final String rootPath = System.getProperty("user.dir") + PROJECT_ROOT;
 
         // 삭제할 폴더 경로 설정
         final File deleteFolder = new File(rootPath, folderName);
@@ -72,7 +70,7 @@ public class FileService {
 
             // 리스트에 담긴 각 Resource 처리
             for (ImageData data : imageFiles.imageData()) {
-                String filename = String.format(DOCUMENT_IMAGE_NAME,data.docImageId());
+                String filename = String.format(DOCUMENT_IMAGE_NAME, data.docImageId());
                 if (filename == null) {
                     // 파일명이 없으면 건너뜁니다.
                     continue;

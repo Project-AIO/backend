@@ -28,9 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class SynonymController {
     private final SynonymService synonymService;
+
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 페이징 조회 API", description = """
-           프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
-        """)
+               프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
+            """)
     @GetMapping("/synonym/page")
     public Page<SynonymDto> getSynonymByPage(@ModelAttribute final SynonymPageRequest request) {
 
@@ -38,8 +39,8 @@ public class SynonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 페이징 조회 API", description = """
-           프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
-        """)
+               프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
+            """)
     @GetMapping("/project/{project_id}/synonyms")
     public List<SynonymDto> getSynonym(@PathVariable("project_id") final Integer projectId) {
 
@@ -47,8 +48,8 @@ public class SynonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 추가 API", description = """
-           projectId로 동의어 추가
-        """)
+               projectId로 동의어 추가
+            """)
     @PostMapping("/synonym")
     public ResponseEntity<?> saveSynonym(@ModelAttribute final SynonymRequest request) {
         synonymService.saveSynonym(request.projectId(), request.synonymId(), request.source(), request.match());
@@ -56,8 +57,8 @@ public class SynonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 변경 API", description = """
-           projectId로 동의어 변경
-        """)
+               projectId로 동의어 변경
+            """)
     @PatchMapping("/synonym")
     public ResponseEntity<?> updateSynonym(@ModelAttribute final SynonymUpdateRequest request) {
         synonymService.updateSynonymById(request.synonymId(), request.source(), request.match());
@@ -65,8 +66,8 @@ public class SynonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 삭제 API", description = """
-           projectId로 동의어 삭제
-        """)
+               projectId로 동의어 삭제
+            """)
     @DeleteMapping("/synonym")
     public ResponseEntity<?> deleteSynonym(@RequestParam("synonymId") final Integer synonymId) {
         synonymService.deleteSynonymById(synonymId);

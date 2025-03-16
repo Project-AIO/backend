@@ -27,9 +27,8 @@ public class ObjectMapperConfig {
      * 발생시키지 않고 무시합니다.
      * <p>
      * objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);: 날짜를 직렬화할 때 타임스탬프 대신 ISO-8601 형식으로 직렬화하도록
-     * 설정합니다. WRITE_DATES_AS_TIMESTAMPS 기능을 비활성화하면, ObjectMapper는 날짜와 시간 객체를 ISO 8601 형식 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)의 문자열로 출력함.
-     * 이 형식은 국제 표준이며, 다양한 프로그래밍 언어와 시스템에서 널리 인식되고 지원됨.
-     * 예를 들어, 2023-10-03T13:55:20.000+0000 같은 형태로 출력
+     * 설정합니다. WRITE_DATES_AS_TIMESTAMPS 기능을 비활성화하면, ObjectMapper는 날짜와 시간 객체를 ISO 8601 형식 (yyyy-MM-dd'T'HH:mm:ss.SSSZ)의
+     * 문자열로 출력함. 이 형식은 국제 표준이며, 다양한 프로그래밍 언어와 시스템에서 널리 인식되고 지원됨. 예를 들어, 2023-10-03T13:55:20.000+0000 같은 형태로 출력
      * <p>
      * objectMapper.setPropertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy());: JSON 필드의 네이밍 전략을 스네이크
      * 케이스로 설정합니다. 즉, 필드명을 CamelCase가 아닌 스네이크 케이스로 변경합니다.

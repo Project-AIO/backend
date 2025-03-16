@@ -1,6 +1,5 @@
 package com.idt.aio.dto;
 
-import com.idt.aio.entity.DocumentImage;
 import com.idt.aio.response.ImageResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;

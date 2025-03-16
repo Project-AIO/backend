@@ -21,11 +21,11 @@ public class ProjectFolderDto {
     public static List<ProjectFolderDto> from(final List<ProjectFolder> projectFolders) {
         return projectFolders.stream()
                 .map(e -> ProjectFolderDto.builder()
-                            .projectFolderId(e.getProjectFolderId())
-                            .projectId(e.getProject().getProjectId())
-                            .name(e.getName())
-                            .createdDt(e.getCreateDt())
-                            .build()
+                        .projectFolderId(e.getProjectFolderId())
+                        .projectId(e.getProject().getProjectId())
+                        .name(e.getName())
+                        .createdDt(e.getCreateDt())
+                        .build()
                 )
                 .toList();
     }

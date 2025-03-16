@@ -4,12 +4,10 @@ import com.idt.aio.entity.Document;
 import com.idt.aio.entity.constant.State;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 @AllArgsConstructor
 @NoArgsConstructor
