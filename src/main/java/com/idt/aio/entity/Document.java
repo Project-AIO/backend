@@ -1,5 +1,7 @@
 package com.idt.aio.entity;
 
+import com.idt.aio.dto.DocumentData;
+import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.entity.constant.State;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,6 +65,19 @@ public class Document {
     @PrePersist
     private void prePersist() {
         this.uploadDt = LocalDateTime.now();
+    }
+
+    public static Document from(final DocumentData documentData){
+        return Document.builder()
+                .docId(documentData.getDocId())
+                .projectFolder(ProjectFolder.builder().projectFolderId(documentData.getProjectFolderId()).build())
+                .name(documentData.getName())
+                .pageCount(documentData.getPageCount())
+                .state(documentData.getState())
+                .url(documentData.getUrl())
+                .fileSize(documentData.getFileSize())
+                .revision(documentData.getRevision())
+                .build();
     }
 
 }
