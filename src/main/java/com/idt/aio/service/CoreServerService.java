@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +25,8 @@ public class CoreServerService {
 
     @Value("${core.server.url}")
     private String coreServerUrl;
+
+    @Transactional
     public ImageResponse execute(final MultipartFile file, final int startPage, final int endPage) {
 
         // 요청 본문 생성

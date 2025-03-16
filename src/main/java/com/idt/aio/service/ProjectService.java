@@ -4,6 +4,7 @@ import com.idt.aio.dto.ProjectDto;
 import com.idt.aio.dto.ProjectFolderDto;
 import com.idt.aio.entity.Project;
 import com.idt.aio.entity.ProjectFolder;
+import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class ProjectService {
+    private final FileService fileService;
     private final ProjectRepository projectRepository;
     private final ProjectFolderRepository projectFolderRepository;
 
@@ -40,7 +42,9 @@ public class ProjectService {
                 .orElseThrow(DomainExceptionCode.PROJECT_NOT_FOUND::newInstance);
 
         final ProjectFolder entity = ProjectFolderRequest.from(request, project);
-        projectFolderRepository.saveAndFlush(entity);
+        ProjectFolder projectFolder = projectFolderRepository.saveAndFlush(entity);
+
+        fileService.createFolder(Folder.DOCUMENT.getProjectFolderName(request.projectId(), projectFolder.getProjectFolderId()));
     }
 
     @Transactional(readOnly = true)
@@ -55,6 +59,9 @@ public class ProjectService {
         final Project project = Project.builder()
                 .name(name)
                 .build();
-        projectRepository.save(project);
+        Project save = projectRepository.save(project);
+
+        fileService.createFolder(Folder.PROJECT.getProjectName(save.getProjectId()));
+
     }
 }
