@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -18,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileDataExtractorService {
     private final ProjectFolderRepository projectFolderRepository;
-    public Document extractDocumentFromFile(final MultipartFile file, final Integer projectId, final Integer projectFolderId) {
+
+    public Document extractDocumentFromFile(final MultipartFile file, final Integer projectId,
+                                            final Integer projectFolderId) {
         // 1. 파일명 추출
         String fileName = file.getOriginalFilename();
         String revision = "1.0";

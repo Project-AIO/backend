@@ -28,9 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class HomonymController {
     private final HomonymService homonymService;
+
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 페이징 조회 API", description = """
-           프로젝트 귀속 이의어 사전 목록 페이징 조회 - homonymId 오름차순 정렬 (수정 가능)
-        """)
+               프로젝트 귀속 이의어 사전 목록 페이징 조회 - homonymId 오름차순 정렬 (수정 가능)
+            """)
     @GetMapping("/homonym/page")
     public Page<HomonymDto> getHomonymByPage(@ModelAttribute final HomonymPageRequest request) {
 
@@ -38,8 +39,8 @@ public class HomonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 페이징 조회 API", description = """
-           프로젝트 귀속 이의어 사전 목록 페이징 조회 - homonymId 오름차순 정렬 (수정 가능)
-        """)
+               프로젝트 귀속 이의어 사전 목록 페이징 조회 - homonymId 오름차순 정렬 (수정 가능)
+            """)
     @GetMapping("/project/{project_id}/homonyms")
     public List<HomonymDto> getHomonym(@PathVariable("project_id") final Integer projectId) {
 
@@ -47,8 +48,8 @@ public class HomonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 추가 API", description = """
-           projectId로 이의어 추가
-        """)
+               projectId로 이의어 추가
+            """)
     @PostMapping("/homonym")
     public ResponseEntity<?> saveHomonym(@ModelAttribute final HomonymRequest request) {
         homonymService.saveHomonym(request.projectId(), request.homonymId(), request.source(), request.match());
@@ -56,8 +57,8 @@ public class HomonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 변경 API", description = """
-           projectId로 이의어 변경
-        """)
+               projectId로 이의어 변경
+            """)
     @PatchMapping("/homonym")
     public ResponseEntity<?> updateHomonym(@ModelAttribute final HomonymUpdateRequest request) {
         homonymService.updateHomonymById(request.homonymId(), request.source(), request.match());
@@ -65,8 +66,8 @@ public class HomonymController {
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 삭제 API", description = """
-           projectId로 이의어 삭제
-        """)
+               projectId로 이의어 삭제
+            """)
     @DeleteMapping("/homonym")
     public ResponseEntity<?> deleteHomonym(@RequestParam("homonymId") final Integer homonymId) {
         homonymService.deleteHomonymById(homonymId);

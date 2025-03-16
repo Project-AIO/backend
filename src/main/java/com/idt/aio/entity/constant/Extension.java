@@ -12,6 +12,7 @@ public enum Extension {
     PDF("application/pdf");
 
     private final String value;
+
     //set에다가 다 담아서 set반환
     public static Set<String> getValues() {
         return Arrays.stream(Extension.values())

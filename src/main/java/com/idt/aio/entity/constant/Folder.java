@@ -2,7 +2,6 @@ package com.idt.aio.entity.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.checkerframework.checker.units.qual.A;
 
 @Getter
 @AllArgsConstructor
@@ -13,14 +12,15 @@ public enum Folder {
 
     private final String folderName;
 
-    public String getProjectName(final Integer projectId){
+    public String getProjectName(final Integer projectId) {
         return folderName + projectId;
     }
-    public String getProjectFolderName(final Integer projectId, final Integer projectFolderId){
+
+    public String getProjectFolderName(final Integer projectId, final Integer projectFolderId) {
         return getProjectName(projectId) + "/" + folderName + projectFolderId;
     }
 
-    public String getDocumentName(final Integer projectId, final Integer projectFolderId, final Integer documentId){
+    public String getDocumentName(final Integer projectId, final Integer projectFolderId, final Integer documentId) {
         return getProjectFolderName(projectId, projectFolderId) + "/" + folderName + documentId;
     }
 }

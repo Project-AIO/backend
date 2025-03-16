@@ -32,7 +32,6 @@ public class CoreServerService {
         // 요청 본문 생성
         MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
 
-
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -41,20 +40,21 @@ public class CoreServerService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         // POST 요청 보내고 응답 받기
-        try{
+        try {
             ResponseEntity<ImageResponse> response = restTemplate.postForEntity(
                     coreServerUrl,
                     requestEntity,
                     ImageResponse.class
             );
             return response.getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Core 서버 호출 실패: {}", e.getMessage());
             throw new RuntimeException("코어 서버와 통신 중 오류가 발생했습니다.", e);
         }
     }
 
-    private MultiValueMap<String, Object> createRequest(final MultipartFile file, final int startPage, final int endPage) {
+    private MultiValueMap<String, Object> createRequest(final MultipartFile file, final int startPage,
+                                                        final int endPage) {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         try {
             // 파일을 ByteArrayResource로 감싸서 전송

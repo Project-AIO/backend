@@ -5,7 +5,6 @@ import com.idt.aio.dto.FileDto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ImageFileResponse;
-import com.idt.aio.response.ImageResponse;
 import com.idt.aio.service.DocumentService;
 import com.idt.aio.service.FileDataExtractorService;
 import com.idt.aio.validator.FileValidator;
@@ -51,7 +50,7 @@ public class DocumentController {
                 request.projectFolderId());
 
         //db에 document 저장
-        documentService.saveDocument(document,request.projectId());
+        documentService.saveDocument(document, request.projectId());
 
         final FileDto fileDto = FileDto.from(request.file(), 1, document.getPageCount());
 

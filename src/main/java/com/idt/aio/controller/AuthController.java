@@ -1,6 +1,11 @@
 package com.idt.aio.controller;
 
-import com.idt.aio.dto.*;
+import com.idt.aio.dto.LicenseDto;
+import com.idt.aio.dto.LicenseReIssueDto;
+import com.idt.aio.dto.LoginDto;
+import com.idt.aio.dto.RefreshTokenDto;
+import com.idt.aio.dto.TokenDto;
+import com.idt.aio.dto.UserDto;
 import com.idt.aio.entity.User;
 import com.idt.aio.jwt.JwtFilter;
 import com.idt.aio.jwt.TokenProvider;
@@ -9,6 +14,9 @@ import com.idt.aio.repository.RefreshTokenRepository;
 import com.idt.aio.repository.UserRepository;
 import com.idt.aio.service.UserService;
 import com.idt.aio.util.EncryptUtil;
+import jakarta.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +27,30 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class AuthController {
 
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private BlackListRepository blackListRepository;
-
-    @Autowired
-    private UserService userService;
-
-    private final UserRepository userRepository;
-    private EncryptUtil encryptUtil = new EncryptUtil();
-
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    private BlackListRepository blackListRepository;
+    @Autowired
+    private UserService userService;
+    private final EncryptUtil encryptUtil = new EncryptUtil();
 
-    public AuthController(UserRepository userRepository, TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public AuthController(UserRepository userRepository, TokenProvider tokenProvider,
+                          AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
@@ -138,7 +142,7 @@ public class AuthController {
             3. 정상응답
         
          */
-        
+
         return ResponseEntity.ok().build();
     }
 
@@ -160,7 +164,8 @@ public class AuthController {
         리프레시 토큰이 만료면 인증불가 -> 메모리(DB)삭제
          */
         HttpHeaders httpHeaders = new HttpHeaders();
-        if (savedRefreshToken != null && savedRefreshToken.equals(refreshTokenDto.getNewRefreshToken())) {  //리프레시 토큰이 유효
+        if (savedRefreshToken != null && savedRefreshToken.equals(
+                refreshTokenDto.getNewRefreshToken())) {  //리프레시 토큰이 유효
 
             String jwtNewAccess = tokenProvider.accessCreateToken(authentication);
             String jwtNewRefresh = tokenProvider.refreshCreateToken(authentication);
@@ -174,7 +179,7 @@ public class AuthController {
             return new ResponseEntity<>(new TokenDto(jwtNewAccess, jwtNewRefresh), httpHeaders, HttpStatus.OK);
         } else {
 
-            refreshTokenRepository.deleteRefreshToken (refreshTokenDto.getUsername());
+            refreshTokenRepository.deleteRefreshToken(refreshTokenDto.getUsername());
             return new ResponseEntity<>(new TokenDto(null, null), httpHeaders, HttpStatus.OK);
         }
 
@@ -241,7 +246,7 @@ public class AuthController {
             encryptKeyStr = encryptUtil.genLicenseKey(username);
             logger.debug("/v1/license-issue encryptKeyStr: {} ", encryptKeyStr);
         }
-        
+
         if (license(username, licenseKey)) {
             logger.debug("라이센스키 정상");
         } else {
@@ -256,7 +261,8 @@ public class AuthController {
         if (!userId.equals(dbId)) {
             logger.debug("userId 검증 실패");
             encryptKeyStr = "";
-            return new ResponseEntity<>(new LicenseDto(userId, username, encryptKeyStr), httpHeaders, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new LicenseDto(userId, username, encryptKeyStr), httpHeaders,
+                    HttpStatus.FORBIDDEN);
         } else {
             logger.debug("userId 검증 성공");
             /*
@@ -289,7 +295,8 @@ public class AuthController {
         라이센스키 재발급 (인증토큰 유효함 체크)
      */
     @PostMapping("/v1/license-reissue")
-    public ResponseEntity<LicenseReIssueDto> licenseReIssue(@Valid @RequestBody LicenseReIssueDto licenseReIssueDto) throws Exception {
+    public ResponseEntity<LicenseReIssueDto> licenseReIssue(@Valid @RequestBody LicenseReIssueDto licenseReIssueDto)
+            throws Exception {
 
         String username = licenseReIssueDto.getUsername();
 

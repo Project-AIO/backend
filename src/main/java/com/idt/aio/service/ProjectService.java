@@ -44,7 +44,8 @@ public class ProjectService {
         final ProjectFolder entity = ProjectFolderRequest.from(request, project);
         ProjectFolder projectFolder = projectFolderRepository.saveAndFlush(entity);
 
-        fileService.createFolder(Folder.DOCUMENT.getProjectFolderName(request.projectId(), projectFolder.getProjectFolderId()));
+        fileService.createFolder(
+                Folder.DOCUMENT.getProjectFolderName(request.projectId(), projectFolder.getProjectFolderId()));
     }
 
     @Transactional(readOnly = true)
