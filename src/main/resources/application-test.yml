@@ -37,7 +37,9 @@ jwt:
 aes:
   key: 123456789ABCDEF!
   algorithm: AES/CBC/PKCS5Padding
-
+core:
+  server:
+    url: http://localhost:8090
 logging:
   level:
     com.idt: DEBUG
