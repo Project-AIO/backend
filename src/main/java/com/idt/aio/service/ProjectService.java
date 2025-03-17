@@ -23,6 +23,12 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectFolderRepository projectFolderRepository;
 
+    @Transactional
+    public void deleteProjectById(final Integer projectId){
+        projectRepository.deleteById(projectId);
+        fileService.deleteFolder(Folder.PROJECT.getProjectName(projectId));
+    }
+
     @Transactional(readOnly = true)
     public List<ProjectFolderDto> fetchProjectFoldersById(final Integer projectId) {
         final List<ProjectFolderDto> dto = ProjectFolderDto.from(

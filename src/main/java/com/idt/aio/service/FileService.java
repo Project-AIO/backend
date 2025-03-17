@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,19 +46,17 @@ public class FileService {
 
     @Transactional
     public void deleteFolder(final String folderName) {
-        // 루트 디렉토리 경로 설정
         final String rootPath = System.getProperty("user.dir") + PROJECT_ROOT;
-
-        // 삭제할 폴더 경로 설정
         final File deleteFolder = new File(rootPath, folderName);
 
-        // 폴더 삭제
         if (deleteFolder.exists()) {
-            if (deleteFolder.delete()) {
-                log.info("폴더 삭제 성공: " + deleteFolder.getAbsolutePath());
-                return;
+            try {
+                FileUtils.deleteDirectory(deleteFolder); // 폴더와 하위 모든 파일/폴더 삭제
+                log.info("폴더 및 내부 파일 삭제 성공: " + deleteFolder.getAbsolutePath());
+            } catch (IOException e) {
+                // 예외 처리
+                throw new RuntimeException("폴더 삭제 중 오류 발생", e);
             }
-            throw DomainExceptionCode.FOLDER_CREATION_FAILED.newInstance();
         }
     }
 
