@@ -38,7 +38,7 @@ public class DocumentService {
     }
 
     @Transactional
-    public void processTransfer(final DocumentUploadRequest request){
+    public Document processTransfer(final DocumentUploadRequest request){
         final Document extracted = fileDataExtractorService.extractDocumentFromFile(
                 request.file(),
                 request.projectId(),
@@ -57,6 +57,11 @@ public class DocumentService {
                 1,
                 fileDataExtractorService.getPageCount(request.file()),
                 documentPathDto.getDocId());
+
+        /**
+         * 아직 세부 요구사항이 안 나와서 pending
+         */
+        return null;
     }
 
     @Transactional

@@ -6,10 +6,7 @@ import com.idt.aio.dto.FileDto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ImagePageResponse;
-import com.idt.aio.service.CoreServerService;
-import com.idt.aio.service.DocumentService;
-import com.idt.aio.service.FileDataExtractorService;
-import com.idt.aio.service.FileService;
+import com.idt.aio.service.*;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -26,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1")
 public class  DocumentController {
     private final DocumentService documentService;
+    private final DocumentPartService documentPartService;
+    private final DocumentImageService documentImageService;
     private final FileValidator validator;
 
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
@@ -61,7 +60,9 @@ public class  DocumentController {
     public ResponseEntity<?> uploadDocument(@ModelAttribute @Valid final DocumentUploadRequest request) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(request.file());
-        documentService.processTransfer(request);
+        Document document = documentService.processTransfer(request);
+        documentImageService.saveDocumentImage(document, request.removePages());
+       //  documentPartService.saveDocumentPart(document, request.contentStartPage(), request.contentEndPage());
         return ResponseEntity.ok().build();
     }
 
@@ -74,5 +75,7 @@ public class  DocumentController {
         documentService.updateStatus(docId,status);
         return ResponseEntity.ok().build();
     }
+
+
 
 }

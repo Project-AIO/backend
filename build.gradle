@@ -33,6 +33,9 @@ dependencies {
 	//PDDocument
 	implementation 'org.apache.pdfbox:pdfbox:2.0.27'
 
+	//폴더 삭제
+	implementation 'commons-io:commons-io:2.13.0'
+
 	//CaseFormat
 	implementation 'com.google.guava:guava:31.1-jre'
 
