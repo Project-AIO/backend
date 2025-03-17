@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.Resource;
+
+import java.util.List;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageFileDto {
-    private Resource imageFile;
-    private int page;
+public class ImagePageData {
+    private List<Integer> pages;
 }

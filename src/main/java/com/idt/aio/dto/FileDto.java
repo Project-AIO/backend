@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileDto {
+public class        FileDto {
     @NotNull
     MultipartFile file;
     @NotNull

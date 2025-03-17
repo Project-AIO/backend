@@ -6,8 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record ImageFileResponse(
-        Integer docId,
-        List<ImageData> imageData
+        List<Integer> pages
 
 ) {
 }
