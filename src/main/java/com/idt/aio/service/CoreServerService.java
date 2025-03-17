@@ -1,19 +1,22 @@
 package com.idt.aio.service;
 
-import com.idt.aio.response.ImageResponse;
+import com.idt.aio.response.ImagePageResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,25 +29,72 @@ public class CoreServerService {
     @Value("${core.server.url}")
     private String coreServerUrl;
 
-    @Transactional
-    public ImageResponse execute(final MultipartFile file, final int startPage, final int endPage) {
+    @Async
+    public void executeTransfer(
+            final String filePath,
+            final String fileName,
+            final MultipartFile file,
+            final int startPage,
+            final int endPage,
+            final Integer docId
+    ){
 
-        // 요청 본문 생성
-        MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
+        final Resource resource = multipartFileToResource(file);
 
-        // 헤더 설정
+// 요청 보내기
+        RestTemplate restTemplate = new RestTemplate();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
+        // MultiValueMap으로 데이터 구성
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("filePath", filePath);
+        body.add("fileName", fileName);
+        body.add("file", resource);  // resource 포함
+        body.add("startPage", startPage);
+        body.add("endPage", endPage);
+        body.add("docId", docId);
+
+        final HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        try {
+            final ResponseEntity<String> response = restTemplate.postForEntity(
+                    coreServerUrl,
+                    entity,
+                    String.class
+            );
+
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("다른 서버로 파일 전송 중 오류 발생");
+            }
+
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            throw new RuntimeException("다른 서버로 파일 전송 중 오류 발생", e);
+        }
+
+    }
+
+    @Transactional
+    public ImagePageResponse executeExtraction(final MultipartFile file, final int startPage, final int endPage) {
+
+        // 요청 본문 생성
+        final MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
+
+        // 헤더 설정
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
         // HttpEntity 생성
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        final HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         // POST 요청 보내고 응답 받기
         try {
-            ResponseEntity<ImageResponse> response = restTemplate.postForEntity(
+            ResponseEntity<ImagePageResponse> response = restTemplate.postForEntity(
                     coreServerUrl,
                     requestEntity,
-                    ImageResponse.class
+                    ImagePageResponse.class
             );
             return response.getBody();
         } catch (Exception e) {
@@ -72,6 +122,19 @@ public class CoreServerService {
         map.add("start_page", String.valueOf(startPage));
         map.add("end_page", String.valueOf(endPage));
         return map;
+    }
+
+    private Resource multipartFileToResource(MultipartFile file) {
+        try {
+            return new ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+        } catch (IOException e) {
+            throw new RuntimeException("MultipartFile을 Resource로 변환하는 중 오류 발생", e);
+        }
     }
 
 }

@@ -18,22 +18,24 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileDataExtractorService {
     private final ProjectFolderRepository projectFolderRepository;
 
+    public int getPageCount(final MultipartFile file) {
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
+            return document.getNumberOfPages();
+        } catch (IOException e) {
+            throw new RuntimeException("PDF 파일 처리 중 오류가 발생했습니다.", e);
+        }
+    }
+
     public Document extractDocumentFromFile(final MultipartFile file, final Integer projectId,
-                                            final Integer projectFolderId) {
-        // 1. 파일명 추출
-        String fileName = file.getOriginalFilename();
+                                            final Integer projectFolderId, final String fileName) {
+
         String revision = "1.0";
 
         // 2. 파일 사이즈 추출 (바이트 단위)
         long fileSize = file.getSize();
 
         // 3. PDF 페이지 수 추출 (PDFBox 사용)
-        int pageCount;
-        try (PDDocument document = PDDocument.load(file.getInputStream())) {
-            pageCount = document.getNumberOfPages();
-        } catch (IOException e) {
-            throw new RuntimeException("PDF 파일 처리 중 오류가 발생했습니다.", e);
-        }
+        int pageCount = getPageCount(file);
 
         String path = Folder.PROJECT_FOLDER.getProjectFolderName(projectId, projectFolderId);
 
@@ -53,7 +55,7 @@ public class FileDataExtractorService {
                 .url(path)
                 .fileSize(fileSize)
                 .projectFolder(referenceById)
-                .state(State.SERVING)
+                .state(State.PENDING)
                 .build();
     }
 }

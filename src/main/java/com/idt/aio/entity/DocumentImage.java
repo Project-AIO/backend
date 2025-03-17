@@ -1,21 +1,7 @@
 package com.idt.aio.entity;
 
-import com.idt.aio.dto.DocumentImageDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.util.List;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @Builder
@@ -36,14 +22,4 @@ public class DocumentImage {
     @Column(name = "page", nullable = false)
     private Integer page;
 
-
-    public static List<DocumentImage> from(final List<DocumentImageDto> documentImageDtos,
-                                           final Document referenceById) {
-        return documentImageDtos.stream()
-                .map(documentImageDto -> DocumentImage.builder()
-                        .document(referenceById)
-                        .page(documentImageDto.getPage())
-                        .build())
-                .toList();
-    }
 }

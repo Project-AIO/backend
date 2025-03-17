@@ -1,33 +1,32 @@
 package com.idt.aio.controller;
 
 import com.idt.aio.dto.DocumentDto;
+import com.idt.aio.dto.DocumentPathDto;
 import com.idt.aio.dto.FileDto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
-import com.idt.aio.response.ImageFileResponse;
+import com.idt.aio.response.ImagePageResponse;
+import com.idt.aio.service.CoreServerService;
 import com.idt.aio.service.DocumentService;
 import com.idt.aio.service.FileDataExtractorService;
+import com.idt.aio.service.FileService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-public class DocumentController {
+public class  DocumentController {
     private final DocumentService documentService;
     private final FileValidator validator;
-    private final FileDataExtractorService fileDataExtractorService;
 
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
                프로젝트 ID로 피드백 가져오기
@@ -40,20 +39,40 @@ public class DocumentController {
     @Operation(summary = "'파일 불러오기' 버튼 클릭 시 프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 API", description = """
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 - [주의] swagger문서의 response 중 imageFile의 string은 이미지 파일 resource 타입임
             """)
+    @PostMapping("/document/extract")
+    public ImagePageResponse getDocumentImagePages(@RequestParam("file") final MultipartFile file,
+                                                   @RequestParam("startPage") final Integer startPage,
+                                                   @RequestParam("endPage") final Integer endPage) {
+        //검증 현재는 PDF만 가능
+        validator.validateFileSize(file);
+
+        final FileDto fileDto = FileDto.from(file, startPage, endPage);
+
+        return documentService.fetchImages(fileDto);
+    }
+
+    /**
+     * 현재 tb_doc_part와 tb_doc_image 테이블에 넣는 부분은 빠져 있음
+     */
+    @Operation(summary = "'파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송하는 API", description = """
+               '파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송 후 (tb_doc_part, tb_doc_image에 저장할 지 미정)
+            """)
     @PostMapping("/document/upload")
-    public ImageFileResponse getDocumentImages(@ModelAttribute @Valid DocumentUploadRequest request) {
+    public ResponseEntity<?> uploadDocument(@ModelAttribute @Valid final DocumentUploadRequest request) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(request.file());
-
-        //MultipartFile로부터 DocumentData 추출, 현재는 PDF라고 가정했을 때
-        final Document document = fileDataExtractorService.extractDocumentFromFile(request.file(), request.projectId(),
-                request.projectFolderId());
-
-        //db에 document 저장
-        documentService.saveDocument(document, request.projectId());
-
-        final FileDto fileDto = FileDto.from(request.file(), 1, document.getPageCount());
-
-        return documentService.fetchImages(fileDto, request.projectId());
+        documentService.processTransfer(request);
+        return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Core Server에서 특정 문서를 다 학습하고 상태값 바꿀 때 쓰는 API", description = """
+               Core Server에서 특정 문서를 다 학습하고 상태값 바꾸기
+            """)
+    @PostMapping("/document/status")
+    public ResponseEntity<?> updateDocumentStatus(@RequestParam("docId") final Integer docId,
+                                                  @RequestParam("status") final String status) {
+        documentService.updateStatus(docId,status);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class FileService {
     static final String PROJECT_ROOT = "/aio";
-    static final String DOCUMENT_IMAGE_NAME = "image_%d";
     static final String ROOT_PATH = System.getProperty("user.dir");
 
     @Transactional
@@ -62,24 +62,27 @@ public class FileService {
     }
 
     @Transactional
-    public void saveResourceToFolder(final ImageFileResponse imageFiles, final String filePath) {
+    public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName) {
         final String rootPath = ROOT_PATH + PROJECT_ROOT + filePath;
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
             Path targetDir = Paths.get(rootPath);
 
-            // 리스트에 담긴 각 Resource 처리
-            for (ImageData data : imageFiles.imageData()) {
-                String filename = String.format(DOCUMENT_IMAGE_NAME, data.docImageId());
-                if (filename == null) {
-                    // 파일명이 없으면 건너뜁니다.
-                    continue;
-                }
-                // 대상 파일 경로 생성
-                Path targetFile = targetDir.resolve(filename);
-                // 파일 복사 (기존 파일이 있으면 교체)
-                Files.copy(data.imageFile().getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
+            if (fileName == null || fileName.isEmpty()) {
+                throw new IllegalArgumentException("파일명이 유효하지 않습니다.");
             }
+
+            // 대상 파일 경로 생성
+            Path targetFile = targetDir.resolve(fileName);
+
+            // 파일이 이미 존재하는지 체크
+            if (Files.exists(targetFile)) {
+                throw DomainExceptionCode.FILE_NAME_DUPLICATED.newInstance();
+            }
+
+            // 파일 복사
+            Files.copy(file.getInputStream(), targetFile);
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("파일 저장 중 오류 발생", e);
