@@ -42,8 +42,8 @@ public class ConfigurationKnowledgeService {
     }
 
     @Transactional
-    public void updateConfigKnowledge(final ConfigKnowledgeUpdateRequest params){
-        final ConfigurationKnowledge entity = repository.findById(params.confKnowledgeId())
+    public void updateConfigKnowledge(final Integer confKnowledgeId, final ConfigKnowledgeUpdateRequest params){
+        final ConfigurationKnowledge entity = repository.findById(confKnowledgeId)
                 .orElseThrow(DomainExceptionCode.CONFIGURATION_KNOWLEDGE_NOT_FOUND::newInstance);
 
         entity.update(params.chunkTokenSize(),

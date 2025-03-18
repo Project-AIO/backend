@@ -34,7 +34,7 @@ public class SynonymController {
                 direction - ASC, DESC
                 sortProperty - synonymId, source, match
             """)
-    @GetMapping("/synonym/page")
+    @GetMapping("/synonyms/page")
     public Page<SynonymDto> getSynonymByPage(@ModelAttribute final SynonymPageRequest request) {
 
         return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
@@ -43,8 +43,8 @@ public class SynonymController {
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 전체 조회 API", description = """
                프로젝트 귀속 동의어 사전 목록 전체 조회
             """)
-    @GetMapping("/project/{project_id}/synonyms")
-    public List<SynonymDto> getSynonym(@PathVariable("project_id") final Integer projectId) {
+    @GetMapping("/synonyms")
+    public List<SynonymDto> getSynonym(@RequestParam("project_id") final Integer projectId) {
 
         return synonymService.fetchSynonymsByProjectId(projectId);
     }
@@ -61,17 +61,17 @@ public class SynonymController {
     @Operation(summary = "프로젝트 귀속 동의어 변경 API", description = """
                projectId로 동의어 변경
             """)
-    @PatchMapping("/synonym")
-    public ResponseEntity<?> updateSynonym(@ModelAttribute final SynonymUpdateRequest request) {
-        synonymService.updateSynonymById(request.synonymId(), request.source(), request.match());
+    @PatchMapping("/synonym/{synonym_id}")
+    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @ModelAttribute final SynonymUpdateRequest request) {
+        synonymService.updateSynonymById(synonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 삭제 API", description = """
                projectId로 동의어 삭제
             """)
-    @DeleteMapping("/synonym")
-    public ResponseEntity<?> deleteSynonym(@RequestParam("synonymId") final Integer synonymId) {
+    @DeleteMapping("/synonym/{synonym_id}")
+    public ResponseEntity<?> deleteSynonym(@PathVariable("synonym_id") final Integer synonymId) {
         synonymService.deleteSynonymById(synonymId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
