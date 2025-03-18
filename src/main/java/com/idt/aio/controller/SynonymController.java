@@ -63,7 +63,7 @@ public class SynonymController {
                projectId로 동의어 변경
             """)
     @PatchMapping("/synonyms/{synonym_id}")
-    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @Valid @ModelAttribute final SynonymUpdateRequest request) {
+    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @ModelAttribute @Valid final SynonymUpdateRequest request) {
         synonymService.updateSynonymById(synonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }

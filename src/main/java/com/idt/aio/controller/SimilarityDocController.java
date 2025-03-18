@@ -8,6 +8,7 @@ import com.idt.aio.response.SimilarityDocResponse;
 import com.idt.aio.service.ConversationService;
 import com.idt.aio.service.SimilarityDocService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ public class SimilarityDocController {
                특정 프로젝트의 유사도 높은 참조 문서 추가
             """)
     @PostMapping("/similarity-doc")
-    public ResponseEntity<?> saveSimilarityDoc(@ModelAttribute final SimilarityDocRequest request) {
+    public ResponseEntity<?> saveSimilarityDoc(@ModelAttribute @Valid final SimilarityDocRequest request) {
         similarityDocService.saveSimilarityDoc(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
