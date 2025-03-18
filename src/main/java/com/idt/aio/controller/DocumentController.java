@@ -30,8 +30,8 @@ public class  DocumentController {
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
                프로젝트 ID로 피드백 가져오기
             """)
-    @GetMapping("folders/{project_folder_id}/documents")
-    public List<DocumentDto> getDocumentsByFolderId(@PathVariable("project_folder_id") final Integer folderId) {
+    @GetMapping("/documents")
+    public List<DocumentDto> getDocumentsByFolderId(@RequestParam("project_folder_id") final Integer folderId) {
         return documentService.fetchDocumentByFolderId(folderId);
     }
 
