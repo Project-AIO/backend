@@ -46,8 +46,8 @@ public class  DocumentController {
     }
 
 
-    @Operation(summary = "'파일 불러오기' 버튼 클릭 시 프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 API", description = """
-               프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 - [주의] swagger문서의 response 중 imageFile의 string은 이미지 파일 resource 타입임
+    @Operation(summary = "(완성 X - 코어 서버에서 아직 준비가 안됨)'파일 불러오기' 버튼 클릭 시 프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 API", description = """
+               (완성 X - 코어 서버에서 아직 준비가 안됨)프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 - [주의] swagger문서의 response 중 imageFile의 string은 이미지 파일 resource 타입임
             """)
     @PostMapping("/document/extract")
     public ImagePageResponse getDocumentImagePages(@RequestParam("file") final MultipartFile file,
@@ -64,8 +64,8 @@ public class  DocumentController {
     /**
      * 현재 tb_doc_part와 tb_doc_image 테이블에 넣는 부분은 빠져 있음
      */
-    @Operation(summary = "'파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송하는 API", description = """
-               '파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송 후 (tb_doc_part, tb_doc_image에 저장할 지 미정)
+    @Operation(summary = "(완성 X - 코어 서버에서 아직 준비가 안됨)'파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송하는 API", description = """
+               (완성 X - 코어 서버에서 아직 준비가 안됨)'파일 추가 진행하기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송 후 (tb_doc_part, tb_doc_image에 저장할 지 미정)
             """)
     @PostMapping("/document/upload")
     public ResponseEntity<?> uploadDocument(@ModelAttribute @Valid final DocumentUploadRequest request) {
