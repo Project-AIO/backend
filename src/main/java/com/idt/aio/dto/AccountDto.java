@@ -4,17 +4,14 @@ import com.idt.aio.util.StringListConverter;
 import jakarta.persistence.Convert;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountDto {
 
     @NotNull

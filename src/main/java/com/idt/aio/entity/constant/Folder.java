@@ -1,10 +1,11 @@
 package com.idt.aio.entity.constant;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public enum Folder {
     PROJECT("project_"),
     PROJECT_FOLDER("project_folder_"),

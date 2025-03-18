@@ -2,15 +2,13 @@ package com.idt.aio.dto;
 
 import com.idt.aio.entity.Homonym;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HomonymDto {
     private Integer homonymId;
     private Integer projectId;

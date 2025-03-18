@@ -2,13 +2,14 @@ package com.idt.aio.dto;
 
 import com.idt.aio.entity.constant.FeedbackType;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeedbackDto {
     private String accountId;
     private Integer questionId;
