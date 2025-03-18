@@ -34,7 +34,7 @@ public class ModelPresetController {
                언어모델 ID로 모델 프리셋 조회
             """)
     @GetMapping("/model-preset/lang-model")
-    public List<ModelPresetResponse> fetchModelPresetByLangModelId(@RequestParam("lang_model_id") final Integer langModelId) {
+    public ModelPresetResponse fetchModelPresetByLangModelId(@RequestParam("lang_model_id") final Integer langModelId) {
         return modelPresetService.getModelPresetByLangModelId(langModelId);
     }
 
@@ -59,7 +59,7 @@ public class ModelPresetController {
     @Operation(summary = "특정 프로젝트의 모델 프리셋 삭제 API", description = """
                projectId로 동의어 삭제
             """)
-    @DeleteMapping("/model-preset")
+    @DeleteMapping("/model-presets")
     public ResponseEntity<?> deleteModelPresetByProjectId(@RequestParam("project_id") final Integer projectId) {
         modelPresetService.deleteModelPresetByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -68,7 +68,7 @@ public class ModelPresetController {
     @Operation(summary = "모델 프리셋 ID로 모델 프리셋 삭제 API", description = """
                모델 프리셋 ID로 모델 프리셋 삭제
             """)
-    @DeleteMapping("/model-preset/{model_preset_id}")
+    @DeleteMapping("/model-presets/{model_preset_id}")
     public ResponseEntity<?> deleteModelPresetById(@PathVariable("model_preset_id") final Integer modelPresetId) {
         modelPresetService.deleteModelPresetById(modelPresetId);
         return ResponseEntity.status(HttpStatus.OK).build();

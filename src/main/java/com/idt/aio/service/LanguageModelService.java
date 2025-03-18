@@ -28,8 +28,8 @@ public class LanguageModelService {
     }
 
     @Transactional(readOnly = true)
-    public List<LanguageModelResponse> getLanguageModelById(final Integer langModelId) {
-        List<LanguageModel> languageModels = languageModelRepository.getLanguageModelByLangModelId(langModelId);
+    public LanguageModelResponse getLanguageModelById(final Integer langModelId) {
+        LanguageModel languageModels = languageModelRepository.getLanguageModelByLangModelId(langModelId);
         return LanguageModelResponse.from(languageModels);
     }
 

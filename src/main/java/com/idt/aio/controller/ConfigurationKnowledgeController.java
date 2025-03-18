@@ -29,7 +29,7 @@ public class ConfigurationKnowledgeController {
     @Operation(summary = "Knowledge Configuration 수정 API", description = """
                Knowledge Configuration 수정
             """)
-    @PatchMapping("/configuration-knowledge/{confKnowledge_id}")
+    @PatchMapping("/configuration-knowledges/{confKnowledge_id}")
     public ResponseEntity<?> updateConfigurationKnowledge(@PathVariable("confKnowledge_id") Integer confKnowledgeId, @RequestBody final ConfigKnowledgeUpdateRequest request) {
         service.updateConfigKnowledge(confKnowledgeId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
