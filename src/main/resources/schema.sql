@@ -172,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `tb_doc` (
     `page_count` INT,
     `state` ENUM('PENDING','SERVING','INACTIVE') DEFAULT 'PENDING',
     `url` VARCHAR(255) NOT NULL,
+    `file_size` INT NOT NULL,
     `revision` VARCHAR(25),
     `upload_dt` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`doc_id`),
