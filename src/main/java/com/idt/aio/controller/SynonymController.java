@@ -30,12 +30,14 @@ public class SynonymController {
     private final SynonymService synonymService;
 
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 페이징 조회 API", description = """
-               프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
+               프로젝트 귀속 동의어 사전 목록 페이징 조회 - direction, sortProperty로 정렬 방식 지정
+                direction - ASC, DESC
+                sortProperty - synonymId, source, match
             """)
     @GetMapping("/synonym/page")
     public Page<SynonymDto> getSynonymByPage(@ModelAttribute final SynonymPageRequest request) {
 
-        return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size());
+        return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 전체 조회 API", description = """
