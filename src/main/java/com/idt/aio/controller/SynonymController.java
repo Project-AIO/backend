@@ -38,8 +38,8 @@ public class SynonymController {
         return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size());
     }
 
-    @Operation(summary = "프로젝트 귀속 동의어 사전 목록 페이징 조회 API", description = """
-               프로젝트 귀속 동의어 사전 목록 페이징 조회 - synonymId로 오름차순 정렬 (수정 가능)
+    @Operation(summary = "프로젝트 귀속 동의어 사전 목록 전체 조회 API", description = """
+               프로젝트 귀속 동의어 사전 목록 전체 조회
             """)
     @GetMapping("/project/{project_id}/synonyms")
     public List<SynonymDto> getSynonym(@PathVariable("project_id") final Integer projectId) {
