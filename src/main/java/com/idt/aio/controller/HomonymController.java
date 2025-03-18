@@ -34,7 +34,7 @@ public class HomonymController {
                direction - ASC, DESC
                sortProperty - homonymId, source, match
             """)
-    @GetMapping("/homonym/page")
+    @GetMapping("/homonyms/page")
     public Page<HomonymDto> getHomonymByPage(@ModelAttribute final HomonymPageRequest request) {
 
         return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
@@ -43,8 +43,8 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 전체 조회 API", description = """
                프로젝트 귀속 이의어 사전 목록 전체 조회
             """)
-    @GetMapping("/project/{project_id}/homonyms")
-    public List<HomonymDto> getHomonym(@PathVariable("project_id") final Integer projectId) {
+    @GetMapping("/homonyms")
+    public List<HomonymDto> getHomonym(@RequestParam("project_id") final Integer projectId) {
 
         return homonymService.fetchHomonymsByProjectId(projectId);
     }
@@ -61,17 +61,17 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 변경 API", description = """
                projectId로 이의어 변경
             """)
-    @PatchMapping("/homonym")
-    public ResponseEntity<?> updateHomonym(@ModelAttribute final HomonymUpdateRequest request) {
-        homonymService.updateHomonymById(request.homonymId(), request.source(), request.match());
+    @PatchMapping("/homonym/{homonym_id}")
+    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute final HomonymUpdateRequest request) {
+        homonymService.updateHomonymById(homonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 삭제 API", description = """
                projectId로 이의어 삭제
             """)
-    @DeleteMapping("/homonym")
-    public ResponseEntity<?> deleteHomonym(@RequestParam("homonymId") final Integer homonymId) {
+    @DeleteMapping("/homonym/{homonym_id}")
+    public ResponseEntity<?> deleteHomonym(@PathVariable("homonym_id") final Integer homonymId) {
         homonymService.deleteHomonymById(homonymId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

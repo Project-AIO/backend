@@ -7,8 +7,6 @@ import lombok.Builder;
 @Builder
 public record ConfigKnowledgeUpdateRequest(
         @NotNull
-        Integer confKnowledgeId,
-        @NotNull
         String chunkTokenSize,
         @NotNull
         Float overlapTokenRate,

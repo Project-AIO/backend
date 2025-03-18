@@ -35,7 +35,7 @@ public class ProjectController {
     @Operation(summary = "프로젝트 ID로 프로젝트 삭제 API", description = """
                 실제 프로젝트 폴더, 문서 등 자식 관계 데이터들도 다 Cascade 됨
             """)
-    @DeleteMapping("/project/{project_id}")
+    @DeleteMapping("/projects/{project_id}")
     public ResponseEntity<?> removeProject(@PathVariable("project_id") final Integer projectId) {
         projectService.deleteProjectById(projectId);
         return ResponseEntity.ok().build();
@@ -45,8 +45,8 @@ public class ProjectController {
     @Operation(summary = "프로젝트 ID로 프로젝트 폴더 정보 가져오는 API", description = """
                프로젝트 ID로 프로젝트 폴더 정보 가져오기
             """)
-    @GetMapping("/project/{project_id}/project_folder")
-    public List<ProjectFolderDto> getProjectFolder(@PathVariable("project_id") final Integer project_id) {
+    @GetMapping("/project_folder")
+    public List<ProjectFolderDto> getProjectFolder(@RequestParam("project_id") final Integer project_id) {
         return projectService.fetchProjectFoldersById(project_id);
     }
 
