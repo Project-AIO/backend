@@ -61,7 +61,7 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 변경 API", description = """
                projectId로 이의어 변경
             """)
-    @PatchMapping("/homonym/{homonym_id}")
+    @PatchMapping("/homonyms/{homonym_id}")
     public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute final HomonymUpdateRequest request) {
         homonymService.updateHomonymById(homonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -70,7 +70,7 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 삭제 API", description = """
                projectId로 이의어 삭제
             """)
-    @DeleteMapping("/homonym/{homonym_id}")
+    @DeleteMapping("/homonyms/{homonym_id}")
     public ResponseEntity<?> deleteHomonym(@PathVariable("homonym_id") final Integer homonymId) {
         homonymService.deleteHomonymById(homonymId);
         return ResponseEntity.status(HttpStatus.OK).build();

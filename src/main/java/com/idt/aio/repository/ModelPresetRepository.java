@@ -10,7 +10,7 @@ import java.util.List;
 public interface ModelPresetRepository extends JpaRepository<ModelPreset, Integer> {
     List<ModelPreset> getModelPresetByLanguageModel_Project_ProjectId(final Integer projectId);
 
-    List<ModelPreset> getModelPresetByLanguageModel_LangModelId(final Integer langModelId);
+    ModelPreset getModelPresetByLanguageModel_LangModelId(final Integer langModelId);
 
     ModelPreset getModelPresetByModelPresetId(final Integer modelPresetId);
 

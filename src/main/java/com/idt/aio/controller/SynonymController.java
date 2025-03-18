@@ -61,7 +61,7 @@ public class SynonymController {
     @Operation(summary = "프로젝트 귀속 동의어 변경 API", description = """
                projectId로 동의어 변경
             """)
-    @PatchMapping("/synonym/{synonym_id}")
+    @PatchMapping("/synonyms/{synonym_id}")
     public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @ModelAttribute final SynonymUpdateRequest request) {
         synonymService.updateSynonymById(synonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -70,7 +70,7 @@ public class SynonymController {
     @Operation(summary = "프로젝트 귀속 동의어 삭제 API", description = """
                projectId로 동의어 삭제
             """)
-    @DeleteMapping("/synonym/{synonym_id}")
+    @DeleteMapping("/synonyms/{synonym_id}")
     public ResponseEntity<?> deleteSynonym(@PathVariable("synonym_id") final Integer synonymId) {
         synonymService.deleteSynonymById(synonymId);
         return ResponseEntity.status(HttpStatus.OK).build();

@@ -32,7 +32,7 @@ public class LanguageModelController {
                언어모델 ID로 언어모델 조회
             """)
     @GetMapping("/language-model")
-    public List<LanguageModelResponse> fetchLanguageModelByModelId(@RequestParam("lang_model_id") final Integer langModelId) {
+    public LanguageModelResponse fetchLanguageModelByModelId(@RequestParam("lang_model_id") final Integer langModelId) {
         return languageModelService.getLanguageModelById(langModelId);
 
     }
@@ -47,9 +47,9 @@ public class LanguageModelController {
     }
 
     @Operation(summary = "특정 프로젝트의 언어모델 삭제 API", description = """
-               projectId로 동의어 삭제
+               projectId로 언어모델 삭제
             """)
-    @DeleteMapping("/language-model")
+    @DeleteMapping("/language-models")
     public ResponseEntity<?> deleteLanguageModelByProjectId(@RequestParam("project_id") final Integer projectId) {
         languageModelService.deleteLanguageModelByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -58,7 +58,7 @@ public class LanguageModelController {
     @Operation(summary = "언어모델 ID로 언어모델 삭제 API", description = """
                언어모델 ID로 언어모델 삭제
             """)
-    @DeleteMapping("/language-model/{lang_model_id}")
+    @DeleteMapping("/language-models/{lang_model_id}")
     public ResponseEntity<?> deleteLanguageModelById(@PathVariable("lang_model_id") final Integer langModelId) {
         languageModelService.deleteLanguageModelById(langModelId);
         return ResponseEntity.status(HttpStatus.OK).build();

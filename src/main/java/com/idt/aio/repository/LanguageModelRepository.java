@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface LanguageModelRepository extends JpaRepository<LanguageModel, Integer> {
     List<LanguageModel> getLanguageModelByProject_ProjectId(final Integer projectId);
-    List<LanguageModel> getLanguageModelByLangModelId(final Integer langModelId);
+    LanguageModel getLanguageModelByLangModelId(final Integer langModelId);
 
     void deleteLanguageModelsByProject_ProjectId(final Integer projectId);
 

@@ -45,7 +45,7 @@ public class ProjectController {
     @Operation(summary = "프로젝트 ID로 프로젝트 폴더 정보 가져오는 API", description = """
                프로젝트 ID로 프로젝트 폴더 정보 가져오기
             """)
-    @GetMapping("/project_folder")
+    @GetMapping("/project_folders")
     public List<ProjectFolderDto> getProjectFolder(@RequestParam("project_id") final Integer project_id) {
         return projectService.fetchProjectFoldersById(project_id);
     }
