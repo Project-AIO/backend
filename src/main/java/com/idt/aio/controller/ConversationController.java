@@ -1,9 +1,7 @@
 package com.idt.aio.controller;
 
 import com.idt.aio.request.ConversationRequest;
-import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.response.ConversationResponse;
-import com.idt.aio.response.LanguageModelResponse;
 import com.idt.aio.service.ConversationService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -30,16 +28,16 @@ public class ConversationController {
                프로젝트 ID로 대화 조회
             """)
     @GetMapping("/conversations")
-    public List<ConversationResponse> fetchConversationByProjectId(@RequestParam("project_id") final Integer projectId) {
-        return conversationService.getConversationByProjectId(projectId);
+    public List<ConversationResponse> fetchConversationsByProjectId(@RequestParam("project_id") final Integer projectId) {
+        return conversationService.getConversationsByProjectId(projectId);
     }
 
     @Operation(summary = "대화 ID로 대화 조회 API", description = """
                언어모델 ID로 언어모델 조회
             """)
     @GetMapping("/conversation")
-    public ConversationResponse fetchConversationByModelId(@RequestParam("conversation_id") final Integer langModelId) {
-        return conversationService.getConversationById(langModelId);
+    public ConversationResponse fetchConversationByModelId(@RequestParam("conversation_id") final Integer conversationId) {
+        return conversationService.getConversationById(conversationId);
 
     }
 
@@ -56,13 +54,13 @@ public class ConversationController {
                projectId로 대화 삭제
             """)
     @DeleteMapping("/conversations")
-    public ResponseEntity<?> deleteConversationByProjectId(@RequestParam("project_id") final Integer projectId) {
-        conversationService.deleteConversationByProjectId(projectId);
+    public ResponseEntity<?> deleteConversationsByProjectId(@RequestParam("project_id") final Integer projectId) {
+        conversationService.deleteConversationsByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "언어모델 ID로 대화 삭제 API", description = """
-               언어모델 ID로 대화 삭제
+    @Operation(summary = "대화 ID로 대화 삭제 API", description = """
+               대화 ID로 대화 삭제
             """)
     @DeleteMapping("/conversations/{conversation_id}")
     public ResponseEntity<?> deleteConversationById(@PathVariable("conversation_id") final Integer conversationId) {

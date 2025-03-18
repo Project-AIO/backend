@@ -1,16 +1,12 @@
 package com.idt.aio.service;
 
 import com.idt.aio.entity.Conversation;
-import com.idt.aio.entity.LanguageModel;
 import com.idt.aio.entity.Project;
-import com.idt.aio.entity.constant.Feature;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.ConversationRepository;
 import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.ConversationRequest;
-import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.response.ConversationResponse;
-import com.idt.aio.response.LanguageModelResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +18,7 @@ public class ConversationService {
     private final ConversationRepository conversationRepository;
     private final ProjectRepository projectRepository;
     @Transactional(readOnly = true)
-    public List<ConversationResponse> getConversationByProjectId(final Integer projectId) {
+    public List<ConversationResponse> getConversationsByProjectId(final Integer projectId) {
         final List<Conversation> conversations = conversationRepository.getConversationByProject_ProjectId(projectId);
         return ConversationResponse.from(conversations);
     }
@@ -48,12 +44,12 @@ public class ConversationService {
     }
 
     @Transactional
-    public void deleteConversationByProjectId(final Integer projectId) {
+    public void deleteConversationsByProjectId(final Integer projectId) {
         conversationRepository.deleteConversationsByProject_ProjectId(projectId);
     }
 
     @Transactional
     public void deleteConversationById(final Integer conversationId) {
-        conversationRepository.getConversationByConversationId(conversationId);
+        conversationRepository.deleteById(conversationId);
     }
 }
