@@ -20,8 +20,8 @@ public class SynonymService {
     private final ProjectService projectService;
 
     @Transactional(readOnly = true)
-    public Page<SynonymDto> fetchSynonymsByProjectIdByPage(final Integer projectId, final int page, final int size) {
-        final Pageable pageable = PageRequest.of(page - 1, size, Sort.by("synonymId").ascending());
+    public Page<SynonymDto> fetchSynonymsByProjectIdByPage(final Integer projectId, final int page, final int size, final Sort.Direction direction, final String sortProperty) {
+        final Pageable pageable = PageRequest.of(page - 1, size, direction, sortProperty);
         final Page<Synonym> synonymPage = synonymRepository.findByProject_ProjectId(projectId, pageable);
         return synonymPage.map(s -> SynonymDto.from(s));
     }

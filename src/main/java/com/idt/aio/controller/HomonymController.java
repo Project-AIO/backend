@@ -30,12 +30,14 @@ public class HomonymController {
     private final HomonymService homonymService;
 
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 페이징 조회 API", description = """
-               프로젝트 귀속 이의어 사전 목록 페이징 조회 - homonymId 오름차순 정렬 (수정 가능)
+               프로젝트 귀속 이의어 사전 목록 페이징 조회 - direction, sortProperty로 정렬 방식 지정
+               direction - ASC, DESC
+               sortProperty - homonymId, source, match
             """)
     @GetMapping("/homonym/page")
     public Page<HomonymDto> getHomonymByPage(@ModelAttribute final HomonymPageRequest request) {
 
-        return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size());
+        return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 전체 조회 API", description = """
