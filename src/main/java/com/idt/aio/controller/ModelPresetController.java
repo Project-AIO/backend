@@ -7,6 +7,7 @@ import com.idt.aio.response.ModelPresetResponse;
 import com.idt.aio.service.LanguageModelService;
 import com.idt.aio.service.ModelPresetService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class ModelPresetController {
                특정 프로젝트의 모델 프리셋 추가
             """)
     @PostMapping("/model-preset")
-    public ResponseEntity<?> saveModelPreset(@ModelAttribute final ModelPresetRequest request) {
+    public ResponseEntity<?> saveModelPreset(@ModelAttribute @Valid final ModelPresetRequest request) {
         modelPresetService.saveModelPreset(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

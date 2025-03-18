@@ -4,6 +4,7 @@ import com.idt.aio.request.ConversationRequest;
 import com.idt.aio.response.ConversationResponse;
 import com.idt.aio.service.ConversationService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class ConversationController {
                특정 프로젝트의 대화 추가
             """)
     @PostMapping("/conversation")
-    public ResponseEntity<?> saveConversation(@ModelAttribute final ConversationRequest request) {
+    public ResponseEntity<?> saveConversation(@ModelAttribute @Valid final ConversationRequest request) {
         conversationService.saveConversation(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

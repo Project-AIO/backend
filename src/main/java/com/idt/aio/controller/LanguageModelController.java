@@ -5,6 +5,7 @@ import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.response.LanguageModelResponse;
 import com.idt.aio.service.LanguageModelService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class LanguageModelController {
                특정 프로젝트의 언어모델 추가
             """)
     @PostMapping("/language-model")
-    public ResponseEntity<?> saveLanguageModel(@ModelAttribute final LanguageModelRequest request) {
+    public ResponseEntity<?> saveLanguageModel(@ModelAttribute @Valid final LanguageModelRequest request) {
         languageModelService.saveLanguageModel(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
