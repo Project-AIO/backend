@@ -51,7 +51,7 @@ public class LanguageModelController {
                projectId로 언어모델 삭제
             """)
     @DeleteMapping("/language-models")
-    public ResponseEntity<?> deleteLanguageModelByProjectId(@RequestParam("project_id") final Integer projectId) {
+    public ResponseEntity<?> deleteLanguageModelsByProjectId(@RequestParam("project_id") final Integer projectId) {
         languageModelService.deleteLanguageModelByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
