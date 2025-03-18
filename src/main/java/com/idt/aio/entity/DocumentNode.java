@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +26,12 @@ public class DocumentNode {
     @Column(name = "doc_node_id")
     private Integer docNodeId;
 
-    @JoinColumn(name = "doc_attr_id")
+    @JoinColumn(name = "doc_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private DocumentAttribute documentAttributeId;
+    private Document document;
+
+    @Size(max = 255)
+    private String attr;
 
 
 }
