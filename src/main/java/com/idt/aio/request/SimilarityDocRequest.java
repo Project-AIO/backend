@@ -7,6 +7,7 @@ public record SimilarityDocRequest(
         Integer docId,
         @NotNull
         Integer answerId,
+        @NotNull
         int page,
         Float score
 ) {
