@@ -61,4 +61,48 @@ public class ConfigurationKnowledge {
     @Builder.Default
     @Column(name = "keyword_weight", nullable = false)
     private Float keywordWeight = 0f;
+
+    public static ConfigurationKnowledge of(
+            Project project,
+            String chunkTokenSize,
+            Float overlapTokenRate,
+            String embModelName,
+            String rerkModelName,
+            Integer rerktopN,
+            Float retvThreshholdScore,
+            Integer retvTopK,
+            Float keywordWeight
+    ) {
+        return ConfigurationKnowledge.builder()
+                .project(project)
+                .chunkTokenSize(chunkTokenSize)
+                .overlapTokenRate(overlapTokenRate)
+                .embModelName(embModelName)
+                .rerkModelName(rerkModelName)
+                .rerktopN(rerktopN)
+                .retvThreshholdScore(retvThreshholdScore)
+                .retvTopK(retvTopK)
+                .keywordWeight(keywordWeight)
+                .build();
+    }
+
+    public void update(
+            String chunkTokenSize,
+            Float overlapTokenRate,
+            String embModelName,
+            String rerkModelName,
+            Integer rerktopN,
+            Float retvThreshholdScore,
+            Integer retvTopK,
+            Float keywordWeight
+    ) {
+        this.chunkTokenSize = chunkTokenSize;
+        this.overlapTokenRate = overlapTokenRate;
+        this.embModelName = embModelName;
+        this.rerkModelName = rerkModelName;
+        this.rerktopN = rerktopN;
+        this.retvThreshholdScore = retvThreshholdScore;
+        this.retvTopK = retvTopK;
+        this.keywordWeight = keywordWeight;
+    }
 }
