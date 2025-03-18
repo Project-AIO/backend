@@ -11,6 +11,9 @@ public enum Folder {
     DOCUMENT("document_");
 
     private final String folderName;
+    public String getFolderName(final Integer id) {
+        return folderName + id;
+    }
 
     public String getProjectName(final Integer projectId) {
         return folderName + projectId;

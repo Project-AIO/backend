@@ -1,14 +1,15 @@
 package com.idt.aio.service;
 
 import com.idt.aio.exception.DomainExceptionCode;
-import com.idt.aio.response.ImageFileResponse;
-import com.idt.aio.service.DocumentService.ImageData;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -20,8 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Service
 public class FileService {
-    static final String PROJECT_ROOT = "/aio";
+    static final String PROJECT_ROOT = "\\aio";
     static final String ROOT_PATH = System.getProperty("user.dir");
+
 
     @Transactional
     public void createFolder(final String folderName) {
@@ -85,6 +87,23 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("파일 저장 중 오류 발생", e);
+        }
+    }
+
+
+    @Transactional
+    public String findPathWithoutRootByFolderName(Path rootPath, String folderName) {
+        try (Stream<Path> pathStream = Files.walk(rootPath)) {
+            String path = Objects.requireNonNull(pathStream
+                    .filter(Files::isDirectory)
+                    .filter(p -> p.getFileName().toString().equals(folderName))
+                    .findFirst()
+                    .orElseThrow(DomainExceptionCode.FILE_NOT_FOUND::newInstance)).toString();
+
+            //path에서 ROOT_PATH+PROJECT_ROOT를 제거한 경로 반환
+            return path.replace(ROOT_PATH + PROJECT_ROOT+"\\", "");
+        } catch (IOException e) {
+            throw DomainExceptionCode.FILE_NOT_FOUND.newInstance();
         }
     }
 

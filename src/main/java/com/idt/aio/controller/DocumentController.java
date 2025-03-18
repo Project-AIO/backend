@@ -35,6 +35,17 @@ public class  DocumentController {
         return documentService.fetchDocumentByFolderId(folderId);
     }
 
+
+    @Operation(summary = "문서 ID로 문서 삭제 API", description = """
+               삭제하려는 문서와 연관된 테이블의 데이터들과 문서 파일도 삭제됨
+            """)
+    @DeleteMapping("/documents/{doc_id}")
+    public ResponseEntity<?> deleteDocument(@PathVariable("doc_id") final Integer docId) {
+        documentService.deleteDocumentById(docId);
+        return ResponseEntity.ok().build();
+    }
+
+
     @Operation(summary = "'파일 불러오기' 버튼 클릭 시 프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 API", description = """
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 - [주의] swagger문서의 response 중 imageFile의 string은 이미지 파일 resource 타입임
             """)

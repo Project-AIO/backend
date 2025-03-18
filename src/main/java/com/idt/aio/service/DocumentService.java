@@ -1,6 +1,5 @@
 package com.idt.aio.service;
 
-import ch.qos.logback.core.status.Status;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentPathDto;
 import com.idt.aio.dto.FileDto;
@@ -11,6 +10,7 @@ import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ImagePageResponse;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import lombok.Builder;
@@ -95,6 +95,12 @@ public class DocumentService {
     public void updateStatus(final Integer docId, final String status) {
         State state = State.valueOf(status);
         documentRepository.updateStats(docId, state);
+    }
+
+    public void deleteDocumentById(final Integer docId) {
+        documentRepository.deleteById(docId);
+        final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH), Folder.DOCUMENT.getFolderName(docId));
+        fileService.deleteFolder(path);
     }
 
     @Builder
