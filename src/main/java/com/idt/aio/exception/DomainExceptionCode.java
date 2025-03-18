@@ -30,7 +30,11 @@ public enum DomainExceptionCode {
     CONFIGURATION_KNOWLEDGE_NOT_FOUND(CONFIGURATION_KNOWLEDGE.code + 1, "설정 지식을 찾을 수 없습니다."),
 
     LANGUAGE_MODEL(3500, "정의되지 않은 에러입니다."),
-    LANGUAGE_MODEL_NOT_FOUND(LANGUAGE_MODEL.code + 1, "언어 모델을 찾을 수 없습니다."),;
+    LANGUAGE_MODEL_NOT_FOUND(LANGUAGE_MODEL.code + 1, "언어 모델을 찾을 수 없습니다."),
+
+    ANSWER(4000, "정의되지 않은 에러입니다."),
+    ANSWER_NOT_FOUND(ANSWER.code + 1, "답변을 찾을 수 없습니다."),
+    ;
 
 
     private final int code;
