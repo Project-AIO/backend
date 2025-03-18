@@ -29,7 +29,7 @@ public class LanguageModelService {
 
     @Transactional(readOnly = true)
     public LanguageModelResponse getLanguageModelById(final Integer langModelId) {
-        LanguageModel languageModels = languageModelRepository.getLanguageModelByLangModelId(langModelId);
+        final LanguageModel languageModels = languageModelRepository.getLanguageModelByLangModelId(langModelId);
         return LanguageModelResponse.from(languageModels);
     }
 

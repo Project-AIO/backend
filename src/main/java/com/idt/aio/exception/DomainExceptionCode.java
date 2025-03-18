@@ -34,6 +34,8 @@ public enum DomainExceptionCode {
 
     ANSWER(4000, "정의되지 않은 에러입니다."),
     ANSWER_NOT_FOUND(ANSWER.code + 1, "답변을 찾을 수 없습니다."),
+    CONVERSATION(4500, "정의되지 않은 에러입니다."),
+    CONVERSATION_NOT_FOUND(CONVERSATION.code + 1, "대화를 찾을 수 없습니다."),
     ;
 
 
