@@ -12,8 +12,8 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private Integer userId;
