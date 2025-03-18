@@ -35,7 +35,7 @@ public class LanguageModelService {
 
     @Transactional
     public void saveLanguageModel(final LanguageModelRequest params) {
-        if(projectRepository.existsById(params.projectId())) {
+        if(!projectRepository.existsById(params.projectId())) {
             throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
         }
 

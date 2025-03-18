@@ -1,16 +1,13 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -25,8 +22,9 @@ public class ModelPreset {
     private Integer modelPresetId;
 
     // 논리적 FK
-    @Column(name = "lang_model_id")
-    private Integer langModelId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lang_model_id")
+    private LanguageModel languageModel;
 
     @Builder.Default
     @Column(name = "temperature", nullable = false)
@@ -39,4 +37,6 @@ public class ModelPreset {
     @Builder.Default
     @Column(name = "top_k", nullable = false)
     private Integer topK = 1;
+
+
 }
