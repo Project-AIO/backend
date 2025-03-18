@@ -6,6 +6,7 @@ import com.idt.aio.request.SynonymRequest;
 import com.idt.aio.request.SynonymUpdateRequest;
 import com.idt.aio.service.SynonymService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class SynonymController {
                 sortProperty - synonymId, source, match
             """)
     @GetMapping("/synonyms/page")
-    public Page<SynonymDto> getSynonymByPage(@ModelAttribute final SynonymPageRequest request) {
+    public Page<SynonymDto> getSynonymByPage(@ModelAttribute @Valid final SynonymPageRequest request) {
 
         return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
     }
@@ -62,7 +63,7 @@ public class SynonymController {
                projectId로 동의어 변경
             """)
     @PatchMapping("/synonyms/{synonym_id}")
-    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @ModelAttribute final SynonymUpdateRequest request) {
+    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @Valid @ModelAttribute final SynonymUpdateRequest request) {
         synonymService.updateSynonymById(synonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }

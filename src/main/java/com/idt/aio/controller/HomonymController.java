@@ -6,6 +6,7 @@ import com.idt.aio.request.HomonymRequest;
 import com.idt.aio.request.HomonymUpdateRequest;
 import com.idt.aio.service.HomonymService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class HomonymController {
                sortProperty - homonymId, source, match
             """)
     @GetMapping("/homonyms/page")
-    public Page<HomonymDto> getHomonymByPage(@ModelAttribute final HomonymPageRequest request) {
+    public Page<HomonymDto> getHomonymByPage(@ModelAttribute @Valid  final HomonymPageRequest request) {
 
         return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
     }
@@ -53,7 +54,7 @@ public class HomonymController {
                projectId로 이의어 추가
             """)
     @PostMapping("/homonym")
-    public ResponseEntity<?> saveHomonym(@ModelAttribute final HomonymRequest request) {
+    public ResponseEntity<?> saveHomonym(@ModelAttribute @Valid  final HomonymRequest request) {
         homonymService.saveHomonym(request.projectId(), request.homonymId(), request.source(), request.match());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -62,7 +63,7 @@ public class HomonymController {
                projectId로 이의어 변경
             """)
     @PatchMapping("/homonyms/{homonym_id}")
-    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute final HomonymUpdateRequest request) {
+    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute @Valid  final HomonymUpdateRequest request) {
         homonymService.updateHomonymById(homonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }

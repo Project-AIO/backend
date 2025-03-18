@@ -8,7 +8,9 @@ import org.springframework.data.domain.Sort;
 public record SynonymPageRequest(
         @NotNull
         Integer projectId,
+        @NotNull
         int page,
+        @NotNull
         int size,
         @NotNull
         Sort.Direction direction,
