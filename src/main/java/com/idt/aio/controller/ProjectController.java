@@ -33,7 +33,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "프로젝트 ID로 프로젝트 삭제 API", description = """
-               프로젝트 삭제
+                실제 프로젝트 폴더, 문서 등 자식 관계 데이터들도 다 Cascade 됨
             """)
     @DeleteMapping("/project/{project_id}")
     public ResponseEntity<?> removeProject(@PathVariable("project_id") final Integer projectId) {
