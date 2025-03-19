@@ -1,6 +1,8 @@
 package com.idt.aio.controller;
 
 import java.util.Map;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class DocumentStatusController {
     private final Map<String, SseEmitter> emitters;
 
+    @Operation(summary = "문서 상태 조회를 위한 SSE 구독 API", description = """
+              문서의 JobId로 상태를 조회하기 위한 SSE 연결을 생성
+            """)
     @GetMapping("/sse/subscribe/{jobId}")
     public SseEmitter subscribe(@PathVariable final String jobId) {
         // 하루
