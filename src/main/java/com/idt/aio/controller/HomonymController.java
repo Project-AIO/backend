@@ -54,8 +54,8 @@ public class HomonymController {
                projectId로 이의어 추가
             """)
     @PostMapping("/homonym")
-    public ResponseEntity<?> saveHomonym(@ModelAttribute @Valid  final HomonymRequest request) {
-        homonymService.saveHomonym(request.projectId(), request.homonymId(), request.source(), request.match());
+    public ResponseEntity<?> saveHomonym(@ModelAttribute final HomonymRequest request) {
+        homonymService.saveHomonym(request.projectId(), request.source(), request.match());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

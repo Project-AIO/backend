@@ -33,12 +33,11 @@ public class HomonymService {
     }
 
     @Transactional
-    public void saveHomonym(final Integer projectId, final Integer homonymId, final String source, final String match) {
+    public void saveHomonym(final Integer projectId,  final String source, final String match) {
         final ProjectDto project = projectService.findProjectById(projectId);
 
         final Homonym homonym = Homonym.builder()
                 .project(project.toEntity())
-                .homonymId(homonymId)
                 .source(source)
                 .match(match)
                 .build();

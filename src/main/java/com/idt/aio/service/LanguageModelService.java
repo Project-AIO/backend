@@ -43,7 +43,6 @@ public class LanguageModelService {
 
         languageModelRepository.save(LanguageModel.builder()
                 .project(referenceById)
-                .langModelId(params.langModelId())
                 .name(params.name())
                 .vendor(params.vendor())
                 .feature(params.feature() == null ? Feature.CHAT : params.feature())
