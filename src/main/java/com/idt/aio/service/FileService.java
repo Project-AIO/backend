@@ -88,7 +88,7 @@ public class FileService {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public String findPathWithoutRootByFolderName(Path rootPath, String folderName) {
         try (Stream<Path> pathStream = Files.walk(rootPath)) {
             String path = Objects.requireNonNull(pathStream
