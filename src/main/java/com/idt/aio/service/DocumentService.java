@@ -74,7 +74,7 @@ public class DocumentService {
     }
 
     @Transactional
-    @RabbitListener(queues = RabbitMqConfig.FILE_CONTENT_RESULT_QUEUE)
+    @RabbitListener(queues = RabbitMqConfig.FILE_CONTENT_QUEUE)
     public void handleChapterResult(CoreServerResponse response) {
         log.info("코어 서버에서 처리 결과를 수신했습니다: {}", response);
 

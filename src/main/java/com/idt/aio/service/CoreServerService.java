@@ -4,6 +4,7 @@ import com.idt.aio.dto.ConfigurationKnowledgeDto;
 import com.idt.aio.request.RuleData;
 import com.idt.aio.request.ContentSenderRequest;
 import com.idt.aio.response.ContentResponse;
+import com.idt.aio.util.JobIdUtil;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CoreServerService {
     private final RestTemplate restTemplate;
     private final ContentSenderService sender;
+    private final JobIdUtil jobIdUtil;
 
     @Value("${core.server.url}")
     private String coreServerUrl;
@@ -38,9 +40,10 @@ public class CoreServerService {
             final Integer docId,
             final ConfigurationKnowledgeDto config
             ){
-
+        final String jobId = jobIdUtil.generateJobId();
 
         final ContentSenderRequest request = ContentSenderRequest.builder()
+                .jobId(jobId)
                 .filePath(savedFilePath)
                 .rules(contents)
                 .docId(docId)
