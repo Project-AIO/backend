@@ -19,10 +19,7 @@ public record DocumentUploadRequest(
         @Size(min = 1, max = 100)
         String fileName,
         @NotNull
-        List<Integer> removePages,
-        @NotNull
-        int contentStartPage,
-        @NotNull
-        int contentEndPage
+        List<ContentData> contents
+
 ) {
 }

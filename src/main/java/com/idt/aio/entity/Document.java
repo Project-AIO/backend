@@ -74,6 +74,10 @@ public class Document {
                 .build();
     }
 
+    public void updateState(final State state) {
+        this.state = state;
+    }
+
     @PrePersist
     private void prePersist() {
         this.uploadDt = LocalDateTime.now();

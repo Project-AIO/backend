@@ -28,10 +28,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Spring AMQP (RabbitMQ) 스타터
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	// (선택) JSON 직렬화를 위한 Jackson
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	//PDDocument
 	implementation 'org.apache.pdfbox:pdfbox:2.0.27'
+	implementation 'commons-io:commons-io:2.11.0'
 
 	//폴더 삭제
 	implementation 'commons-io:commons-io:2.13.0'

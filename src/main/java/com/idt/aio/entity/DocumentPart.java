@@ -1,6 +1,5 @@
 package com.idt.aio.entity;
 
-import com.idt.aio.entity.constant.PartType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,16 +36,12 @@ public class DocumentPart {
     @Column(name = "title", length = 100)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "part_type")
-    private PartType partType;
-
     @Column(name = "start_page")
     private Integer startPage;
 
     @Column(name = "end_page")
     private Integer endPage;
 
-    @Column(name = "lable")
-    private String lable;
+    @Column(name = "label")
+    private String label;
 }
