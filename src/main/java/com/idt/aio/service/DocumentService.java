@@ -1,10 +1,7 @@
 package com.idt.aio.service;
 
 import com.idt.aio.config.RabbitMqConfig;
-import com.idt.aio.dto.ConfigurationKnowledgeDto;
-import com.idt.aio.dto.DocumentDto;
-import com.idt.aio.dto.DocumentPathDto;
-import com.idt.aio.dto.FileDto;
+import com.idt.aio.dto.*;
 import com.idt.aio.entity.Document;
 import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.entity.constant.State;
@@ -45,7 +42,7 @@ public class DocumentService {
     }
 
     @Transactional
-    public Document processTransfer(final DocumentUploadRequest request) {
+    public DocumentJob processTransfer(final DocumentUploadRequest request) {
         final Document extracted = fileDataExtractorService.extractDocumentFromFile(
                 request.file(),
                 request.projectId(),
@@ -62,7 +59,7 @@ public class DocumentService {
                 request.projectId());
 
         //core server로 전송
-        coreServerService.executeTransfer(
+        final String jobId = coreServerService.executeTransfer(
                 savedFilePath,
                 request.contents(),
                 documentPathDto.getDocId(),
@@ -70,7 +67,10 @@ public class DocumentService {
 
         extracted.updateState(State.STAND_BY);
 
-        return extracted;
+        return DocumentJob.builder()
+                .document(extracted)
+                .jobId(jobId)
+                .build();
     }
 
     @Transactional
@@ -133,14 +133,6 @@ public class DocumentService {
         final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH),
                 Folder.DOCUMENT.getFolderName(docId));
         fileService.deleteFolder(path);
-    }
-
-    @Builder
-    public record ImageData(
-            Integer docImageId,
-            Resource imageFile,
-            int page) {
-
     }
 
 }

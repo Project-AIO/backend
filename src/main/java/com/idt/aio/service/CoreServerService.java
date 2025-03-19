@@ -38,7 +38,7 @@ public class CoreServerService {
     @Value("${core.server.url}")
     private String coreServerUrl;
 
-    public void executeTransfer(
+    public String executeTransfer(
             final String savedFilePath,
             final List<RuleData> contents,
             final Integer docId,
@@ -59,7 +59,7 @@ public class CoreServerService {
         final DataResponse dataResponse = DataResponse.from(request);
 
         sender.sendContents(dataResponse);
-
+        return jobId;
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.idt.aio.controller;
 
 import com.idt.aio.dto.DocumentDto;
+import com.idt.aio.dto.DocumentJob;
 import com.idt.aio.dto.FileDto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
@@ -81,9 +82,9 @@ public class DocumentController {
     public ResponseEntity<?> uploadDocument(@ModelAttribute @Valid final DocumentUploadRequest request) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(request.file());
-        final Document document = documentService.processTransfer(request);
-        documentPartService.saveDocumentPart(document, request.contents());
-        return ResponseEntity.ok().build();
+        final DocumentJob documentJob = documentService.processTransfer(request);
+        documentPartService.saveDocumentPart(documentJob.document(), request.contents());
+        return ResponseEntity.ok().body(documentJob.jobId());
     }
 
     @Operation(summary = "(사용 안 함)Core Server에서 특정 문서를 다 학습하고 상태값 바꿀 때 쓰는 API", description = """
