@@ -6,6 +6,7 @@ import com.idt.aio.request.HomonymRequest;
 import com.idt.aio.request.HomonymUpdateRequest;
 import com.idt.aio.service.HomonymService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class HomonymController {
                sortProperty - homonymId, source, match
             """)
     @GetMapping("/homonyms/page")
-    public Page<HomonymDto> getHomonymByPage(@ModelAttribute final HomonymPageRequest request) {
+    public Page<HomonymDto> getHomonymByPage(@ModelAttribute @Valid  final HomonymPageRequest request) {
 
         return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
     }
@@ -61,8 +62,8 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 변경 API", description = """
                projectId로 이의어 변경
             """)
-    @PatchMapping("/homonym/{homonym_id}")
-    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute final HomonymUpdateRequest request) {
+    @PatchMapping("/homonyms/{homonym_id}")
+    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute @Valid  final HomonymUpdateRequest request) {
         homonymService.updateHomonymById(homonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -70,7 +71,7 @@ public class HomonymController {
     @Operation(summary = "프로젝트 귀속 이의어 삭제 API", description = """
                projectId로 이의어 삭제
             """)
-    @DeleteMapping("/homonym/{homonym_id}")
+    @DeleteMapping("/homonyms/{homonym_id}")
     public ResponseEntity<?> deleteHomonym(@PathVariable("homonym_id") final Integer homonymId) {
         homonymService.deleteHomonymById(homonymId);
         return ResponseEntity.status(HttpStatus.OK).build();

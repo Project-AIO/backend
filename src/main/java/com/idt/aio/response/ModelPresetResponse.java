@@ -15,13 +15,7 @@ public record ModelPresetResponse (
 ){
     public static List<ModelPresetResponse> from(final List<ModelPreset> entities){
         return entities.stream()
-                .map(e-> ModelPresetResponse.builder()
-                        .modelPresetId(e.getModelPresetId())
-                        .langModelId(e.getLanguageModel().getLangModelId())
-                        .temperature(e.getTemperature())
-                        .topP(e.getTopP())
-                        .topK(e.getTopK())
-                        .build())
+                .map(ModelPresetResponse::from)
                 .toList();
     }
     public static ModelPresetResponse from(final ModelPreset entity){

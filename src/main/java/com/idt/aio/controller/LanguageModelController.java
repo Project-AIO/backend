@@ -5,6 +5,7 @@ import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.response.LanguageModelResponse;
 import com.idt.aio.service.LanguageModelService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class LanguageModelController {
                언어모델 ID로 언어모델 조회
             """)
     @GetMapping("/language-model")
-    public List<LanguageModelResponse> fetchLanguageModelByModelId(@RequestParam("lang_model_id") final Integer langModelId) {
+    public LanguageModelResponse fetchLanguageModelByModelId(@RequestParam("lang_model_id") final Integer langModelId) {
         return languageModelService.getLanguageModelById(langModelId);
 
     }
@@ -41,16 +42,16 @@ public class LanguageModelController {
                특정 프로젝트의 언어모델 추가
             """)
     @PostMapping("/language-model")
-    public ResponseEntity<?> saveLanguageModel(@ModelAttribute final LanguageModelRequest request) {
+    public ResponseEntity<?> saveLanguageModel(@ModelAttribute @Valid final LanguageModelRequest request) {
         languageModelService.saveLanguageModel(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "특정 프로젝트의 언어모델 삭제 API", description = """
-               projectId로 동의어 삭제
+               projectId로 언어모델 삭제
             """)
-    @DeleteMapping("/language-model")
-    public ResponseEntity<?> deleteLanguageModelByProjectId(@RequestParam("project_id") final Integer projectId) {
+    @DeleteMapping("/language-models")
+    public ResponseEntity<?> deleteLanguageModelsByProjectId(@RequestParam("project_id") final Integer projectId) {
         languageModelService.deleteLanguageModelByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -58,7 +59,7 @@ public class LanguageModelController {
     @Operation(summary = "언어모델 ID로 언어모델 삭제 API", description = """
                언어모델 ID로 언어모델 삭제
             """)
-    @DeleteMapping("/language-model/{lang_model_id}")
+    @DeleteMapping("/language-models/{lang_model_id}")
     public ResponseEntity<?> deleteLanguageModelById(@PathVariable("lang_model_id") final Integer langModelId) {
         languageModelService.deleteLanguageModelById(langModelId);
         return ResponseEntity.status(HttpStatus.OK).build();

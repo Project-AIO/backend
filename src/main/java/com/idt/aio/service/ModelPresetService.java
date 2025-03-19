@@ -24,8 +24,8 @@ public class ModelPresetService {
         return ModelPresetResponse.from(modelPresets);
     }
 
-    public List<ModelPresetResponse> getModelPresetByLangModelId(final Integer langModelId) {
-        final List<ModelPreset> modelPresets = modelPresetRepository.getModelPresetByLanguageModel_LangModelId(langModelId);
+    public ModelPresetResponse getModelPresetByLangModelId(final Integer langModelId) {
+        final ModelPreset modelPresets = modelPresetRepository.getModelPresetByLanguageModel_LangModelId(langModelId);
         return ModelPresetResponse.from(modelPresets);
     }
 
