@@ -10,14 +10,15 @@ public record QuestionResponse(
         Integer conversationId,
         String message
 ) {
-    public static QuestionResponse from(final Question question){
+    public static QuestionResponse from(final Question question) {
         return QuestionResponse.builder()
                 .questionId(question.getQuestionId())
                 .conversationId(question.getConversation().getConversationId())
                 .message(question.getMessage())
                 .build();
     }
-    public static List<QuestionResponse> from(final List<Question> questions){
+
+    public static List<QuestionResponse> from(final List<Question> questions) {
         return questions.stream()
                 .map(QuestionResponse::from)
                 .toList();

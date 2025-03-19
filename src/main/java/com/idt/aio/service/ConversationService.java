@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConversationService {
     private final ConversationRepository conversationRepository;
     private final ProjectRepository projectRepository;
+
     @Transactional(readOnly = true)
     public List<ConversationResponse> getConversationsByProjectId(final Integer projectId) {
         final List<Conversation> conversations = conversationRepository.getConversationByProject_ProjectId(projectId);
@@ -31,7 +32,7 @@ public class ConversationService {
 
     @Transactional
     public void saveConversation(final ConversationRequest params) {
-        if(!projectRepository.existsById(params.projectId())) {
+        if (!projectRepository.existsById(params.projectId())) {
             throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
         }
 

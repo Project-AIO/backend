@@ -6,7 +6,8 @@ import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
-import com.idt.aio.service.*;
+import com.idt.aio.service.DocumentPartService;
+import com.idt.aio.service.DocumentService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -14,14 +15,21 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-public class  DocumentController {
+public class DocumentController {
     private final DocumentService documentService;
     private final DocumentPartService documentPartService;
     private final FileValidator validator;
@@ -50,8 +58,8 @@ public class  DocumentController {
             """)
     @PostMapping("/document/extract")
     public ResponseEntity<DataResponse> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
-                                                                                   @RequestParam("startPage") final Integer startPage,
-                                                                                   @RequestParam("endPage") final Integer endPage) {
+                                                              @RequestParam("startPage") final Integer startPage,
+                                                              @RequestParam("endPage") final Integer endPage) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(file);
 
@@ -82,10 +90,9 @@ public class  DocumentController {
     @PostMapping("/document/status")
     public ResponseEntity<?> updateDocumentStatus(@RequestParam("docId") final Integer docId,
                                                   @RequestParam("status") final String status) {
-        documentService.updateStatus(docId,status);
+        documentService.updateStatus(docId, status);
         return ResponseEntity.ok().build();
     }
-
 
 
 }

@@ -1,7 +1,6 @@
 package com.idt.aio.controller;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RestController
 @RequestMapping("/api/v1")
 public class DocumentStatusController {
-    private final Map<String, SseEmitter> emitters ;
+    private final Map<String, SseEmitter> emitters;
 
     @GetMapping("/sse/subscribe/{jobId}")
     public SseEmitter subscribe(@PathVariable final String jobId) {

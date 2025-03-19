@@ -21,6 +21,7 @@ public record SimilarityDocResponse(
                 .score(similarityDoc.getScore())
                 .build();
     }
+
     public static List<SimilarityDocResponse> from(final List<SimilarityDoc> similarityDocs) {
         return similarityDocs.stream()
                 .map(SimilarityDocResponse::from)

@@ -1,6 +1,5 @@
 package com.idt.aio.service;
 
-import com.idt.aio.dto.SynonymDto;
 import com.idt.aio.entity.LanguageModel;
 import com.idt.aio.entity.Project;
 import com.idt.aio.entity.constant.Feature;
@@ -9,11 +8,10 @@ import com.idt.aio.repository.LanguageModelRepository;
 import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.response.LanguageModelResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +21,8 @@ public class LanguageModelService {
 
     @Transactional(readOnly = true)
     public List<LanguageModelResponse> getLanguageModelByProjectId(final Integer projectId) {
-        final List<LanguageModel> languageModels = languageModelRepository.getLanguageModelByProject_ProjectId(projectId);
+        final List<LanguageModel> languageModels = languageModelRepository.getLanguageModelByProject_ProjectId(
+                projectId);
         return LanguageModelResponse.from(languageModels);
     }
 
@@ -35,7 +34,7 @@ public class LanguageModelService {
 
     @Transactional
     public void saveLanguageModel(final LanguageModelRequest params) {
-        if(!projectRepository.existsById(params.projectId())) {
+        if (!projectRepository.existsById(params.projectId())) {
             throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
         }
 

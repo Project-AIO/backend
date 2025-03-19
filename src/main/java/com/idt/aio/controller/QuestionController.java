@@ -1,11 +1,7 @@
 package com.idt.aio.controller;
 
-import com.idt.aio.request.ConversationRequest;
-import com.idt.aio.request.LanguageModelRequest;
 import com.idt.aio.request.QuestionRequest;
-import com.idt.aio.response.LanguageModelResponse;
 import com.idt.aio.response.QuestionResponse;
-import com.idt.aio.service.LanguageModelService;
 import com.idt.aio.service.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -34,7 +30,8 @@ public class QuestionController {
                대화 ID로 질문 조회
             """)
     @GetMapping("/questions")
-    public List<QuestionResponse> fetchQuestionByConversationId(@RequestParam("conversation_id") final Integer conversationId) {
+    public List<QuestionResponse> fetchQuestionByConversationId(
+            @RequestParam("conversation_id") final Integer conversationId) {
         return questionService.getQuestionByConversationId(conversationId);
     }
 
@@ -60,7 +57,8 @@ public class QuestionController {
                대화ID로 질문 삭제
             """)
     @DeleteMapping("/questions")
-    public ResponseEntity<?> deleteQuestionsByConversationId(@RequestParam("conversation_id") final Integer conversationId) {
+    public ResponseEntity<?> deleteQuestionsByConversationId(
+            @RequestParam("conversation_id") final Integer conversationId) {
         questionService.deleteQuestionsByConversationId(conversationId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

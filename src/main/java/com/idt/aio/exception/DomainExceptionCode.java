@@ -24,9 +24,9 @@ public enum DomainExceptionCode {
     FOLDER_CREATION_FAILED(FILE.code + 3, "폴더를 찾을 수 없습니다."),
     FOLDER_EXISTS(FILE.code + 4, "폴더가 이미 존재합니다."),
     FILE_NAME_DUPLICATED(FILE.code + 5, "중복된 파일명이 있습니다."),
-    FILE_NOT_FOUND(FILE.code+6, "파일을 찾을 수 없습니다."),
-    FILE_EXTENSION_INVALID(FILE.code+7, "파일 확장자가 올바르지 않습니다."),
-    FILE_EXTENSION_NOT_ALLOWED(FILE.code+8, "허용되지 않는 파일 확장자입니다."),
+    FILE_NOT_FOUND(FILE.code + 6, "파일을 찾을 수 없습니다."),
+    FILE_EXTENSION_INVALID(FILE.code + 7, "파일 확장자가 올바르지 않습니다."),
+    FILE_EXTENSION_NOT_ALLOWED(FILE.code + 8, "허용되지 않는 파일 확장자입니다."),
 
     CONFIGURATION_KNOWLEDGE(3000, "정의되지 않은 에러입니다."),
     CONFIGURATION_KNOWLEDGE_NOT_FOUND(CONFIGURATION_KNOWLEDGE.code + 1, "설정 지식을 찾을 수 없습니다."),

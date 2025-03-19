@@ -24,7 +24,7 @@ public class ProjectService {
     private final ProjectFolderRepository projectFolderRepository;
 
     @Transactional
-    public void deleteProjectById(final Integer projectId){
+    public void deleteProjectById(final Integer projectId) {
         projectRepository.deleteById(projectId);
         fileService.deleteFolder(Folder.PROJECT.getProjectName(projectId));
     }

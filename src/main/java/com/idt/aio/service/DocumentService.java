@@ -11,12 +11,10 @@ import com.idt.aio.entity.constant.State;
 import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
-
+import com.idt.aio.response.CoreServerResponse;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
-
-import com.idt.aio.response.CoreServerResponse;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +44,7 @@ public class DocumentService {
     }
 
     @Transactional
-    public Document processTransfer(final DocumentUploadRequest request){
+    public Document processTransfer(final DocumentUploadRequest request) {
         final Document extracted = fileDataExtractorService.extractDocumentFromFile(
                 request.file(),
                 request.projectId(),
@@ -56,10 +54,11 @@ public class DocumentService {
         //엔티티 db 저장 및 폴더 생성
         final DocumentPathDto documentPathDto = saveDocumentAndGetFolderPath(extracted, request.projectId());
         final String extension = fileService.getFileExtension(request.file());
-        fileService.saveResourceToFolder(request.file(),documentPathDto.getPath() , request.fileName(), extension);
+        fileService.saveResourceToFolder(request.file(), documentPathDto.getPath(), request.fileName(), extension);
 
-        final String savedFilePath = documentPathDto.getPath()+ File.separator+ request.fileName() + extension;
-        final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(request.projectId());
+        final String savedFilePath = documentPathDto.getPath() + File.separator + request.fileName() + extension;
+        final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(
+                request.projectId());
 
         //core server로 전송
         coreServerService.executeTransfer(
@@ -127,7 +126,8 @@ public class DocumentService {
 
     public void deleteDocumentById(final Integer docId) {
         documentRepository.deleteById(docId);
-        final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH), Folder.DOCUMENT.getFolderName(docId));
+        final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH),
+                Folder.DOCUMENT.getFolderName(docId));
         fileService.deleteFolder(path);
     }
 

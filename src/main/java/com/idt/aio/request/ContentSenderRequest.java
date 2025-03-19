@@ -1,7 +1,7 @@
 package com.idt.aio.request;
 
-import lombok.Builder;
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public record ContentSenderRequest(

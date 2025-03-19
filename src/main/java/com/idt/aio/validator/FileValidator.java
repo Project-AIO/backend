@@ -5,7 +5,6 @@ import com.idt.aio.entity.constant.Mime;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +28,7 @@ public class FileValidator {
         // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
         final String extension = fileService.getFileExtension(file);
 
-        if(!Extension.getValues().contains(extension)) {
+        if (!Extension.getValues().contains(extension)) {
             throw DomainExceptionCode.FILE_EXTENSION_INVALID.newInstance(extension);
         }
 
