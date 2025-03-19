@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse {
 
-    private int code;
+    private Integer code;
     private String message;
 
-    public static ErrorResponse of(int code, String message) {
+    public static ErrorResponse of(Integer code, String message) {
         return new ErrorResponse(code, message);
     }
 }

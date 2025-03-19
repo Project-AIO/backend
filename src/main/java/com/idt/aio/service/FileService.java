@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Service
 public class FileService {
-    static final String PROJECT_ROOT = "\\aio";
+    static final String PROJECT_ROOT = File.separator+"aio";
     static final String ROOT_PATH = System.getProperty("user.dir");
 
 
     @Transactional
-    public void createFolder(final String folderName) {
+    public String createFolder(final String folderName) {
         // 루트에 폴더 생성
         // 루트 디렉토리 경로 설정
         final String rootPath = ROOT_PATH + PROJECT_ROOT;
@@ -38,12 +39,9 @@ public class FileService {
         if (!newFolder.exists()) {
             if (newFolder.mkdirs()) {
                 log.info("폴더 생성 성공: " + newFolder.getAbsolutePath());
-                return;
             }
-            throw DomainExceptionCode.FOLDER_CREATION_FAILED.newInstance();
         }
-        log.error("폴더가 이미 존재합니다: " + newFolder.getAbsolutePath());
-        throw DomainExceptionCode.FOLDER_EXISTS.newInstance();
+        return newFolder.getAbsolutePath();
     }
 
     @Transactional
@@ -63,18 +61,17 @@ public class FileService {
     }
 
     @Transactional
-    public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName) {
-        final String rootPath = ROOT_PATH + PROJECT_ROOT + filePath;
+    public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName, final String extension) {
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
-            Path targetDir = Paths.get(rootPath);
+            Path targetDir = Paths.get(filePath);
 
             if (fileName == null || fileName.isEmpty()) {
                 throw new IllegalArgumentException("파일명이 유효하지 않습니다.");
             }
 
             // 대상 파일 경로 생성
-            Path targetFile = targetDir.resolve(fileName);
+            Path targetFile = targetDir.resolve(String.format(fileName+".%s",extension));
 
             // 파일이 이미 존재하는지 체크
             if (Files.exists(targetFile)) {
@@ -105,6 +102,15 @@ public class FileService {
         } catch (IOException e) {
             throw DomainExceptionCode.FILE_NOT_FOUND.newInstance();
         }
+    }
+
+    public String getFileExtension(final MultipartFile file) {
+        final String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null) {
+            throw DomainExceptionCode.FILE_EXTENSION_INVALID.newInstance();
+        }
+        // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
+       return FilenameUtils.getExtension(originalFilename);
     }
 
 }

@@ -9,9 +9,7 @@ public record HomonymRequest(
         @NotNull
         Integer projectId,
         @NotNull
-        Integer homonymId,
         @Size(min = 1, max = 25)
-        @NotNull
         String source,
         @Size(min = 1, max = 25)
         @NotNull

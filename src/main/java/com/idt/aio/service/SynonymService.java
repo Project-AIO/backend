@@ -33,12 +33,11 @@ public class SynonymService {
     }
 
     @Transactional
-    public void saveSynonym(final Integer projectId, final Integer synonymId, final String source, final String match) {
+    public void saveSynonym(final Integer projectId, final String source, final String match) {
         final ProjectDto project = projectService.findProjectById(projectId);
 
         final Synonym synonym = Synonym.builder()
                 .project(project.toEntity())
-                .synonymId(synonymId)
                 .source(source)
                 .match(match)
                 .build();

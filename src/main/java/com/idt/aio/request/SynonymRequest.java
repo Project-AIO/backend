@@ -9,8 +9,6 @@ public record SynonymRequest(
         @NotNull
         Integer projectId,
         @NotNull
-        Integer synonymId,
-        @NotNull
         @Size(min = 1, max = 25)
         String source,
         @NotNull

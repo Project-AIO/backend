@@ -5,6 +5,11 @@ spring:
 
   application:
     name: aio
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: pass
   sql:
     init:
       mode: always
