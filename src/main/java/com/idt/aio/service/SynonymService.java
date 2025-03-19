@@ -24,7 +24,7 @@ public class SynonymService {
                                                            final Sort.Direction direction, final String sortProperty) {
         final Pageable pageable = PageRequest.of(page - 1, size, direction, sortProperty);
         final Page<Synonym> synonymPage = synonymRepository.findByProject_ProjectId(projectId, pageable);
-        return synonymPage.map(s -> SynonymDto.from(s));
+        return synonymPage.map(SynonymDto::from);
     }
 
     @Transactional(readOnly = true)

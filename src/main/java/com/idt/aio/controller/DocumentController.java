@@ -8,6 +8,7 @@ import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
 import com.idt.aio.service.DocumentPartService;
 import com.idt.aio.service.DocumentService;
+import com.idt.aio.service.FileService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ public class DocumentController {
     private final DocumentService documentService;
     private final DocumentPartService documentPartService;
     private final FileValidator validator;
+    private final FileService fileService;
 
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
                프로젝트 ID로 피드백 가져오기
