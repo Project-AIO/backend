@@ -16,6 +16,7 @@ import com.idt.aio.response.SimilarityDocResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,16 +24,17 @@ public class SimilarityDocService {
     private final SimilarityDocRepository similarityDocRepository;
     private final DocumentRepository documentRepository;
     private final AnswerRepository answerRepository;
+    @Transactional(readOnly = true)
     public List<SimilarityDocResponse> getSimilarityDocsByDocId(final Integer docId) {
         final List<SimilarityDoc> similarityDocs = similarityDocRepository.getSimilarityDocsByDocument_DocId(docId);
         return SimilarityDocResponse.from(similarityDocs);
     }
-
+    @Transactional(readOnly = true)
     public SimilarityDocResponse getSimilarityDocById(final Integer similarityDocId) {
         final SimilarityDoc similarityDoc = similarityDocRepository.getSimilarityDocsBySimilarityDocId(similarityDocId);
         return SimilarityDocResponse.from(similarityDoc);
     }
-
+    @Transactional
     public void saveSimilarityDoc(final SimilarityDocRequest params) {
         if(!documentRepository.existsById(params.docId())) {
             throw DomainExceptionCode.DOCUMENT_NOT_FOUND.newInstance();
@@ -54,11 +56,11 @@ public class SimilarityDocService {
 
 
     }
-
+    @Transactional
     public void deleteSimilarityDocsByDocumentId(final Integer docId) {
         similarityDocRepository.deleteSimilarityDocByDocument_DocId(docId);
     }
-
+    @Transactional
     public void deleteSimilarityDocsById(final Integer similarityDocId) {
         similarityDocRepository.deleteById(similarityDocId);
     }
