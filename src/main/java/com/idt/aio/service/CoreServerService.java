@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -62,8 +63,7 @@ public class CoreServerService {
     }
 
     @Transactional
-    public List<ContentResponse> executeExtraction(final MultipartFile file, final int startPage, final int endPage) {
-
+    public List<ContentResponse> executeExtraction(final Resource file, final int startPage, final int endPage) {
         // 요청 본문 생성
         final MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
 
@@ -80,8 +80,7 @@ public class CoreServerService {
                     coreServerUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<>() {
-                    }
+                    new ParameterizedTypeReference<>() {}
             );
 
             return response.getBody();
@@ -91,22 +90,24 @@ public class CoreServerService {
         }
     }
 
-    private MultiValueMap<String, Object> createRequest(final MultipartFile file, final int startPage,
-                                                        final int endPage) {
+    private MultiValueMap<String, Object> createRequest(final Resource file, final int startPage, final int endPage) {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         try {
-            // 파일을 ByteArrayResource로 감싸서 전송
-            ByteArrayResource byteArrayResource = new ByteArrayResource(file.getBytes()) {
+            // Resource의 InputStream에서 바이트 배열 추출
+            byte[] bytes = FileCopyUtils.copyToByteArray(file.getInputStream());
+            // ByteArrayResource를 사용하여 파일 데이터를 전송.
+            // Resource의 getFilename() 메서드를 사용하여 파일 이름 반환
+            ByteArrayResource byteArrayResource = new ByteArrayResource(bytes) {
                 @Override
                 public String getFilename() {
-                    return file.getOriginalFilename();
+                    return file.getFilename();
                 }
             };
             map.add("file", byteArrayResource);
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는데 실패했습니다.", e);
         }
-        // 다른 파라미터 추가
+        // 추가 파라미터 설정
         map.add("start_page", String.valueOf(startPage));
         map.add("end_page", String.valueOf(endPage));
         return map;

@@ -13,6 +13,7 @@ import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.CoreServerResponse;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import lombok.Builder;
@@ -93,7 +94,10 @@ public class DocumentService {
 
     @Transactional
     public List<ContentResponse> fetchImages(final FileDto fileDto) {
-        final MultipartFile file = fileDto.getFile();
+        final Resource file = fileDataExtractorService.extractPdfPagesAsResource(
+                fileDto.getFile(),
+                fileDto.getStartPage(),
+                fileDto.getEndPage());
         final int startPage = fileDto.getStartPage();
         final int endPage = fileDto.getEndPage();
 
