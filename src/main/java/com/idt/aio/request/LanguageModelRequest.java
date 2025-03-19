@@ -6,7 +6,6 @@ import lombok.Builder;
 @Builder
 public record LanguageModelRequest(
     Integer projectId,
-    Integer langModelId,
     String name,
     String vendor,
     Feature feature,

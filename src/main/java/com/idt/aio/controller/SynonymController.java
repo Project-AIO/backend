@@ -54,7 +54,7 @@ public class SynonymController {
             """)
     @PostMapping("/synonym")
     public ResponseEntity<?> saveSynonym(@ModelAttribute final SynonymRequest request) {
-        synonymService.saveSynonym(request.projectId(), request.synonymId(), request.source(), request.match());
+        synonymService.saveSynonym(request.projectId(), request.source(), request.match());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

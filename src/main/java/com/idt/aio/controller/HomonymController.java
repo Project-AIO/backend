@@ -54,7 +54,7 @@ public class HomonymController {
             """)
     @PostMapping("/homonym")
     public ResponseEntity<?> saveHomonym(@ModelAttribute final HomonymRequest request) {
-        homonymService.saveHomonym(request.projectId(), request.homonymId(), request.source(), request.match());
+        homonymService.saveHomonym(request.projectId(), request.source(), request.match());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
