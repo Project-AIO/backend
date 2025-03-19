@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
     // Spring -> Core
     //Spring -> Core 방향 통신에 쓰일 큐/교환기/라우팅 키
-    public static final String FILE_CONTENT_QUEUE = "pdf-chapter-queue";
-    public static final String FILE_CONTENT_EXCHANGE = "pdf-chapter-exchange";
-    public static final String FILE_CONTENT_ROUTING_KEY = "pdf.chapter.key";
+    public static final String FILE_CONTENT_QUEUE = "file-content-queue";
+    public static final String FILE_CONTENT_EXCHANGE = "file-content-exchange";
+    public static final String FILE_CONTENT_ROUTING_KEY = "file.content.key";
 
     // Core -> Spring (결과)
-    public static final String FILE_CONTENT_RESULT_QUEUE = "pdf-chapter-result-queue";
-    public static final String FILE_CONTENT_RESULT_EXCHANGE = "pdf-chapter-result-exchange";
-    public static final String FILE_CONTENT_RESULT_ROUTING_KEY = "pdf.chapter.result.key";
+    public static final String FILE_CONTENT_RESULT_QUEUE = "file-content-result-queue";
+    public static final String FILE_CONTENT_RESULT_EXCHANGE = "file-content-result-exchange";
+    public static final String FILE_CONTENT_RESULT_ROUTING_KEY = "file.content.result.key";
 
     // (1) Spring -> Core 큐 생성
     //durable = false이므로 운영환경에선 필요 시 true로 변경 필요 false는 메모리에 저장되기 때문에 서버 재시작 시 데이터 손실 가능
