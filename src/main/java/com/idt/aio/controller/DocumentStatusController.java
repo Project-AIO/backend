@@ -19,8 +19,8 @@ public class DocumentStatusController {
 
     @GetMapping("/sse/subscribe/{jobId}")
     public SseEmitter subscribe(@PathVariable final String jobId) {
-        // 타임아웃을 무제한(0L)으로 설정할 수 있으나, 실제 서비스에서는 적절한 타임아웃을 설정하세요.
-        SseEmitter emitter = new SseEmitter(0L);
+        // 하루
+        SseEmitter emitter = new SseEmitter(3600000L);
 
         // 연결 완료 혹은 타임아웃 시 해당 emitter를 제거
         emitter.onCompletion(() -> emitters.remove(jobId));
