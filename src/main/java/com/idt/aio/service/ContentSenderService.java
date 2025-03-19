@@ -1,13 +1,10 @@
 package com.idt.aio.service;
 
 import com.idt.aio.config.RabbitMqConfig;
-import com.idt.aio.request.ContentSenderRequest;
 import com.idt.aio.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

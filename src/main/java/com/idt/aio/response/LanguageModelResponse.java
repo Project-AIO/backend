@@ -2,9 +2,8 @@ package com.idt.aio.response;
 
 import com.idt.aio.entity.LanguageModel;
 import com.idt.aio.entity.constant.Feature;
-import java.util.stream.Collectors;
-import lombok.Builder;
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public record LanguageModelResponse(
@@ -15,7 +14,7 @@ public record LanguageModelResponse(
         Feature feature,
         String apiKey
 ) {
-    public static LanguageModelResponse from (final LanguageModel entity){
+    public static LanguageModelResponse from(final LanguageModel entity) {
         return LanguageModelResponse.builder()
                 .langModelId(entity.getLangModelId())
                 .projectId(entity.getProject().getProjectId())
@@ -25,7 +24,8 @@ public record LanguageModelResponse(
                 .apiKey(entity.getApiKey())
                 .build();
     }
-    public static List<LanguageModelResponse> from (final List<LanguageModel> entities){
+
+    public static List<LanguageModelResponse> from(final List<LanguageModel> entities) {
         return entities.stream()
                 .map(LanguageModelResponse::from)
                 .toList();

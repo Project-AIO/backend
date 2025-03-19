@@ -20,7 +20,8 @@ public class HomonymService {
     private final ProjectService projectService;
 
     @Transactional(readOnly = true)
-    public Page<HomonymDto> fetchHomonymByProjectIdByPage(final Integer projectId, final int page, final int size, final Sort.Direction direction, final String sortProperty) {
+    public Page<HomonymDto> fetchHomonymByProjectIdByPage(final Integer projectId, final int page, final int size,
+                                                          final Sort.Direction direction, final String sortProperty) {
         final Pageable pageable = PageRequest.of(page - 1, size, direction, sortProperty);
         final Page<Homonym> homonymPage = homonymRepository.findByProject_ProjectId(projectId, pageable);
         return homonymPage.map(s -> HomonymDto.from(s));
@@ -33,7 +34,7 @@ public class HomonymService {
     }
 
     @Transactional
-    public void saveHomonym(final Integer projectId,  final String source, final String match) {
+    public void saveHomonym(final Integer projectId, final String source, final String match) {
         final ProjectDto project = projectService.findProjectById(projectId);
 
         final Homonym homonym = Homonym.builder()

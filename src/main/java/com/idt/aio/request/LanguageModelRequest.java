@@ -5,10 +5,10 @@ import lombok.Builder;
 
 @Builder
 public record LanguageModelRequest(
-    Integer projectId,
-    String name,
-    String vendor,
-    Feature feature,
-    String apiKey
+        Integer projectId,
+        String name,
+        String vendor,
+        Feature feature,
+        String apiKey
 ) {
 }

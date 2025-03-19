@@ -41,13 +41,13 @@ public class AuthController {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final EncryptUtil encryptUtil = new EncryptUtil();
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
     @Autowired
     private BlackListRepository blackListRepository;
     @Autowired
     private UserService userService;
-    private final EncryptUtil encryptUtil = new EncryptUtil();
 
     public AuthController(UserRepository userRepository, TokenProvider tokenProvider,
                           AuthenticationManagerBuilder authenticationManagerBuilder) {

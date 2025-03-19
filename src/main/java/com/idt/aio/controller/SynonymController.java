@@ -38,7 +38,8 @@ public class SynonymController {
     @GetMapping("/synonyms/page")
     public Page<SynonymDto> getSynonymByPage(@ModelAttribute @Valid final SynonymPageRequest request) {
 
-        return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
+        return synonymService.fetchSynonymsByProjectIdByPage(request.projectId(), request.page(), request.size(),
+                request.direction(), request.sortProperty());
     }
 
     @Operation(summary = "프로젝트 귀속 동의어 사전 목록 전체 조회 API", description = """
@@ -63,7 +64,8 @@ public class SynonymController {
                projectId로 동의어 변경
             """)
     @PatchMapping("/synonyms/{synonym_id}")
-    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId, @ModelAttribute @Valid final SynonymUpdateRequest request) {
+    public ResponseEntity<?> updateSynonym(@PathVariable("synonym_id") final Integer synonymId,
+                                           @ModelAttribute @Valid final SynonymUpdateRequest request) {
         synonymService.updateSynonymById(synonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }

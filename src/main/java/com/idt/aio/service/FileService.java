@@ -1,7 +1,6 @@
 package com.idt.aio.service;
 
 import com.idt.aio.exception.DomainExceptionCode;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Stream;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -22,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Service
 public class FileService {
-    static final String PROJECT_ROOT = File.separator+"aio";
+    static final String PROJECT_ROOT = File.separator + "aio";
     static final String ROOT_PATH = System.getProperty("user.dir");
 
 
@@ -61,7 +59,8 @@ public class FileService {
     }
 
     @Transactional
-    public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName, final String extension) {
+    public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName,
+                                     final String extension) {
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
             Path targetDir = Paths.get(filePath);
@@ -71,7 +70,7 @@ public class FileService {
             }
 
             // 대상 파일 경로 생성
-            Path targetFile = targetDir.resolve(String.format(fileName+".%s",extension));
+            Path targetFile = targetDir.resolve(String.format(fileName + ".%s", extension));
 
             // 파일이 이미 존재하는지 체크
             if (Files.exists(targetFile)) {
@@ -98,7 +97,7 @@ public class FileService {
                     .orElseThrow(DomainExceptionCode.FILE_NOT_FOUND::newInstance)).toString();
 
             //path에서 ROOT_PATH+PROJECT_ROOT를 제거한 경로 반환
-            return path.replace(ROOT_PATH + PROJECT_ROOT+"\\", "");
+            return path.replace(ROOT_PATH + PROJECT_ROOT + "\\", "");
         } catch (IOException e) {
             throw DomainExceptionCode.FILE_NOT_FOUND.newInstance();
         }
@@ -110,7 +109,7 @@ public class FileService {
             throw DomainExceptionCode.FILE_EXTENSION_INVALID.newInstance();
         }
         // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
-       return FilenameUtils.getExtension(originalFilename);
+        return FilenameUtils.getExtension(originalFilename);
     }
 
 }

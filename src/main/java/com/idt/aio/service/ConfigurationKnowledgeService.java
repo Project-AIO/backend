@@ -19,14 +19,15 @@ public class ConfigurationKnowledgeService {
     private final ProjectRepository projectRepository;
 
     @Transactional(readOnly = true)
-    public ConfigurationKnowledgeDto fetchConfigKnowledgeByProjectId(final Integer projectId){
+    public ConfigurationKnowledgeDto fetchConfigKnowledgeByProjectId(final Integer projectId) {
         return repository.findConfigKnowledgeByProjectId(projectId)
                 .orElseThrow(DomainExceptionCode.CONFIGURATION_KNOWLEDGE_NOT_FOUND::newInstance);
     }
+
     @Transactional
     public void createConfigKnowledge(final ConfigKnowledgeRequest params) {
 
-        if(!projectRepository.existsById(params.projectId())){
+        if (!projectRepository.existsById(params.projectId())) {
             throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
         }
 
@@ -49,7 +50,7 @@ public class ConfigurationKnowledgeService {
     }
 
     @Transactional
-    public void updateConfigKnowledge(final Integer confKnowledgeId, final ConfigKnowledgeUpdateRequest params){
+    public void updateConfigKnowledge(final Integer confKnowledgeId, final ConfigKnowledgeUpdateRequest params) {
         final ConfigurationKnowledge entity = repository.findById(confKnowledgeId)
                 .orElseThrow(DomainExceptionCode.CONFIGURATION_KNOWLEDGE_NOT_FOUND::newInstance);
 

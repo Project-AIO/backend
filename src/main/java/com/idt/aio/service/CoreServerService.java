@@ -1,21 +1,24 @@
 package com.idt.aio.service;
 
 import com.idt.aio.dto.ConfigurationKnowledgeDto;
-import com.idt.aio.request.RuleData;
 import com.idt.aio.request.ContentSenderRequest;
+import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
+import com.idt.aio.response.DataResponse;
 import com.idt.aio.util.JobIdUtil;
 import java.io.IOException;
 import java.util.List;
-
-import com.idt.aio.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,7 +42,7 @@ public class CoreServerService {
             final List<RuleData> contents,
             final Integer docId,
             final ConfigurationKnowledgeDto config
-            ){
+    ) {
         final String jobId = jobIdUtil.generateJobId();
 
         final ContentSenderRequest request = ContentSenderRequest.builder()

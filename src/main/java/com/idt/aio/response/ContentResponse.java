@@ -1,6 +1,6 @@
 package com.idt.aio.response;
 
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record ContentResponse(

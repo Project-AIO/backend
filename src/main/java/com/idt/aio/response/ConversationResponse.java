@@ -23,6 +23,7 @@ public record ConversationResponse(
                 .createdAt(conversation.getCreateDt())
                 .build();
     }
+
     static public List<ConversationResponse> from(List<Conversation> conversations) {
         return conversations.stream()
                 .map(ConversationResponse::from)

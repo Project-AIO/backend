@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class ConversationController {
     private final ConversationService conversationService;
+
     @Operation(summary = "프로젝트 ID로 대화 조회 API", description = """
                프로젝트 ID로 대화 조회
             """)
     @GetMapping("/conversations")
-    public List<ConversationResponse> fetchConversationsByProjectId(@RequestParam("project_id") final Integer projectId) {
+    public List<ConversationResponse> fetchConversationsByProjectId(
+            @RequestParam("project_id") final Integer projectId) {
         return conversationService.getConversationsByProjectId(projectId);
     }
 
@@ -37,7 +39,8 @@ public class ConversationController {
                언어모델 ID로 언어모델 조회
             """)
     @GetMapping("/conversation")
-    public ConversationResponse fetchConversationByModelId(@RequestParam("conversation_id") final Integer conversationId) {
+    public ConversationResponse fetchConversationByModelId(
+            @RequestParam("conversation_id") final Integer conversationId) {
         return conversationService.getConversationById(conversationId);
 
     }

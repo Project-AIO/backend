@@ -3,7 +3,6 @@ package com.idt.aio.entity.constant;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -36,9 +36,10 @@ public class HomonymController {
                sortProperty - homonymId, source, match
             """)
     @GetMapping("/homonyms/page")
-    public Page<HomonymDto> getHomonymByPage(@ModelAttribute @Valid  final HomonymPageRequest request) {
+    public Page<HomonymDto> getHomonymByPage(@ModelAttribute @Valid final HomonymPageRequest request) {
 
-        return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(), request.direction(), request.sortProperty());
+        return homonymService.fetchHomonymByProjectIdByPage(request.projectId(), request.page(), request.size(),
+                request.direction(), request.sortProperty());
     }
 
     @Operation(summary = "프로젝트 귀속 이의어 사전 목록 전체 조회 API", description = """
@@ -63,7 +64,8 @@ public class HomonymController {
                projectId로 이의어 변경
             """)
     @PatchMapping("/homonyms/{homonym_id}")
-    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId, @ModelAttribute @Valid  final HomonymUpdateRequest request) {
+    public ResponseEntity<?> updateHomonym(@PathVariable("homonym_id") final Integer homonymId,
+                                           @ModelAttribute @Valid final HomonymUpdateRequest request) {
         homonymService.updateHomonymById(homonymId, request.source(), request.match());
         return ResponseEntity.status(HttpStatus.OK).build();
     }

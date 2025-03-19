@@ -3,8 +3,11 @@ package com.idt.aio.dto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.entity.constant.State;
 import java.util.List;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

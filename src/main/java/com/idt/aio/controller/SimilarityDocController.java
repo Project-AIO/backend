@@ -1,11 +1,7 @@
 package com.idt.aio.controller;
 
-import com.idt.aio.entity.SimilarityDoc;
-import com.idt.aio.request.ConversationRequest;
 import com.idt.aio.request.SimilarityDocRequest;
-import com.idt.aio.response.ConversationResponse;
 import com.idt.aio.response.SimilarityDocResponse;
-import com.idt.aio.service.ConversationService;
 import com.idt.aio.service.SimilarityDocService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -29,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class SimilarityDocController {
     private final SimilarityDocService similarityDocService;
+
     @Operation(summary = "유사도 높은 참조 문서 ID로 대화 조회 API", description = """
                프로젝트 ID로 유사도 높은 참조 문서 조회
             """)
@@ -41,7 +38,8 @@ public class SimilarityDocController {
                언어모델 ID로 언어모델 조회
             """)
     @GetMapping("/similarity-doc")
-    public SimilarityDocResponse fetchSimilarityDocByModelId(@RequestParam("similarity_doc_id") final Integer similarityDocId) {
+    public SimilarityDocResponse fetchSimilarityDocByModelId(
+            @RequestParam("similarity_doc_id") final Integer similarityDocId) {
         return similarityDocService.getSimilarityDocById(similarityDocId);
 
     }
@@ -68,7 +66,8 @@ public class SimilarityDocController {
                유사도 높은 참조 문서 ID로 유사도 높은 참조 문서 삭제
             """)
     @DeleteMapping("/similarity-docs/{similarity_doc_id}")
-    public ResponseEntity<?> deleteSimilarityDocsById(@PathVariable("similarity_doc_id") final Integer similarityDocId) {
+    public ResponseEntity<?> deleteSimilarityDocsById(
+            @PathVariable("similarity_doc_id") final Integer similarityDocId) {
         similarityDocService.deleteSimilarityDocsById(similarityDocId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

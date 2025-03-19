@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorConstants {
-    NO_ERROR(ErrorResponse.of(null,""));
+    NO_ERROR(ErrorResponse.of(null, ""));
 
     private final ErrorResponse error;
 }

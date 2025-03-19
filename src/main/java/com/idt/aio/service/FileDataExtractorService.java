@@ -6,9 +6,8 @@ import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.entity.constant.State;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.ProjectFolderRepository;
-import java.io.IOException;
-
 import com.idt.aio.repository.ProjectRepository;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -33,7 +32,6 @@ public class FileDataExtractorService {
     public Document extractDocumentFromFile(final MultipartFile file, final Integer projectId,
                                             final Integer projectFolderId, final String fileName) {
 
-
         // 2. 파일 사이즈 추출 (바이트 단위)
         long fileSize = file.getSize();
 
@@ -44,7 +42,7 @@ public class FileDataExtractorService {
 
         final boolean projectExists = projectRepository.existsById(projectId);
 
-        if(!projectExists){
+        if (!projectExists) {
             throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
         }
 

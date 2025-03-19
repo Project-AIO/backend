@@ -1,10 +1,9 @@
 package com.idt.aio.entity.constant;
 
+import java.io.File;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.io.File;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,6 +13,7 @@ public enum Folder {
     DOCUMENT("document_");
     private final String ROOT = System.getProperty("user.dir");
     private final String folderName;
+
     public String getFolderName(final Integer id) {
         return PROJECT.folderName + id;
     }

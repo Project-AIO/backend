@@ -1,9 +1,8 @@
 package com.idt.aio.repository;
 
 import com.idt.aio.entity.Document;
-import java.util.List;
-
 import com.idt.aio.entity.constant.State;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +16,5 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     @Modifying
     @Query("update Document d set d.state = :state where d.docId in :docIds")
-    void updateStats(@Param("docIds")final Integer docIds, @Param("state") final State state);
+    void updateStats(@Param("docIds") final Integer docIds, @Param("state") final State state);
 }
