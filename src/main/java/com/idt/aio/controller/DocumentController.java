@@ -5,6 +5,7 @@ import com.idt.aio.dto.FileDto;
 import com.idt.aio.entity.Document;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
+import com.idt.aio.response.DataResponse;
 import com.idt.aio.service.*;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,15 +49,16 @@ public class  DocumentController {
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 - [주의] swagger문서의 response 중 imageFile의 string은 이미지 파일 resource 타입임
             """)
     @PostMapping("/document/extract")
-    public List<ContentResponse> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
-                                                       @RequestParam("startPage") final Integer startPage,
-                                                       @RequestParam("endPage") final Integer endPage) {
+    public ResponseEntity<DataResponse> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
+                                                                                   @RequestParam("startPage") final Integer startPage,
+                                                                                   @RequestParam("endPage") final Integer endPage) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(file);
 
         final FileDto fileDto = FileDto.from(file, startPage, endPage);
 
-        return documentService.fetchImages(fileDto);
+        final List<ContentResponse> contentResponses = documentService.fetchImages(fileDto);
+        return ResponseEntity.ok().body(DataResponse.builder().data(contentResponses).build());
     }
 
     /**

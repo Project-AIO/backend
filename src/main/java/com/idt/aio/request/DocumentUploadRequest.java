@@ -19,7 +19,7 @@ public record DocumentUploadRequest(
         @Size(min = 1, max = 100)
         String fileName,
         @NotNull
-        List<ContentData> contents
+        List<RuleData> contents
 
 ) {
 }
