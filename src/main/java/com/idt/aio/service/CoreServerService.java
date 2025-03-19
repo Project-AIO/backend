@@ -1,16 +1,18 @@
 package com.idt.aio.service;
 
-import com.idt.aio.response.ImagePageResponse;
+import com.idt.aio.request.ContentData;
+import com.idt.aio.request.ContentSenderRequest;
+import com.idt.aio.response.ContentResponse;
 import java.io.IOException;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,59 +27,32 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class CoreServerService {
     private final RestTemplate restTemplate;
+    private final ContentSenderService sender;
 
     @Value("${core.server.url}")
     private String coreServerUrl;
 
-    @Async
     public void executeTransfer(
             final String filePath,
             final String fileName,
-            final MultipartFile file,
-            final int startPage,
-            final int endPage,
+            final List<ContentData> contents,
             final Integer docId
     ){
 
-        final Resource resource = multipartFileToResource(file);
 
-// 요청 보내기
-        RestTemplate restTemplate = new RestTemplate();
+        final ContentSenderRequest request = ContentSenderRequest.builder()
+                .filePath(filePath)
+                .fileName(fileName)
+                .contents(contents)
+                .docId(docId)
+                .build();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        // MultiValueMap으로 데이터 구성
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("filePath", filePath);
-        body.add("fileName", fileName);
-        body.add("file", resource);  // resource 포함
-        body.add("startPage", startPage);
-        body.add("endPage", endPage);
-        body.add("docId", docId);
-
-        final HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
-
-        try {
-            final ResponseEntity<String> response = restTemplate.postForEntity(
-                    coreServerUrl,
-                    entity,
-                    String.class
-            );
-
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new RuntimeException("다른 서버로 파일 전송 중 오류 발생");
-            }
-
-        } catch (RestClientException e) {
-            e.printStackTrace();
-            throw new RuntimeException("다른 서버로 파일 전송 중 오류 발생", e);
-        }
+        sender.sendContents(request);
 
     }
 
     @Transactional
-    public ImagePageResponse executeExtraction(final MultipartFile file, final int startPage, final int endPage) {
+    public List<ContentResponse> executeExtraction(final MultipartFile file, final int startPage, final int endPage) {
 
         // 요청 본문 생성
         final MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
@@ -91,11 +66,13 @@ public class CoreServerService {
 
         // POST 요청 보내고 응답 받기
         try {
-            ResponseEntity<ImagePageResponse> response = restTemplate.postForEntity(
+            ResponseEntity<List<ContentResponse>> response = restTemplate.exchange(
                     coreServerUrl,
+                    HttpMethod.POST,
                     requestEntity,
-                    ImagePageResponse.class
+                    new ParameterizedTypeReference<List<ContentResponse>>() {}
             );
+
             return response.getBody();
         } catch (Exception e) {
             log.error("Core 서버 호출 실패: {}", e.getMessage());

@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum State {
-    PENDING, SERVING, INACTIVE
+    PENDING, SERVING, INACTIVE, STAND_BY
 }

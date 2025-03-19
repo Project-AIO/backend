@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
     List<Document> findByProjectFolder_ProjectFolderId(final Integer projectFolderId);
 
+
     @Modifying
-    @Query("update Document d set d.state = :state where d.docId = :docId")
-    void updateStats(@Param("docId")final Integer docId, @Param("state") final State state);
+    @Query("update Document d set d.state = :state where d.docId in :docIds")
+    void updateStats(@Param("docIds")final Integer docIds, @Param("state") final State state);
 }

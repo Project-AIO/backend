@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `tb_doc` (
                                         `project_folder_id` INT NOT NULL,
                                         `name` VARCHAR(50) NOT NULL,
     `page_count` INT,
-    `state` ENUM('PENDING','SERVING','INACTIVE') DEFAULT 'PENDING',
+    `state` ENUM('PENDING','SERVING','INACTIVE', 'STAND_BY') DEFAULT 'PENDING',
     `url` VARCHAR(255) NOT NULL,
     `file_size` INT NOT NULL,
     `revision` VARCHAR(25),
@@ -190,47 +190,6 @@ CREATE TABLE IF NOT EXISTS `tb_doc_account` (
     FOREIGN KEY (`account_id`) REFERENCES `tb_account`(`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 17. tb_doc_attr (문서에서 의미있는 내용의 가장 작은 범위의 값)
-DROP TABLE IF EXISTS `tb_doc_attr`;
-CREATE TABLE IF NOT EXISTS `tb_doc_attr` (
-                                             `doc_attr_id` INT NOT NULL AUTO_INCREMENT,
-                                             `doc_id` INT NOT NULL,
-                                             `name` VARCHAR(100) NOT NULL,
-    PRIMARY KEY (`doc_attr_id`),
-    FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 18. tb_doc_attr_hierarchy (문서의 attr 의 계층 구조)
-DROP TABLE IF EXISTS `tb_doc_attr_hierarchy`;
-CREATE TABLE IF NOT EXISTS `tb_doc_attr_hierarchy` (
-                                                       `ancestor_id` INT NOT NULL,
-                                                       `descendant_id` INT NOT NULL,
-                                                       `depth` INT NOT NULL,
-                                                       PRIMARY KEY (`ancestor_id`, `descendant_id`),
-    FOREIGN KEY (`ancestor_id`) REFERENCES `tb_doc_attr`(`doc_attr_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`descendant_id`) REFERENCES `tb_doc_attr`(`doc_attr_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 19. tb_doc_node (문서의 노드)
-DROP TABLE IF EXISTS `tb_doc_node`;
-CREATE TABLE IF NOT EXISTS `tb_doc_node` (
-                                             `doc_node_id` INT NOT NULL AUTO_INCREMENT,
-                                             `doc_attr_id` INT NOT NULL,
-                                             PRIMARY KEY (`doc_node_id`),
-    FOREIGN KEY (`doc_attr_id`) REFERENCES `tb_doc_attr`(`doc_attr_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 20. tb_doc_hierarchy (문서의 계층 구조)
-DROP TABLE IF EXISTS `tb_doc_hierarchy`;
-CREATE TABLE IF NOT EXISTS `tb_doc_hierarchy` (
-                                                  `from_node_id` INT NOT NULL,
-                                                  `to_node_id` INT NOT NULL,
-                                                  `edge` VARCHAR(255),
-    `weight` INT NOT NULL,
-    PRIMARY KEY (`from_node_id`, `to_node_id`),
-    FOREIGN KEY (`from_node_id`) REFERENCES `tb_doc_node`(`doc_node_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`to_node_id`) REFERENCES `tb_doc_node`(`doc_node_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 21. tb_similarity_doc (질문에서 찾은 유사도가 높은 참조 문서)
 DROP TABLE IF EXISTS `tb_similarity_doc`;
@@ -259,26 +218,7 @@ CREATE TABLE IF NOT EXISTS `tb_doc_part` (
     FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 23. tb_doc_image (문서에 포함된 이미지 페이지)
-DROP TABLE IF EXISTS `tb_doc_image`;
-CREATE TABLE IF NOT EXISTS `tb_doc_image` (
-                                              `doc_image_id` INT NOT NULL AUTO_INCREMENT,
-                                              `doc_id` INT NOT NULL,
-                                              `page` INT NOT NULL,
-                                              PRIMARY KEY (`doc_image_id`),
-    FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 24. tb_doc_keyword (문서에서 발견된 키워드)
-DROP TABLE IF EXISTS `tb_doc_keyword`;
-CREATE TABLE IF NOT EXISTS `tb_doc_keyword` (
-                                                `doc_keyword_id` INT NOT NULL AUTO_INCREMENT,
-                                                `doc_id` INT NOT NULL,
-                                                `keyword` VARCHAR(20) NOT NULL,
-    `count` INT NOT NULL,
-    PRIMARY KEY (`doc_keyword_id`),
-    FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- tb_authority: 권한 정보 (Authority 엔티티)
 DROP TABLE IF EXISTS `tb_authority`;
