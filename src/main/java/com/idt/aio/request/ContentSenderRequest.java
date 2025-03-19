@@ -5,9 +5,11 @@ import java.util.List;
 
 @Builder
 public record ContentSenderRequest(
-        List<ContentData> contents,
+        List<RuleData> rules,
         String filePath,
-        String fileName,
+        String chunkSize,
+        Float overlapTokenRate,
+        String empModelName,
         Integer docId
 ) {
 }

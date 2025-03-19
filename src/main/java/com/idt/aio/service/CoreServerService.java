@@ -1,11 +1,13 @@
 package com.idt.aio.service;
 
-import com.idt.aio.request.ContentData;
+import com.idt.aio.dto.ConfigurationKnowledgeDto;
+import com.idt.aio.request.RuleData;
 import com.idt.aio.request.ContentSenderRequest;
 import com.idt.aio.response.ContentResponse;
 import java.io.IOException;
 import java.util.List;
 
+import com.idt.aio.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +15,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,21 +33,25 @@ public class CoreServerService {
     private String coreServerUrl;
 
     public void executeTransfer(
-            final String filePath,
-            final String fileName,
-            final List<ContentData> contents,
-            final Integer docId
-    ){
+            final String savedFilePath,
+            final List<RuleData> contents,
+            final Integer docId,
+            final ConfigurationKnowledgeDto config
+            ){
 
 
         final ContentSenderRequest request = ContentSenderRequest.builder()
-                .filePath(filePath)
-                .fileName(fileName)
-                .contents(contents)
+                .filePath(savedFilePath)
+                .rules(contents)
                 .docId(docId)
+                .chunkSize(config.getChunkSize())
+                .empModelName(config.getEmbModelName())
+                .overlapTokenRate(config.getOverlapTokenRate())
                 .build();
 
-        sender.sendContents(request);
+        final DataResponse dataResponse = DataResponse.from(request);
+
+        sender.sendContents(dataResponse);
 
     }
 
@@ -70,7 +74,8 @@ public class CoreServerService {
                     coreServerUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<List<ContentResponse>>() {}
+                    new ParameterizedTypeReference<>() {
+                    }
             );
 
             return response.getBody();

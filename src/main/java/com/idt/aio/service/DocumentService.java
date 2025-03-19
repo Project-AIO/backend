@@ -1,6 +1,7 @@
 package com.idt.aio.service;
 
 import com.idt.aio.config.RabbitMqConfig;
+import com.idt.aio.dto.ConfigurationKnowledgeDto;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentPathDto;
 import com.idt.aio.dto.FileDto;
@@ -11,6 +12,7 @@ import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class DocumentService {
     private final CoreServerService coreServerService;
     private final FileService fileService;
     private final FileDataExtractorService fileDataExtractorService;
+    private final ConfigurationKnowledgeService configurationKnowledgeService;
 
     @Transactional(readOnly = true)
     public List<DocumentDto> fetchDocumentByFolderId(final Integer folderId) {
@@ -55,12 +58,15 @@ public class DocumentService {
         final String extension = fileService.getFileExtension(request.file());
         fileService.saveResourceToFolder(request.file(),documentPathDto.getPath() , request.fileName(), extension);
 
+        final String savedFilePath = documentPathDto.getPath()+ File.separator+ request.fileName() + extension;
+        final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(request.projectId());
+
         //core server로 전송
         coreServerService.executeTransfer(
-                documentPathDto.getPath(),
-                request.fileName(),
+                savedFilePath,
                 request.contents(),
-                documentPathDto.getDocId());
+                documentPathDto.getDocId(),
+                configurationKnowledgeDto);
 
         extracted.updateState(State.STAND_BY);
 

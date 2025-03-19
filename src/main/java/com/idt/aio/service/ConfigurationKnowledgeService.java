@@ -1,5 +1,6 @@
 package com.idt.aio.service;
 
+import com.idt.aio.dto.ConfigurationKnowledgeDto;
 import com.idt.aio.entity.ConfigurationKnowledge;
 import com.idt.aio.entity.Project;
 import com.idt.aio.exception.DomainExceptionCode;
@@ -16,6 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConfigurationKnowledgeService {
     private final ConfigurationKnowledgeRepository repository;
     private final ProjectRepository projectRepository;
+
+    @Transactional(readOnly = true)
+    public ConfigurationKnowledgeDto fetchConfigKnowledgeByProjectId(final Integer projectId){
+        return repository.findConfigKnowledgeByProjectId(projectId)
+                .orElseThrow(DomainExceptionCode.CONFIGURATION_KNOWLEDGE_NOT_FOUND::newInstance);
+    }
     @Transactional
     public void createConfigKnowledge(final ConfigKnowledgeRequest params) {
 
