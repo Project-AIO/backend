@@ -30,7 +30,6 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final CoreServerService coreServerService;
     private final FileService fileService;
-    private final FileDataExtractorService fileDataExtractorService;
     private final ConfigurationKnowledgeService configurationKnowledgeService;
     private final ProjectRepository projectRepository;
     private final ProjectFolderRepository projectFolderRepository;
