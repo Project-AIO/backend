@@ -56,7 +56,7 @@ public class CoreServerService {
                 .overlapTokenRate(config.getOverlapTokenRate())
                 .build();
 
-        final DataResponse dataResponse = DataResponse.from(request);
+        final DataResponse<ContentSenderRequest> dataResponse = DataResponse.from(request);
 
         sender.sendContents(dataResponse);
         return jobId;

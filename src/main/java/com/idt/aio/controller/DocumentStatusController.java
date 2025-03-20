@@ -21,8 +21,8 @@ public class DocumentStatusController {
     @Operation(summary = "문서 상태 조회를 위한 SSE 구독 API", description = """
               문서의 JobId로 상태를 조회하기 위한 SSE 연결을 생성
             """)
-    @GetMapping("/sse/subscribe/{jobId}")
-    public SseEmitter subscribe(@PathVariable final String jobId) {
+    @GetMapping("/sse/subscribe/{job_id}")
+    public SseEmitter subscribe(@PathVariable("job_id") final String jobId) {
         // 하루
         SseEmitter emitter = new SseEmitter(3600000L);
 

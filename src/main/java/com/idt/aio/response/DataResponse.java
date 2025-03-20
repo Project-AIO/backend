@@ -6,15 +6,15 @@ import lombok.Builder;
 
 
 @Builder
-public record DataResponse(
-        Object data,
+public record DataResponse<T>(
+        T data,
         ErrorResponse error
 ) {
-    public static DataResponse of(final Object data, final ErrorResponse error) {
-        return new DataResponse(data, error);
+    public static <T> DataResponse<T> of(final T data, final ErrorResponse error) {
+        return new DataResponse<>(data, error);
     }
 
-    public static DataResponse from(final Object data) {
-        return new DataResponse(data, ErrorConstants.NO_ERROR.getError());
+    public static <T> DataResponse<T> from(final T data) {
+        return new DataResponse<>(data, ErrorConstants.NO_ERROR.getError());
     }
 }
