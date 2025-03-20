@@ -52,7 +52,7 @@ public class ConfigurationKnowledge {
 
     @Builder.Default
     @Column(name = "retv_threshold_score", nullable = false)
-    private Float retvThreshholdScore = 80f;
+    private Float retvThresholdScore = 80f;
 
     @Builder.Default
     @Column(name = "retv_top_k", nullable = false)
@@ -80,7 +80,7 @@ public class ConfigurationKnowledge {
                 .embModelName(embModelName)
                 .rerkModelName(rerkModelName)
                 .rerktopN(rerktopN)
-                .retvThreshholdScore(retvThreshholdScore)
+                .retvThresholdScore(retvThreshholdScore)
                 .retvTopK(retvTopK)
                 .keywordWeight(keywordWeight)
                 .build();
@@ -92,7 +92,7 @@ public class ConfigurationKnowledge {
             String embModelName,
             String rerkModelName,
             Integer rerktopN,
-            Float retvThreshholdScore,
+            Float retvThresholdScore,
             Integer retvTopK,
             Float keywordWeight
     ) {
@@ -101,7 +101,7 @@ public class ConfigurationKnowledge {
         this.embModelName = embModelName;
         this.rerkModelName = rerkModelName;
         this.rerktopN = rerktopN;
-        this.retvThreshholdScore = retvThreshholdScore;
+        this.retvThresholdScore = retvThresholdScore;
         this.retvTopK = retvTopK;
         this.keywordWeight = keywordWeight;
     }

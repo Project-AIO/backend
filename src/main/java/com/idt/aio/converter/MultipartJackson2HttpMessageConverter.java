@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 
+//swagger에서 try out 할 때 multipart/form-data를 지원하기 위한 converter (application/octet-stream 디폴트 변환 해결)
 @Component
 public class MultipartJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
 
