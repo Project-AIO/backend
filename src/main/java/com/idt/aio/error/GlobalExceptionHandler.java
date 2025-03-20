@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,11 +51,18 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(0, e.getMessage()));
     }
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> constraintViolationException(MethodArgumentNotValidException e) {
         log.error("{}", e);
         return ResponseEntity.badRequest()
                 .body(ErrorResponse.of(400, e.getMessage()));
     }
+        @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+        public ResponseEntity<ErrorResponse> constraintViolationException(HttpMediaTypeNotSupportedException e) {
+            log.error("{}", e);
+            return ResponseEntity.badRequest()
+                    .body(ErrorResponse.of(400, e.getMessage()));
+        }
 
 }

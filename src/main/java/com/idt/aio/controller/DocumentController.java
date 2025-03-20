@@ -3,7 +3,7 @@ package com.idt.aio.controller;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentJob;
 import com.idt.aio.dto.FileDto;
-import com.idt.aio.request.DocumentUploadRequest;
+import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
 import com.idt.aio.service.DocumentPartService;
@@ -11,9 +11,16 @@ import com.idt.aio.service.DocumentService;
 import com.idt.aio.service.FileService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +35,6 @@ public class DocumentController {
     private final DocumentService documentService;
     private final DocumentPartService documentPartService;
     private final FileValidator validator;
-    private final FileService fileService;
 
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
                프로젝트 ID로 피드백 가져오기
@@ -52,8 +58,8 @@ public class DocumentController {
     @Operation(summary = "'목차 만들기' 버튼 클릭 시 프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 API", description = """
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 
             """)
-    @PostMapping("/document/extract")
-    public ResponseEntity<DataResponse> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
+    @PostMapping(path = "/document/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<DataResponse<List<ContentResponse>>> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
                                                               @RequestParam("startPage") final Integer startPage,
                                                               @RequestParam("endPage") final Integer endPage) {
         //검증 현재는 PDF만 가능
@@ -62,21 +68,32 @@ public class DocumentController {
         final FileDto fileDto = FileDto.from(file, startPage, endPage);
 
         final List<ContentResponse> contentResponses = documentService.fetchImages(fileDto);
-        return ResponseEntity.ok().body(DataResponse.builder().data(contentResponses).build());
+        return ResponseEntity.ok().body(DataResponse.from(contentResponses));
     }
 
-    /**
-     * 현재 tb_doc_part와 tb_doc_image 테이블에 넣는 부분은 빠져 있음
-     */
     @Operation(summary = "'지식 베이스 만들기' 버튼 클릭 시 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송하고 JobId 반환 API", description = """
-              '지식 베이스 만들기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송 후 JobId 획득
+              '지식 베이스 만들기' 버튼 클릭 시 PDF 파일과 파라미터를 받아서 이미지를 CoreServer 에 전송 후 JobId(String) 반환
             """)
-    @PostMapping("/document/upload")
-    public ResponseEntity<?> uploadDocument(@ModelAttribute @Valid final DocumentUploadRequest request) {
+    @PostMapping(path = "/document/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadDocument(
+            @RequestPart("projectId") @NotNull Integer projectId,
+            @RequestPart("projectFolderId") @NotNull Integer projectFolderId,
+            @RequestPart("file") @NotNull MultipartFile file,
+            @RequestPart("fileName") @NotNull
+            @Size(min = 1, max = 50) String fileName,
+            @RequestPart("contents")
+            @Valid @NotNull(message = "contents는 필수입니다.") List<@Valid RuleData> contents
+    ) {
         //검증 현재는 PDF만 가능
-        validator.validateFileSize(request.file());
-        final DocumentJob documentJob = documentService.processTransfer(request);
-        documentPartService.saveDocumentPart(documentJob.document(), request.contents());
+        validator.validateFileSize(file);
+        final DocumentJob documentJob = documentService.executeSaveAndTransfer(
+                file,
+                projectId,
+                projectFolderId,
+                fileName,
+                contents
+        );
+        documentPartService.saveDocumentPart(documentJob.document(), contents);
         return ResponseEntity.ok().body(documentJob.jobId());
     }
 

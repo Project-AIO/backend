@@ -11,13 +11,14 @@ import com.idt.aio.factory.FileExtractorFactory;
 import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
-import com.idt.aio.request.DocumentUploadRequest;
+import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -44,31 +45,35 @@ public class DocumentService {
     }
 
     @Transactional
-    public DocumentJob processTransfer(final DocumentUploadRequest request) {
-        final String extension = fileService.getFileExtension(request.file());
+    public DocumentJob executeSaveAndTransfer(final MultipartFile file,
+                                              final Integer projectId,
+                                              final Integer projectFolderId,
+                                              final String fileName,
+                                              final List<RuleData> contents) {
+        final String extension = fileService.getFileExtension(file);
         final AbstractFileExtractor extractor = fileExtractorFactory.getExtractor(extension);
         final Document extracted = buildDocument(
-                fileService.getFileSize(request.file()),
-                extractor.getTotalPages(request.file()),
-                request.projectId(),
-                request.projectFolderId(),
-                request.fileName());
+                fileService.getFileSize(file),
+                extractor.getTotalPages(file),
+                projectId,
+                projectFolderId,
+                fileName);
 
         //엔티티 db 저장 및 폴더 생성
-        final DocumentPathDto documentPathDto = saveDocumentAndGetFolderPath(extracted, request.projectId());
+        final DocumentPathDto documentPathDto = saveDocumentAndGetFolderPath(extracted, projectId);
 
 
         //파일 저장
-        fileService.saveResourceToFolder(request.file(), documentPathDto.getPath(), request.fileName(), extension);
+        fileService.saveResourceToFolder(file, documentPathDto.getPath(), fileName, extension);
 
-        final String savedFilePath = documentPathDto.getPath() + File.separator + request.fileName() + extension;
+        final String savedFilePath = documentPathDto.getPath() + File.separator + fileName + extension;
         final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(
-                request.projectId());
+                projectId);
 
         //core server로 전송
         final String jobId = coreServerService.executeTransfer(
                 savedFilePath,
-                request.contents(),
+                contents,
                 documentPathDto.getDocId(),
                 configurationKnowledgeDto);
 
