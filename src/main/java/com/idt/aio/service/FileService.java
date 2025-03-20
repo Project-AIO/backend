@@ -65,8 +65,6 @@ public class FileService {
     public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName,
                                      final String extension) {
 
-        //전체를 할지 부분을 할 지 고민
-        final Resource resource = fileDataExtractorService.extractPdfPagesAsResource(file, 4, 7);
 
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
@@ -85,7 +83,7 @@ public class FileService {
             }
 
             // 파일 복사
-            Files.copy(resource.getInputStream(), targetFile);
+            Files.copy(file.getInputStream(), targetFile);
 
         } catch (IOException e) {
             e.printStackTrace();
