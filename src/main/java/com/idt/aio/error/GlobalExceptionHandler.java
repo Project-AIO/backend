@@ -12,6 +12,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @ControllerAdvice
 @Slf4j
@@ -58,11 +59,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest()
                 .body(ErrorResponse.of(400, e.getMessage()));
     }
-        @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-        public ResponseEntity<ErrorResponse> constraintViolationException(HttpMediaTypeNotSupportedException e) {
-            log.error("{}", e);
-            return ResponseEntity.badRequest()
-                    .body(ErrorResponse.of(400, e.getMessage()));
-        }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> constraintViolationException(HttpMediaTypeNotSupportedException e) {
+        log.error("{}", e);
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(400, e.getMessage()));
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ErrorResponse> constraintViolationException(MissingServletRequestPartException e) {
+        log.error("{}", e);
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(400, e.getMessage()));
+    }
 
 }

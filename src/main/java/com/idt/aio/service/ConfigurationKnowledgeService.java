@@ -39,7 +39,7 @@ public class ConfigurationKnowledgeService {
                 params.overlapTokenRate(),
                 params.embModelName(),
                 params.rerkModelName(),
-                params.rerktopN(),
+                params.rerkTopN(),
                 params.retvThreshholdScore(),
                 params.retvTopK(),
                 params.keywordWeight()
@@ -58,7 +58,7 @@ public class ConfigurationKnowledgeService {
                 params.overlapTokenRate(),
                 params.embModelName(),
                 params.rerkModelName(),
-                params.rerktopN(),
+                params.rerkTopN(),
                 params.retvThreshholdScore(),
                 params.retvTopK(),
                 params.keywordWeight());

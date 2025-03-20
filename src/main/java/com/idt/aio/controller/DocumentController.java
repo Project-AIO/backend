@@ -13,6 +13,7 @@ import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -59,9 +60,9 @@ public class DocumentController {
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 
             """)
     @PostMapping(path = "/document/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DataResponse<List<ContentResponse>>> getDocumentImagePages(@RequestParam("file") final MultipartFile file,
-                                                              @RequestParam("startPage") final Integer startPage,
-                                                              @RequestParam("endPage") final Integer endPage) {
+    public ResponseEntity<DataResponse<List<ContentResponse>>> getDocumentImagePages(@RequestParam("file")  @Schema(name = "file")final MultipartFile file,
+                                                              @RequestParam("startPage")  @Schema(name = "start_page") final Integer startPage,
+                                                              @RequestParam("endPage")  @Schema(name = "end_page")final Integer endPage) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(file);
 
@@ -76,13 +77,13 @@ public class DocumentController {
             """)
     @PostMapping(path = "/document/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadDocument(
-            @RequestPart("projectId") @NotNull Integer projectId,
-            @RequestPart("projectFolderId") @NotNull Integer projectFolderId,
+            @RequestPart("project_id") @NotNull Integer projectId,
+            @RequestPart("project_folder_id") @NotNull Integer projectFolderId,
             @RequestPart("file") @NotNull MultipartFile file,
-            @RequestPart("fileName") @NotNull
+            @RequestPart("file_name") @NotNull
             @Size(min = 1, max = 50) String fileName,
             @RequestPart("contents")
-            @Valid @NotNull(message = "contents는 필수입니다.") List<@Valid RuleData> contents
+            List<@Valid RuleData> contents
     ) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(file);
@@ -96,16 +97,4 @@ public class DocumentController {
         documentPartService.saveDocumentPart(documentJob.document(), contents);
         return ResponseEntity.ok().body(documentJob.jobId());
     }
-
-    @Operation(summary = "(사용 안 함)Core Server에서 특정 문서를 다 학습하고 상태값 바꿀 때 쓰는 API", description = """
-               Core Server에서 특정 문서를 다 학습하고 상태값 바꾸기
-            """)
-    @PostMapping("/document/status")
-    public ResponseEntity<?> updateDocumentStatus(@RequestParam("docId") final Integer docId,
-                                                  @RequestParam("status") final String status) {
-        documentService.updateStatus(docId, status);
-        return ResponseEntity.ok().build();
-    }
-
-
 }
