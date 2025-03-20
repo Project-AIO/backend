@@ -1,5 +1,14 @@
 package com.idt.aio.repository.custom;
 
+import com.idt.aio.dto.FeedbackDto;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
 import static com.idt.aio.entity.QAccount.account;
 import static com.idt.aio.entity.QAnswer.answer;
 import static com.idt.aio.entity.QConversation.conversation;
@@ -9,14 +18,6 @@ import static com.idt.aio.entity.QProject.project;
 import static com.idt.aio.entity.QProjectAccount.projectAccount;
 import static com.idt.aio.entity.QQuestion.question;
 import static com.idt.aio.entity.QSimilarityDoc.similarityDoc;
-
-import com.idt.aio.dto.FeedbackDto;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

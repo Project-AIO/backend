@@ -1,8 +1,9 @@
 package com.idt.aio.exception;
 
-import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 @Getter

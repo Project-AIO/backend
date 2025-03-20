@@ -3,13 +3,14 @@ package com.idt.aio.dto;
 import com.idt.aio.util.StringListConverter;
 import jakarta.persistence.Convert;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter

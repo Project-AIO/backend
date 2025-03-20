@@ -8,13 +8,8 @@ import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
 import com.idt.aio.service.DocumentPartService;
 import com.idt.aio.service.DocumentService;
-import com.idt.aio.service.FileService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +18,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -60,9 +62,9 @@ public class DocumentController {
                프로젝트폴더 ID로 PDF 파일과 파라미터를 받아서 이미지 반환 
             """)
     @PostMapping(path = "/document/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DataResponse<List<ContentResponse>>> getDocumentImagePages(@RequestParam("file")  @Schema(name = "file")final MultipartFile file,
-                                                              @RequestParam("startPage")  @Schema(name = "start_page") final Integer startPage,
-                                                              @RequestParam("endPage")  @Schema(name = "end_page")final Integer endPage) {
+    public ResponseEntity<DataResponse<List<ContentResponse>>> getDocumentImagePages(@RequestParam("file") @Schema(name = "file") final MultipartFile file,
+                                                                                     @RequestParam("startPage") @Schema(name = "start_page") final Integer startPage,
+                                                                                     @RequestParam("endPage") @Schema(name = "end_page") final Integer endPage) {
         //검증 현재는 PDF만 가능
         validator.validateFileSize(file);
 

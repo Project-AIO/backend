@@ -7,11 +7,12 @@ import com.idt.aio.exception.DuplicateMemberException;
 import com.idt.aio.exception.NotFoundMemberException;
 import com.idt.aio.repository.UserRepository;
 import com.idt.aio.util.SecurityUtil;
-import java.util.Collections;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 @Service
 public class UserService {
