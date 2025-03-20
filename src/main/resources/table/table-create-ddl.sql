@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `tb_conf_knowledge` (
     `emb_model_name` VARCHAR(255) NOT NULL,
     `rerk_model_name` VARCHAR(255) NOT NULL,
     `rerk_top_n` INT DEFAULT 3 NOT NULL,
-    `retv_theshold_score` FLOAT DEFAULT 80 NOT NULL,
+    `retv_threshold_score` FLOAT DEFAULT 80 NOT NULL,
     `retv_top_k` INT DEFAULT 50 NOT NULL,
     `keyword_weight` FLOAT DEFAULT 0 NOT NULL,
     PRIMARY KEY (`conf_knowledge_id`),
