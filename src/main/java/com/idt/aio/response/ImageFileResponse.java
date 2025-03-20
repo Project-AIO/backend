@@ -1,7 +1,8 @@
 package com.idt.aio.response;
 
-import java.util.List;
 import lombok.Builder;
+
+import java.util.List;
 
 @Builder
 public record ImageFileResponse(

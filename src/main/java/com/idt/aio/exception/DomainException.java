@@ -1,9 +1,10 @@
 package com.idt.aio.exception;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 public class DomainException extends BaseCustomException {

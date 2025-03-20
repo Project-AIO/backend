@@ -13,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Component
 public class FileValidator {
+    private final FileService fileService;
     //application-local.yml에서 servlet에 정의된 max-file-size 정의된 최대 파일 크기
     @Value("${spring.servlet.multipart.max-file-size}")
     private DataSize MAX_FILE_SIZE; // 50MB
-    private final FileService fileService;
 
     public void validateFileSize(final MultipartFile file) {
         // Mime 타입 확인

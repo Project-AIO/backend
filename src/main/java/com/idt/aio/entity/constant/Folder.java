@@ -1,9 +1,10 @@
 package com.idt.aio.entity.constant;
 
-import java.io.File;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.io.File;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

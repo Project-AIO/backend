@@ -1,8 +1,6 @@
 package com.idt.aio.extractor.impl;
 
 import com.idt.aio.extractor.AbstractFileExtractor;
-import com.idt.aio.repository.ProjectFolderRepository;
-import com.idt.aio.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -61,7 +59,7 @@ public class PdfFileExtractorImpl extends AbstractFileExtractor {
                     return filename;
                 }
             };
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("PDF 파일에서 페이지를 추출하는 중 오류가 발생했습니다.", e);
         }
     }

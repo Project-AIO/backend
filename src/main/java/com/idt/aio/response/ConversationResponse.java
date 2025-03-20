@@ -1,9 +1,10 @@
 package com.idt.aio.response;
 
 import com.idt.aio.entity.Conversation;
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.Builder;
 
 @Builder
 public record ConversationResponse(

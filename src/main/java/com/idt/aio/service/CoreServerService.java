@@ -6,8 +6,6 @@ import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
 import com.idt.aio.util.JobIdUtil;
-import java.io.IOException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +24,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -80,7 +81,8 @@ public class CoreServerService {
                     coreServerUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<>() {}
+                    new ParameterizedTypeReference<>() {
+                    }
             );
 
             return response.getBody();

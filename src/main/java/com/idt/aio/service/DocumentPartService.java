@@ -5,10 +5,11 @@ import com.idt.aio.entity.DocumentPart;
 import com.idt.aio.repository.DocumentPartRepository;
 import com.idt.aio.request.RuleData;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
