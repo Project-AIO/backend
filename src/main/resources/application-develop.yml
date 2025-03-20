@@ -5,6 +5,10 @@ spring:
 
   application:
     name: aio
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   rabbitmq:
     host: localhost
     port: 5672

@@ -1,37 +1,40 @@
 package com.idt.aio.service;
 
-import com.idt.aio.config.RabbitMqConfig;
 import com.idt.aio.dto.*;
 import com.idt.aio.entity.Document;
+import com.idt.aio.entity.ProjectFolder;
 import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.entity.constant.State;
+import com.idt.aio.exception.DomainExceptionCode;
+import com.idt.aio.extractor.AbstractFileExtractor;
+import com.idt.aio.factory.FileExtractorFactory;
 import com.idt.aio.repository.DocumentRepository;
+import com.idt.aio.repository.ProjectFolderRepository;
+import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.DocumentUploadRequest;
 import com.idt.aio.response.ContentResponse;
-import com.idt.aio.response.CoreServerResponse;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class DocumentService {
     private final DocumentRepository documentRepository;
-
     private final CoreServerService coreServerService;
     private final FileService fileService;
     private final FileDataExtractorService fileDataExtractorService;
     private final ConfigurationKnowledgeService configurationKnowledgeService;
+    private final ProjectRepository projectRepository;
+    private final ProjectFolderRepository projectFolderRepository;
+    private final FileExtractorFactory fileExtractorFactory;
 
     @Transactional(readOnly = true)
     public List<DocumentDto> fetchDocumentByFolderId(final Integer folderId) {
@@ -43,15 +46,20 @@ public class DocumentService {
 
     @Transactional
     public DocumentJob processTransfer(final DocumentUploadRequest request) {
-        final Document extracted = fileDataExtractorService.extractDocumentFromFile(
-                request.file(),
+        final String extension = fileService.getFileExtension(request.file());
+        final AbstractFileExtractor extractor = fileExtractorFactory.getExtractor(extension);
+        final Document extracted = buildDocument(
+                fileService.getFileSize(request.file()),
+                extractor.getTotalPages(request.file()),
                 request.projectId(),
                 request.projectFolderId(),
                 request.fileName());
 
         //엔티티 db 저장 및 폴더 생성
         final DocumentPathDto documentPathDto = saveDocumentAndGetFolderPath(extracted, request.projectId());
-        final String extension = fileService.getFileExtension(request.file());
+
+
+        //파일 저장
         fileService.saveResourceToFolder(request.file(), documentPathDto.getPath(), request.fileName(), extension);
 
         final String savedFilePath = documentPathDto.getPath() + File.separator + request.fileName() + extension;
@@ -74,30 +82,15 @@ public class DocumentService {
     }
 
     @Transactional
-    @RabbitListener(queues = RabbitMqConfig.FILE_CONTENT_QUEUE)
-    public void handleChapterResult(CoreServerResponse response) {
-        log.info("코어 서버에서 처리 결과를 수신했습니다: {}", response);
-
-        // 여기서 할 수 있는 작업 예시:
-        // 1. DB에 해당 챕터의 처리 상태 업데이트
-        // 2. WebSocket이나 SSE 등을 통해 프론트(Vue)에 "처리 완료" 알림 보내기
-        // 3. 에러 시 재시도 로직 등
-
-        if (response.state().equals(State.SERVING)) {
-            log.info("문서 ID : {} 처리 성공, 상태 : {}", response.docId(), response.state());
-            documentRepository.updateStats(response.docId(), State.SERVING);
-        } else {
-            log.warn("문서 ID {} 처리 실패, 상태 : {}",
-                    response.docId(), response.state());
-        }
-    }
-
-    @Transactional
     public List<ContentResponse> fetchImages(final FileDto fileDto) {
-        final Resource file = fileDataExtractorService.extractPdfPagesAsResource(
+        final String extension = fileService.getFileExtension(fileDto.getFile());
+        final AbstractFileExtractor extractor = fileExtractorFactory.getExtractor(extension);
+
+        final Resource file = extractor.extractFilePagesAsResource(
                 fileDto.getFile(),
                 fileDto.getStartPage(),
                 fileDto.getEndPage());
+
         final int startPage = fileDto.getStartPage();
         final int endPage = fileDto.getEndPage();
 
@@ -128,11 +121,41 @@ public class DocumentService {
         documentRepository.updateStats(docId, state);
     }
 
+    @Transactional
     public void deleteDocumentById(final Integer docId) {
         documentRepository.deleteById(docId);
         final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH),
                 Folder.DOCUMENT.getFolderName(docId));
         fileService.deleteFolder(path);
+    }
+
+    public Document buildDocument(final long fileSize, int pageCount, final Integer projectId,
+                                  final Integer projectFolderId, final String fileName) {
+
+        String path = Folder.PROJECT_FOLDER.getProjectFolderName(projectId, projectFolderId);
+
+        final boolean projectExists = projectRepository.existsById(projectId);
+
+        if (!projectExists) {
+            throw DomainExceptionCode.PROJECT_NOT_FOUND.newInstance();
+        }
+
+        final boolean projectFolderExists = projectFolderRepository.existsById(projectFolderId);
+        if (!projectFolderExists) {
+            throw new RuntimeException("프로젝트 폴더가 존재하지 않습니다.");
+        }
+
+        final ProjectFolder referenceById = projectFolderRepository.getReferenceById(projectFolderId);
+
+        return Document.builder()
+                .name(fileName)
+                .fileSize(fileSize)
+                .pageCount(pageCount)
+                .url(path)
+                .fileSize(fileSize)
+                .projectFolder(referenceById)
+                .state(State.PENDING)
+                .build();
     }
 
 }
