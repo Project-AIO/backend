@@ -5,13 +5,17 @@ import com.idt.aio.entity.constant.Mime;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Component
 public class FileValidator {
-    private static final long MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+    //application-local.yml에서 servlet에 정의된 max-file-size 정의된 최대 파일 크기
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private DataSize MAX_FILE_SIZE; // 50MB
     private final FileService fileService;
 
     public void validateFileSize(final MultipartFile file) {
@@ -33,8 +37,8 @@ public class FileValidator {
         }
 
         //사이즈 체크
-        if (file.getSize() > MAX_FILE_SIZE) {
-            throw DomainExceptionCode.FILE_SIZE_EXCEEDED.newInstance(MAX_FILE_SIZE);
+        if (file.getSize() > MAX_FILE_SIZE.toBytes()) {
+            throw DomainExceptionCode.FILE_SIZE_EXCEEDED.newInstance(MAX_FILE_SIZE.toBytes());
         }
     }
 }

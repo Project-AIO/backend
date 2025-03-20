@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> constraintViolationException(MethodArgumentNotValidException e) {
         log.error("{}", e);
         return ResponseEntity.badRequest()
-                .body(ErrorResponse.of(0, e.getMessage()));
+                .body(ErrorResponse.of(400, e.getMessage()));
     }
 
 }

@@ -1,6 +1,15 @@
 package com.idt.aio.service;
 
 import com.idt.aio.exception.DomainExceptionCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,13 +17,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
     static final String PROJECT_ROOT = File.separator + "aio";
     static final String ROOT_PATH = System.getProperty("user.dir");
+    private final FileDataExtractorService fileDataExtractorService;
 
 
     @Transactional
@@ -61,6 +64,10 @@ public class FileService {
     @Transactional
     public void saveResourceToFolder(final MultipartFile file, final String filePath, final String fileName,
                                      final String extension) {
+
+        //전체를 할지 부분을 할 지 고민
+        final Resource resource = fileDataExtractorService.extractPdfPagesAsResource(file, 4, 7);
+
         try {
             // 대상 경로 (폴더가 이미 존재한다고 가정)
             Path targetDir = Paths.get(filePath);
@@ -78,7 +85,7 @@ public class FileService {
             }
 
             // 파일 복사
-            Files.copy(file.getInputStream(), targetFile);
+            Files.copy(resource.getInputStream(), targetFile);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,6 +117,10 @@ public class FileService {
         }
         // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
         return FilenameUtils.getExtension(originalFilename);
+    }
+
+    public long getFileSize(final MultipartFile file) {
+        return file.getSize();
     }
 
 }

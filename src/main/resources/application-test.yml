@@ -5,7 +5,10 @@ spring:
 
   application:
     name: aio
-
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   h2:
     console:
       enabled: true
