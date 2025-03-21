@@ -192,4 +192,9 @@ public class DocumentService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public Document getDocumentById(final Integer docId) {
+        return documentRepository.findById(docId)
+                .orElseThrow(DomainExceptionCode.DOCUMENT_NOT_FOUND::newInstance);
+    }
 }

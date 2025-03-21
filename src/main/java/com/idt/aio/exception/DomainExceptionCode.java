@@ -15,7 +15,7 @@ public enum DomainExceptionCode {
     PROJECT(1500, "정의되지 않은 에러입니다."),
     PROJECT_NOT_FOUND(PROJECT.code + 1, "프로젝트를 찾을 수 없습니다."),
 
-    Document(2000, "정의되지 않은 에러입니다."),
+    DOCUMENT(2000, "정의되지 않은 에러입니다."),
     DOCUMENT_TYPE_INVALID(Document.code + 1, "MIME Type이 올바르지 않습니다."),
     DOCUMENT_NOT_FOUND(Document.code + 2, "문서를 찾을 수 없습니다."),
 
@@ -40,6 +40,9 @@ public enum DomainExceptionCode {
     ANSWER_NOT_FOUND(ANSWER.code + 1, "답변을 찾을 수 없습니다."),
     CONVERSATION(4500, "정의되지 않은 에러입니다."),
     CONVERSATION_NOT_FOUND(CONVERSATION.code + 1, "대화를 찾을 수 없습니다."),
+
+    ACCOUNT(5000, "정의되지 않은 에러입니다."),
+    ACCOUNT_NOT_FOUND(ACCOUNT.code + 1, "계정을 찾을 수 없습니다."),
     ;
 
 

@@ -25,7 +25,7 @@ public class HomonymService {
                                                           final Sort.Direction direction, final String sortProperty) {
         final Pageable pageable = PageRequest.of(page - 1, size, direction, sortProperty);
         final Page<Homonym> homonymPage = homonymRepository.findByProject_ProjectId(projectId, pageable);
-        return homonymPage.map(s -> HomonymDto.from(s));
+        return homonymPage.map(HomonymDto::from);
     }
 
     @Transactional(readOnly = true)

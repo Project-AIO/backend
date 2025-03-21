@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface DocumentAccountRepository extends JpaRepository<DocumentAccount, Integer> {
     List<DocumentAccount> findDocumentAccountByDocument_DocId(final Integer docId);
+
+    List<DocumentAccount> findAllByDocAccountId(final Integer docId);
 }
