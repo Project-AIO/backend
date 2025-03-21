@@ -29,8 +29,6 @@ import org.springframework.http.MediaType;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -114,10 +112,11 @@ public class DocumentE2ETest {
         Assertions.assertThat(UUID_PATTERN.matcher(jobId.trim()).matches()).isTrue();
 
     }
-/*    @AfterEach
+
+    @AfterEach
     void tearDown() {
         projectService.deleteProjectById(CREATED_PROJECT_ID);
-    }*/
+    }
 
 
 }
