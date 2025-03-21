@@ -21,4 +21,7 @@ public enum Mime {
                 .map(Mime::getValue)
                 .collect(Collectors.toSet());
     }
+    public static boolean isValidMimeType(String mimeType) {
+        return getValues().stream().anyMatch(mimeType::startsWith);
+    }
 }
