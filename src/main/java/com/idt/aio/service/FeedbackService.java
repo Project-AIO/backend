@@ -22,4 +22,8 @@ public class FeedbackService {
     public void deleteFeedback(final Integer feedbackId) {
         feedbackRepository.deleteById(feedbackId);
     }
+
+    public void deleteFeedbacksByProjectId(final Integer projectId) {
+        feedbackRepository.deleteFeedbackByAnswer_Question_Conversation_Project_ProjectId(projectId);
+    }
 }
