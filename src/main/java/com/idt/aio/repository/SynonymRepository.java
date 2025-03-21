@@ -19,7 +19,7 @@ public interface SynonymRepository extends JpaRepository<Synonym, Integer> {
 
     @Modifying
     @Query("update Synonym s set s.source = :source, s.match = :match where s.synonymId = :synonymId")
-    void updateSynonymById(final Integer synonymId, @Param("source") final String source,
+    void updateSynonymById(@Param("synonymId") final Integer synonymId, @Param("source") final String source,
                            @Param("match") final String match);
 
 }
