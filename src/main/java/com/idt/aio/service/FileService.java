@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +25,7 @@ import java.util.stream.Stream;
 public class FileService {
     static final String PROJECT_ROOT = File.separator + "aio";
     static final String ROOT_PATH = System.getProperty("user.dir");
-    private final FileDataExtractorService fileDataExtractorService;
+
 
 
     @Transactional
@@ -44,10 +46,44 @@ public class FileService {
         return newFolder.getAbsolutePath();
     }
 
+    @Transactional(readOnly = true)
+    public Resource getFileFromPath(String folderName, String fileName) {
+        // ROOT_PATH와 PROJECT_ROOT를 사용하여 루트 디렉토리 경로 구성
+        String rootDir = ROOT_PATH + PROJECT_ROOT;
+
+        // 특정 폴더 내의 파일 경로 구성
+        Path filePath = Paths.get(rootDir, folderName, fileName);
+
+        // Resource 생성 (파일 시스템 기반)
+        Resource resource = new FileSystemResource(filePath);
+
+        // 파일 존재 여부 체크
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new RuntimeException("파일을 찾을 수 없거나 읽을 수 없습니다: " + filePath.toString());
+        }
+
+        return resource;
+    }
+
     @Transactional
     public void deleteFolder(final String folderName) {
         final String rootPath = System.getProperty("user.dir") + PROJECT_ROOT;
         final File deleteFolder = new File(rootPath, folderName);
+
+        if (deleteFolder.exists()) {
+            try {
+                FileUtils.deleteDirectory(deleteFolder); // 폴더와 하위 모든 파일/폴더 삭제
+                log.info("폴더 및 내부 파일 삭제 성공: " + deleteFolder.getAbsolutePath());
+            } catch (IOException e) {
+                // 예외 처리
+                throw new RuntimeException("폴더 삭제 중 오류 발생", e);
+            }
+        }
+    }
+
+    @Transactional
+    public void deleteFolderByAbsolutePath(final String path) {
+        final File deleteFolder = new File(path);
 
         if (deleteFolder.exists()) {
             try {
@@ -110,10 +146,14 @@ public class FileService {
     public String getFileExtension(final MultipartFile file) {
         final String originalFilename = file.getOriginalFilename();
         if (originalFilename == null) {
-            throw DomainExceptionCode.FILE_NAME_IS_NULL.newInstance(originalFilename);
+            throw DomainExceptionCode.FILE_NAME_IS_NULL.newInstance();
         }
         // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
         return FilenameUtils.getExtension(originalFilename);
+    }
+
+    public String getFileNameWithoutExtension(final MultipartFile file) {
+        return FilenameUtils.getBaseName(file.getOriginalFilename());
     }
 
     public long getFileSize(final MultipartFile file) {

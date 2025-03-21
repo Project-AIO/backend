@@ -165,19 +165,32 @@ CREATE TABLE IF NOT EXISTS `tb_feedback` (
 
 -- 15. tb_doc (참조 문서)
 DROP TABLE IF EXISTS `tb_doc`;
+
 CREATE TABLE IF NOT EXISTS `tb_doc` (
-    `doc_id` INT NOT NULL AUTO_INCREMENT,
+    `doc_id` INT AUTO_INCREMENT,
     `project_folder_id` INT NOT NULL,
-    `name` VARCHAR(50) NOT NULL,
-    `page_count` INT,
-    `state` ENUM('PENDING','SERVING','INACTIVE','STAND_BY') DEFAULT 'PENDING',
-    `url` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(50) NOT NULL COMMENT '문서 이름',
+    `state` ENUM('PENDING', 'SERVING', 'INACTIVE', 'READY') NOT NULL DEFAULT 'PENDING',
+    `upload_dt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`doc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- tb_doc_file 테이블 삭제 및 생성
+DROP TABLE IF EXISTS `tb_doc_file`;
+CREATE TABLE IF NOT EXISTS `tb_doc_file` (
+    `doc_file_id` INT NOT NULL AUTO_INCREMENT,
+    `doc_id` INT NOT NULL,
+    `extension` VARCHAR(10) NOT NULL COMMENT '확장자',
+    `path` VARCHAR(255) NOT NULL COMMENT '문서 파일의 경로 ([파일이름 + 확장자] 제외)',
+    `file_name` VARCHAR(50) NOT NULL COMMENT '파일 이름',
+    `original_file_name` VARCHAR(60) NOT NULL COMMENT '파일이름 + 확장자',
+    `total_page` INT NOT NULL,
     `file_size` INT NOT NULL,
-    `revision` VARCHAR(25),
-    `upload_dt` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`doc_id`),
-    FOREIGN KEY (`project_folder_id`) REFERENCES `tb_project_folder`(`project_folder_id`) ON DELETE CASCADE ON UPDATE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `revision` VARCHAR(25) COMMENT '파일 버전',
+  PRIMARY KEY (`doc_file_id`),
+  KEY `fk_doc_id` (`doc_id`),
+  CONSTRAINT `fk_doc_file_doc` FOREIGN KEY (`doc_id`) REFERENCES `tb_doc` (`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 16. tb_doc_account (참조 문서에 접근 가능한 계정의 참조 테이블)
 DROP TABLE IF EXISTS `tb_doc_account`;
@@ -189,7 +202,6 @@ CREATE TABLE IF NOT EXISTS `tb_doc_account` (
     FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`account_id`) REFERENCES `tb_account`(`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 
 
 -- 21. tb_similarity_doc (질문에서 찾은 유사도가 높은 참조 문서)
@@ -219,7 +231,6 @@ CREATE TABLE IF NOT EXISTS `tb_doc_part` (
     FOREIGN KEY (`doc_id`) REFERENCES `tb_doc`(`doc_id`) ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 23. tb_doc_image (문서에 포함된 이미지 페이지)
 
 
 -- tb_authority: 권한 정보 (Authority 엔티티)

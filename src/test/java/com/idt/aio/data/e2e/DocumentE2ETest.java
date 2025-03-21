@@ -113,6 +113,7 @@ public class DocumentE2ETest {
                 .multiPart("project_id", "1", "application/json") // 일반 문자열 파라미터
                 .multiPart("file_name", CREATED_FILE_NAME, "application/json") // 일반 문자열 파라미터
                 .multiPart("contents", contentData, "application/json") // JSON 데이터
+                .multiPart("revision", "1.0", "application/json") // JSON 데이터
                 .when()
                 .post("/api/v1/document/upload")
                 .then()

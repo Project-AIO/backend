@@ -22,7 +22,7 @@ public class Admin {
 
     @Id
     @Column(name = "admin_id")
-    private String admin_id;
+    private String adminId;
 
     @Column(name = "pw", length = 100)
     private String pw;
