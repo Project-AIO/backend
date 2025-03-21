@@ -19,26 +19,21 @@ public class DocumentDto {
     private Integer docId;
     private Integer projectFolderId;
     private String name;
-    private Integer pageCount;
     private State state;
-    private String url;
-    private Long fileSize;
-    private String revision;
     private LocalDateTime uploadDt;
 
+    public static DocumentDto from(Document document) {
+        return DocumentDto.builder()
+                .docId(document.getDocId())
+                .projectFolderId(document.getProjectFolder().getProjectFolderId())
+                .name(document.getName())
+                .state(document.getState())
+                .uploadDt(document.getUploadDt())
+                .build();
+    }
     public static List<DocumentDto> from(final List<Document> documents) {
         return documents.stream()
-                .map(d -> DocumentDto.builder()
-                        .docId(d.getDocId())
-                        .projectFolderId(d.getProjectFolder().getProjectFolderId())
-                        .name(d.getName())
-                        .pageCount(d.getPageCount())
-                        .state(d.getState())
-                        .url(d.getUrl())
-                        .fileSize(d.getFileSize())
-                        .revision(d.getRevision())
-                        .uploadDt(d.getUploadDt())
-                        .build())
+                .map(DocumentDto::from)
                 .toList();
     }
 }

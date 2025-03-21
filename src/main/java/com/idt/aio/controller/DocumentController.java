@@ -3,11 +3,16 @@ package com.idt.aio.controller;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentJob;
 import com.idt.aio.dto.FileDto;
+import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
+import com.idt.aio.response.DocumentData;
+import com.idt.aio.response.DocumentFileResponse;
+import com.idt.aio.response.DocumentPartResponse;
 import com.idt.aio.service.DocumentPartService;
 import com.idt.aio.service.DocumentService;
+import com.idt.aio.service.FileService;
 import com.idt.aio.validator.FileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +21,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,12 +44,13 @@ public class DocumentController {
     private final DocumentService documentService;
     private final DocumentPartService documentPartService;
     private final FileValidator validator;
+    private final FileService fileService;
 
     @Operation(summary = "프로젝트 폴더 ID로 문서 가져오는 API", description = """
                프로젝트 ID로 피드백 가져오기
             """)
     @GetMapping("/documents")
-    public List<DocumentDto> getDocumentsByFolderId(@RequestParam("project_folder_id") final Integer folderId) {
+    public List<DocumentData> getDocumentsByFolderId(@RequestParam("project_folder_id") final Integer folderId) {
         return documentService.fetchDocumentByFolderId(folderId);
     }
 
@@ -84,6 +91,7 @@ public class DocumentController {
             @RequestPart("file") @NotNull MultipartFile file,
             @RequestPart("file_name") @NotNull
             @Size(min = 1, max = 50) String fileName,
+            @RequestPart("revision") @NotNull String revision,
             @RequestPart("contents")
             List<@Valid RuleData> contents
     ) {
@@ -94,9 +102,31 @@ public class DocumentController {
                 projectId,
                 projectFolderId,
                 fileName,
+                revision,
                 contents
         );
         documentPartService.saveDocumentPart(documentJob.document(), contents);
         return ResponseEntity.ok().body(documentJob.jobId());
+    }
+
+    @Operation(summary = "문서 ID로 문서, 문서Part, 문서파일를 가져오는 API", description = """
+               문서 ID로 문서, 문서Part, 문서파일를 가져옴
+            """)
+    @GetMapping(path = "/document")
+    public ResponseEntity<DocumentFileResponse> getDocumentFile(@RequestParam("doc_id") Integer docId) {
+        final DocumentData documentData = documentService.fetchDocumentFileDataById(docId);
+        final List<DocumentPartResponse> partsDto = documentPartService.getDocumentPartsByDocumentId(docId);
+
+        final String path = documentData.fileData().path();
+        final String fileName = documentData.fileData().originalFileName();
+
+        final Resource resource = fileService.getFileFromPath(path, fileName);
+
+        final DocumentFileResponse response = DocumentFileResponse.builder()
+                .documentData(documentData)
+                .partsDto(partsDto)
+                .file(resource)
+                .build();
+        return ResponseEntity.ok().body(response);
     }
 }

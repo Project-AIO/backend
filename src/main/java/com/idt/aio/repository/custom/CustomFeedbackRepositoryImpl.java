@@ -23,7 +23,7 @@ import static com.idt.aio.entity.QSimilarityDoc.similarityDoc;
 @RequiredArgsConstructor
 public class CustomFeedbackRepositoryImpl implements CustomFeedbackRepository {
     private final JPAQueryFactory queryFactory;
-    private final EntityManager em;
+
 
     @Override
     public List<FeedbackDto> fetchFeedbacksByProjectId(Integer projectId) {

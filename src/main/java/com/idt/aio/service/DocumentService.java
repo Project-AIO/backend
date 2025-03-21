@@ -2,17 +2,20 @@ package com.idt.aio.service;
 
 import com.idt.aio.dto.*;
 import com.idt.aio.entity.Document;
+import com.idt.aio.entity.DocumentFile;
 import com.idt.aio.entity.ProjectFolder;
 import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.entity.constant.State;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.extractor.AbstractFileExtractor;
 import com.idt.aio.factory.FileExtractorFactory;
+import com.idt.aio.repository.DocumentFileRepository;
 import com.idt.aio.repository.DocumentRepository;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
+import com.idt.aio.response.DocumentData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -34,14 +37,17 @@ public class DocumentService {
     private final ConfigurationKnowledgeService configurationKnowledgeService;
     private final ProjectRepository projectRepository;
     private final ProjectFolderRepository projectFolderRepository;
+    private final DocumentFileRepository documentFileRepository;
     private final FileExtractorFactory fileExtractorFactory;
 
     @Transactional(readOnly = true)
-    public List<DocumentDto> fetchDocumentByFolderId(final Integer folderId) {
-        final List<Document> documents = documentRepository.findByProjectFolder_ProjectFolderId(
-                folderId);
-
-        return DocumentDto.from(documents);
+    public List<DocumentData> fetchDocumentByFolderId(final Integer folderId) {
+        return documentRepository.findDocumentDataByProjectId(folderId);
+    }
+    @Transactional(readOnly = true)
+    public DocumentData fetchDocumentFileDataById(final Integer docId){
+        
+        return documentRepository.findDocumentDataById(docId).orElseThrow(DomainExceptionCode.DOCUMENT_NOT_FOUND::newInstance);
     }
 
     @Transactional
@@ -49,24 +55,33 @@ public class DocumentService {
                                               final Integer projectId,
                                               final Integer projectFolderId,
                                               final String fileName,
+                                              final String revision,
                                               final List<RuleData> contents) {
         final String extension = fileService.getFileExtension(file);
         final AbstractFileExtractor extractor = fileExtractorFactory.getExtractor(extension);
-        final Document extracted = buildDocument(
-                fileService.getFileSize(file),
-                extractor.getTotalPages(file),
+
+        //Document 엔티티 생성
+         final Document extracted = buildDocument(
                 projectId,
                 projectFolderId,
                 fileName);
 
-        //엔티티 db 저장 및 폴더 생성
+        //Document 엔티티 db 저장 및 폴더 생성
         final DocumentPathDto documentPathDto = saveDocumentAndGetFolderPath(extracted, projectId);
 
+        //문서 파일이 저장된 절대 경로
+        final String absoluteFilePath = documentPathDto.getPath();
+        //DocumentFile 엔티티 생성
+        final DocumentFile documentFile = buildDocumentFile(extractor, file, absoluteFilePath, extracted, revision);
 
         //파일 저장
-        fileService.saveResourceToFolder(file, documentPathDto.getPath(), fileName, extension);
+        documentFileRepository.save(documentFile);
 
-        final String savedFilePath = documentPathDto.getPath() + File.separator + fileName + extension;
+        //물리 파일 저장
+        fileService.saveResourceToFolder(file, absoluteFilePath, fileName, extension);
+
+        //경로+파일명
+        final String savedFilePath = absoluteFilePath + File.separator + fileName + "." + extension;
         final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(
                 projectId);
 
@@ -77,11 +92,35 @@ public class DocumentService {
                 documentPathDto.getDocId(),
                 configurationKnowledgeDto);
 
-        extracted.updateState(State.STAND_BY);
+        //상태 변경
+        extracted.updateState(State.READY);
 
         return DocumentJob.builder()
                 .document(extracted)
                 .jobId(jobId)
+                .build();
+    }
+
+    private DocumentFile buildDocumentFile(final AbstractFileExtractor extractor,
+                                           final MultipartFile file,
+                                           final String savedFolderPath,
+                                           final Document extractedDocument,
+                                           final String revision) {
+        final String fileExtension = fileService.getFileExtension(file);
+        final int totalPages = extractor.getTotalPages(file);
+        final long fileSize = fileService.getFileSize(file);
+        final String baseFileName = fileService.getFileNameWithoutExtension(file);
+        final String fileNameWithExtension = file.getOriginalFilename();
+
+        return DocumentFile.builder()
+                .document(extractedDocument)
+                .extension(fileExtension)
+                .path(savedFolderPath)
+                .fileName(baseFileName)
+                .totalPage(totalPages)
+                .originalFileName(fileNameWithExtension)
+                .fileSize(fileSize)
+                .revision(revision)
                 .build();
     }
 
@@ -104,7 +143,7 @@ public class DocumentService {
 
 
     @Transactional
-    public DocumentPathDto saveDocumentAndGetFolderPath(final Document document, final Integer projectId) {
+    protected DocumentPathDto saveDocumentAndGetFolderPath(final Document document, final Integer projectId) {
 
         //db저장
         final Document save = documentRepository.save(document);
@@ -113,30 +152,25 @@ public class DocumentService {
         final String folder = Folder.DOCUMENT.getDocumentFolderPath(projectId, save.getProjectFolder().getProjectFolderId(),
                 save.getDocId());
         final String absolutePath = fileService.createFolder(folder);
+
         return DocumentPathDto.builder()
                 .docId(save.getDocId())
                 .path(absolutePath)
                 .build();
     }
 
-    @Transactional
-    public void updateStatus(final Integer docId, final String status) {
-        State state = State.valueOf(status);
-        documentRepository.updateStats(docId, state);
-    }
 
     @Transactional
     public void deleteDocumentById(final Integer docId) {
+        //폴더명 전까지의 절대경로
+        final String absolutePath = documentFileRepository.findPathByDocument_DocId(docId);
+        documentFileRepository.deleteByDocument_DocId(docId);
         documentRepository.deleteById(docId);
-        final String path = fileService.findPathWithoutRootByFolderName(Path.of(FileService.ROOT_PATH),
-                Folder.DOCUMENT.getFolderName(docId));
-        fileService.deleteFolder(path);
+
+       fileService.deleteFolderByAbsolutePath(absolutePath);
     }
 
-    public Document buildDocument(final long fileSize, int pageCount, final Integer projectId,
-                                  final Integer projectFolderId, final String fileName) {
-
-        String path = Folder.PROJECT_FOLDER.getProjectFolderPath(projectId, projectFolderId);
+    private Document buildDocument(final Integer projectId, final Integer projectFolderId, final String fileName) {
 
         final boolean projectExists = projectRepository.existsById(projectId);
 
@@ -153,10 +187,6 @@ public class DocumentService {
 
         return Document.builder()
                 .name(fileName)
-                .fileSize(fileSize)
-                .pageCount(pageCount)
-                .url(path)
-                .fileSize(fileSize)
                 .projectFolder(referenceById)
                 .state(State.PENDING)
                 .build();
