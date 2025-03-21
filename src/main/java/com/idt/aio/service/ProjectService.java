@@ -27,7 +27,7 @@ public class ProjectService {
     @Transactional
     public void deleteProjectById(final Integer projectId) {
         projectRepository.deleteById(projectId);
-        fileService.deleteFolder(Folder.PROJECT.getProjectName(projectId));
+        fileService.deleteFolder(Folder.PROJECT.getProjectPath(projectId));
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +52,7 @@ public class ProjectService {
         ProjectFolder projectFolder = projectFolderRepository.saveAndFlush(entity);
 
         fileService.createFolder(
-                Folder.DOCUMENT.getProjectFolderName(request.projectId(), projectFolder.getProjectFolderId()));
+                Folder.DOCUMENT.getProjectFolderPath(request.projectId(), projectFolder.getProjectFolderId()));
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +69,7 @@ public class ProjectService {
                 .build();
         Project save = projectRepository.save(project);
 
-        fileService.createFolder(Folder.PROJECT.getProjectName(save.getProjectId()));
+        fileService.createFolder(Folder.PROJECT.getProjectPath(save.getProjectId()));
 
     }
 }

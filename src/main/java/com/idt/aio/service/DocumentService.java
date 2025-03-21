@@ -110,7 +110,7 @@ public class DocumentService {
         final Document save = documentRepository.save(document);
 
         //폴더 생성
-        final String folder = Folder.DOCUMENT.getDocumentName(projectId, save.getProjectFolder().getProjectFolderId(),
+        final String folder = Folder.DOCUMENT.getDocumentFolderPath(projectId, save.getProjectFolder().getProjectFolderId(),
                 save.getDocId());
         final String absolutePath = fileService.createFolder(folder);
         return DocumentPathDto.builder()
@@ -136,7 +136,7 @@ public class DocumentService {
     public Document buildDocument(final long fileSize, int pageCount, final Integer projectId,
                                   final Integer projectFolderId, final String fileName) {
 
-        String path = Folder.PROJECT_FOLDER.getProjectFolderName(projectId, projectFolderId);
+        String path = Folder.PROJECT_FOLDER.getProjectFolderPath(projectId, projectFolderId);
 
         final boolean projectExists = projectRepository.existsById(projectId);
 

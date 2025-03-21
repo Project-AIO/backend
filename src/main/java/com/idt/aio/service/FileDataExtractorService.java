@@ -92,7 +92,7 @@ public class FileDataExtractorService {
         // 3. PDF 페이지 수 추출 (PDFBox 사용)
         int pageCount = getPageCount(file);
 
-        String path = Folder.PROJECT_FOLDER.getProjectFolderName(projectId, projectFolderId);
+        String path = Folder.PROJECT_FOLDER.getProjectFolderPath(projectId, projectFolderId);
 
         final boolean projectExists = projectRepository.existsById(projectId);
 

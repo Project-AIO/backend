@@ -19,7 +19,7 @@ public interface HomonymRepository extends JpaRepository<Homonym, Integer> {
 
     @Modifying
     @Query("update Homonym s set s.source = :source, s.match = :match where s.homonymId = :homonymId")
-    void updateHomonymById(final Integer homonymId, @Param("source") final String source,
+    void updateHomonymById(@Param("homonymId") final Integer homonymId, @Param("source") final String source,
                            @Param("match") final String match);
 
 }

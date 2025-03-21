@@ -7,10 +7,12 @@ import com.idt.aio.data.domain.ProjectFolderFixture;
 import com.idt.aio.entity.ConfigurationKnowledge;
 import com.idt.aio.entity.Project;
 import com.idt.aio.entity.ProjectFolder;
+import com.idt.aio.entity.constant.Folder;
 import com.idt.aio.repository.ConfigurationKnowledgeRepository;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.RuleData;
+import com.idt.aio.service.FileService;
 import com.idt.aio.service.ProjectService;
 import com.idt.aio.token.TokenProviderTest;
 import io.restassured.RestAssured;
@@ -29,6 +31,9 @@ import org.springframework.http.MediaType;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -45,14 +50,22 @@ public class DocumentE2ETest {
     ProjectRepository projectRepository;
     @Autowired
     ProjectFolderRepository projectFolderRepository;
+
+    @Autowired
+    FileService fileService;
+    @Autowired
+    ProjectService projectService;
+
     @Autowired
     ConfigurationKnowledgeRepository configurationKnowledgeRepository;
     private  final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     private final static Integer CREATED_PROJECT_ID = 1;
     private final static String CREATED_FILE_NAME = "test_name";
-    @Autowired
-    private ProjectService projectService;
+    private final static Integer CREATED_PROJECT_FOLDER_ID = 1;
+    private final static Integer CREATED_DOCUMENT_FOLDER_ID = 1;
+    private final static String FILE_CREATED_PATH = Folder.DOCUMENT.getDocumentFolderPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID, CREATED_DOCUMENT_FOLDER_ID);
+
 
     @BeforeEach
     void setUp() {
@@ -64,6 +77,8 @@ public class DocumentE2ETest {
         projectRepository.saveAll(projects);
         projectFolderRepository.saveAll(projectFolders);
         configurationKnowledgeRepository.saveAll(configs);
+
+        fileService.createFolder(Folder.PROJECT_FOLDER.getProjectFolderPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID));
     }
 
     @Test
@@ -108,9 +123,8 @@ public class DocumentE2ETest {
 
         String jobId = response.getBody().asString();
 
-     //   Path filePath = Paths.get(directory, CREATED_FILE_NAME);
+        Path filePath = Paths.get(FILE_CREATED_PATH, CREATED_FILE_NAME);
         Assertions.assertThat(UUID_PATTERN.matcher(jobId.trim()).matches()).isTrue();
-
     }
 
     @AfterEach

@@ -19,16 +19,16 @@ public enum Folder {
         return PROJECT.folderName + id;
     }
 
-    public String getProjectName(final Integer projectId) {
+    public String getProjectPath(final Integer projectId) {
         return PROJECT.folderName + projectId;
     }
 
-    public String getProjectFolderName(final Integer projectId, final Integer projectFolderId) {
-        return getProjectName(projectId) + File.separator + PROJECT_FOLDER.folderName + projectFolderId;
+    public String getProjectFolderPath(final Integer projectId, final Integer projectFolderId) {
+        return getProjectPath(projectId) + File.separator + PROJECT_FOLDER.folderName + projectFolderId;
     }
 
-    public String getDocumentName(final Integer projectId, final Integer projectFolderId, final Integer documentId) {
-        return getProjectFolderName(projectId, projectFolderId) + File.separator + DOCUMENT.folderName + documentId;
+    public String getDocumentFolderPath(final Integer projectId, final Integer projectFolderId, final Integer documentId) {
+        return getProjectFolderPath(projectId, projectFolderId) + File.separator + DOCUMENT.folderName + documentId;
     }
 
 }
