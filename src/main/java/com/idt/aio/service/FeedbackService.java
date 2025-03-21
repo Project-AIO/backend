@@ -40,7 +40,7 @@ public class FeedbackService {
     public Page<FeedbackData> fetchFeebackByProjectIdByPage(final Integer projectId, final int page, final int size, final Direction direction,
                                                           final String sortProperty) {
         final Pageable pageable = PageRequest.of(page - 1, size, direction, sortProperty);
-        final Page<Feedback> feedbacks = feedbackRepository.findByAnswerQuestionConversationProject_ProjectId(
+        final Page<Feedback> feedbacks = feedbackRepository.findByAnswer_Question_Conversation_Project_ProjectId(
                 projectId, pageable);
         return feedbacks.map(FeedbackData::from);
     }

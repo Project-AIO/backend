@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer>, CustomFeedbackRepository {
     void deleteFeedbackByAnswer_Question_Conversation_Project_ProjectId(Integer projectId);
 
-    Page<Feedback> findByAnswerQuestionConversationProject_ProjectId(final Integer projectId, final Pageable pageable);
+    Page<Feedback> findByAnswer_Question_Conversation_Project_ProjectId(final Integer projectId, final Pageable pageable);
 }
