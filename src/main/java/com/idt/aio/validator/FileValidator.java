@@ -19,8 +19,10 @@ public class FileValidator {
     private DataSize MAX_FILE_SIZE; // 50MB
 
     public void validateFileSize(final MultipartFile file) {
+
+        String contentType = file.getContentType();
         // Mime 타입 확인
-        if (!Mime.getValues().contains(file.getContentType())) {
+        if (!Mime.isValidMimeType(file.getContentType())) {
             throw DomainExceptionCode.DOCUMENT_TYPE_INVALID.newInstance();
         }
 

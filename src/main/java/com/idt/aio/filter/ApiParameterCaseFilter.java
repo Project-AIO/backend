@@ -38,14 +38,6 @@ public class ApiParameterCaseFilter {
                     paramters.put(camelCaseParam, request.getParameterValues(param));
                     paramters.put(param, request.getParameterValues(param));
                 }
-                String contentType = request.getContentType();
-                System.out.println("contentType = " + contentType);
-                Collection<Part> parts = request.getParts();
-                for (Part part : parts) {
-                    System.out.println("Part Name: " + part.getName());
-                    System.out.println("Filename: " + part.getSubmittedFileName());
-                    System.out.println("Size: " + part.getSize());
-                }
 
                 // 필터체인을 이용하여, request에 해당 값을 추가하여 반환
                 filterChain.doFilter(new HttpServletRequestWrapper(request) {

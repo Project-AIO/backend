@@ -16,7 +16,7 @@ public enum DomainExceptionCode {
     PROJECT_NOT_FOUND(PROJECT.code + 1, "프로젝트를 찾을 수 없습니다."),
 
     Document(2000, "정의되지 않은 에러입니다."),
-    DOCUMENT_TYPE_INVALID(Document.code + 1, "문서 확장자가 올바르지 않습니다."),
+    DOCUMENT_TYPE_INVALID(Document.code + 1, "MIME Type이 올바르지 않습니다."),
     DOCUMENT_NOT_FOUND(Document.code + 2, "문서를 찾을 수 없습니다."),
 
     FILE(2500, "정의되지 않은 에러입니다."),
@@ -28,6 +28,7 @@ public enum DomainExceptionCode {
     FILE_NOT_FOUND(FILE.code + 6, "파일을 찾을 수 없습니다."),
     FILE_EXTENSION_INVALID(FILE.code + 7, "파일 확장자가 올바르지 않습니다."),
     FILE_EXTENSION_NOT_ALLOWED(FILE.code + 8, "허용되지 않는 파일 확장자입니다."),
+    FILE_NAME_IS_NULL(FILE.code + 9, "파일명이 null입니다."),
 
     CONFIGURATION_KNOWLEDGE(3000, "정의되지 않은 에러입니다."),
     CONFIGURATION_KNOWLEDGE_NOT_FOUND(CONFIGURATION_KNOWLEDGE.code + 1, "설정 지식을 찾을 수 없습니다."),

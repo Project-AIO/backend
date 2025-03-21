@@ -110,7 +110,7 @@ public class FileService {
     public String getFileExtension(final MultipartFile file) {
         final String originalFilename = file.getOriginalFilename();
         if (originalFilename == null) {
-            throw DomainExceptionCode.FILE_EXTENSION_INVALID.newInstance();
+            throw DomainExceptionCode.FILE_NAME_IS_NULL.newInstance(originalFilename);
         }
         // FilenameUtils.getExtension()은 파일명에서 마지막 '.' 이후의 문자열을 반환합니다.
         return FilenameUtils.getExtension(originalFilename);
