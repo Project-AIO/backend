@@ -16,8 +16,8 @@ public enum DomainExceptionCode {
     PROJECT_NOT_FOUND(PROJECT.code + 1, "프로젝트를 찾을 수 없습니다."),
 
     DOCUMENT(2000, "정의되지 않은 에러입니다."),
-    DOCUMENT_TYPE_INVALID(Document.code + 1, "MIME Type이 올바르지 않습니다."),
-    DOCUMENT_NOT_FOUND(Document.code + 2, "문서를 찾을 수 없습니다."),
+    DOCUMENT_TYPE_INVALID(DOCUMENT.code + 1, "MIME Type이 올바르지 않습니다."),
+    DOCUMENT_NOT_FOUND(DOCUMENT.code + 2, "문서를 찾을 수 없습니다."),
 
     FILE(2500, "정의되지 않은 에러입니다."),
     FILE_READ_FAILED(FILE.code + 1, "파일을 읽는데 실패했습니다."),
