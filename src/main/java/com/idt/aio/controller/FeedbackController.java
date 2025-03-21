@@ -32,6 +32,15 @@ public class FeedbackController {
         return feedbackService.fetchFeedbacksByProjectId(project_id);
     }
 
+    @Operation(summary = "project id에 해당하는 피드백 모두 제거 API", description = """
+              project id에 해당하는 피드백 모두 제거
+            """)
+    @DeleteMapping("/feedbacks")
+    public ResponseEntity<?> deleteFeedbacksByProjectId(@RequestParam("project_id") final Integer projectId) {
+        feedbackService.deleteFeedbacksByProjectId(projectId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @Operation(summary = "피드백ID에 해당하는 피드백 제거 API", description = """
                피드백 제거
             """)
