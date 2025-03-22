@@ -29,7 +29,7 @@ public record ConfigKnowledgeRequest(
         Integer rerkTopN,
         @NotNull
         @Schema(name = "retv_threshold_score")
-        Float retvThreshholdScore,
+        Float retvThresholdScore,
         @NotNull
         @Schema(name = "retv_top_k")
         Integer retvTopK,
