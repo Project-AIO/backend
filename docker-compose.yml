@@ -23,6 +23,13 @@ services:
       RABBITMQ_DEFAULT_PASS: pass
     volumes:
       - ./data:/var/lib/rabbitmq
+  app:
+    image: youngkyonyou/aio:latest
+    ports:
+      - "8090:8090"
+    environment:
+      # 필요한 환경 변수 설정
+      - SPRING_PROFILES_ACTIVE=local
 
 volumes:
   mysql-data:
