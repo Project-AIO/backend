@@ -46,7 +46,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-            docker build -t yourusername/yourrepo:latest .
+            docker build -t youngkyonyou/aio:latest .
       - name: Push Docker Image
         run: |
-            docker push yourusername/yourrepo:latest
+            docker push youngkyonyou/aio:latest
