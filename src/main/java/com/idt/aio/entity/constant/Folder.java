@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.io.File;
-
+@Deprecated
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public enum Folder {

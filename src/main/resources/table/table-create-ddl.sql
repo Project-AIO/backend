@@ -172,7 +172,9 @@ CREATE TABLE IF NOT EXISTS `tb_doc` (
     `name` VARCHAR(50) NOT NULL COMMENT '문서 이름',
     `state` ENUM('PENDING', 'SERVING', 'INACTIVE', 'READY') NOT NULL DEFAULT 'PENDING',
     `upload_dt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`doc_id`)
+    PRIMARY KEY (`doc_id`),
+    FOREIGN KEY (`project_folder_id`) REFERENCES `tb_project_folder`(`project_folder_id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- tb_doc_file 테이블 삭제 및 생성

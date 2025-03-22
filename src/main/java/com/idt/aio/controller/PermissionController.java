@@ -1,7 +1,7 @@
-package com.idt.aio.request;
+package com.idt.aio.controller;
 
+import com.idt.aio.request.DocAccountRequest;
 import com.idt.aio.response.DocumentAccountResponse;
-import com.idt.aio.service.AccountService;
 import com.idt.aio.service.DocumentAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

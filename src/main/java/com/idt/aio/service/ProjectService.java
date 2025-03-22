@@ -4,7 +4,9 @@ import com.idt.aio.dto.ProjectDto;
 import com.idt.aio.dto.ProjectFolderDto;
 import com.idt.aio.entity.Project;
 import com.idt.aio.entity.ProjectFolder;
-import com.idt.aio.entity.constant.Folder;
+
+
+import com.idt.aio.entity.sealed.Folder;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
@@ -27,7 +29,8 @@ public class ProjectService {
     @Transactional
     public void deleteProjectById(final Integer projectId) {
         projectRepository.deleteById(projectId);
-        fileService.deleteFolder(Folder.PROJECT.getProjectPath(projectId));
+        final String path = Folder.Project.getInstance().getPath(projectId);
+        fileService.deleteFolder(path);
     }
 
     @Transactional(readOnly = true)
@@ -51,8 +54,8 @@ public class ProjectService {
         final ProjectFolder entity = ProjectFolderRequest.from(request, project);
         ProjectFolder projectFolder = projectFolderRepository.saveAndFlush(entity);
 
-        fileService.createFolder(
-                Folder.DOCUMENT.getProjectFolderPath(request.projectId(), projectFolder.getProjectFolderId()));
+        final String path = Folder.ProjectFolder.getInstance().getPath(request.projectId(), projectFolder.getProjectFolderId());
+        fileService.createFolder(path);
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +72,14 @@ public class ProjectService {
                 .build();
         Project save = projectRepository.save(project);
 
-        fileService.createFolder(Folder.PROJECT.getProjectPath(save.getProjectId()));
+        final String path = Folder.Project.getInstance().getPath(save.getProjectId());
+        fileService.createFolder(path);
 
+    }
+
+    public void deleteProjectFolderById(final Integer folderId, final Integer projectId) {
+        projectFolderRepository.deleteById(folderId);
+        final String path = Folder.ProjectFolder.getInstance().getPath(projectId, folderId);
+        fileService.deleteFolder(path);
     }
 }

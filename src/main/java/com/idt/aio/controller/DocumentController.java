@@ -3,7 +3,7 @@ package com.idt.aio.controller;
 import com.idt.aio.dto.DocumentDto;
 import com.idt.aio.dto.DocumentJob;
 import com.idt.aio.dto.FileDto;
-import com.idt.aio.entity.constant.Folder;
+
 import com.idt.aio.request.RuleData;
 import com.idt.aio.response.ContentResponse;
 import com.idt.aio.response.DataResponse;
