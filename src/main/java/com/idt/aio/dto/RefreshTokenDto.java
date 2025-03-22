@@ -1,5 +1,7 @@
 package com.idt.aio.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -12,19 +14,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RefreshTokenDto {
 
     @NotNull
+    @JsonProperty(value = "adminId")
     @Size(min = 3, max = 50)
-    private String username;
+    private String adminId;
 
-    @NotNull
     @Size(min = 3, max = 100)
-    private String password;
+    private String pw;
 
+    @JsonProperty(value = "newAccessToken")
     private String newAccessToken;
+
+    @JsonProperty(value = "newRefreshToken")
     private String newRefreshToken;
 
 }

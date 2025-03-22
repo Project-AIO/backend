@@ -1,27 +1,26 @@
 package com.idt.aio.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_admin")
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Admin {
 
     @Id
-    @Column(name = "admin_id")
+    @Column(name = "seq_no")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer sqeNo;
+
+    @JsonProperty(value = "adminId")
+    @Column(name = "admin_id", length = 50, unique = true)
     private String adminId;
 
     @Column(name = "pw", length = 100)
@@ -29,5 +28,12 @@ public class Admin {
 
     @Column(name = "license_key", length = 100)
     private String licenseKey;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_admin_authority",
+            joinColumns = {@JoinColumn(name = "admin_id", referencedColumnName = "admin_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
 }

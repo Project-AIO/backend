@@ -1,20 +1,20 @@
 package com.idt.aio.util;
 
-import com.idt.aio.controller.AuthController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
+@Slf4j
+@Configuration
 public class EncryptUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final String key = "123456789ABCDEF!";
     private final String algorithm = "AES/CBC/PKCS5Padding";
@@ -60,17 +60,32 @@ public class EncryptUtil {
         암호화키 생성
         성명|만료기간
      */
-    public String genLicenseKey(String username) throws Exception {
-        String expireDate = expireDate(180);  //180일
-        String encryptKeyStr = "";
+    public String genLicenseKey(String adminId, int Term) throws Exception {
 
-        encryptKeyStr = username + "|" + expireDate;
-        logger.debug("encryptKeyStr1: {}", encryptKeyStr);
-        encryptKeyStr = aesEncode(encryptKeyStr);
-        logger.debug("encryptKeyStr2: {}", encryptKeyStr);
-        logger.debug("encryptKeyStr3: {}", aesDecode(encryptKeyStr));
+        String expireDate = expireDate(Term);  //180일
+        String encLicenseKey = "";
+        encLicenseKey = adminId + "|" + expireDate;
+        encLicenseKey = aesEncode(encLicenseKey);
 
-        return encryptKeyStr;
+        return encLicenseKey;
+    }
+
+
+    /*
+        라이센스키로 만료기간 조회
+        성명|만료기간
+     */
+    public LocalDate selLicenseKeyToDate(String licenseKey) throws Exception {
+
+        String decLicenseKey = aesDecode(licenseKey);
+        String[] array = decLicenseKey.split("\\|");
+        //String strAdminId = array[0];
+        String strDate = array[1];
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate date = LocalDate.parse(strDate, formatter);
+
+        return date;
     }
 
 }
