@@ -4,8 +4,9 @@ import com.idt.aio.dto.*;
 import com.idt.aio.entity.Document;
 import com.idt.aio.entity.DocumentFile;
 import com.idt.aio.entity.ProjectFolder;
-import com.idt.aio.entity.constant.Folder;
+
 import com.idt.aio.entity.constant.State;
+import com.idt.aio.entity.sealed.Folder;
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.extractor.AbstractFileExtractor;
 import com.idt.aio.factory.FileExtractorFactory;
@@ -24,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 
 @Slf4j
@@ -138,7 +138,7 @@ public class DocumentService {
         final int endPage = fileDto.getEndPage();
 
         //코어 서버로 전송 후 이미지 파일 반환
-        return coreServerService.executeExtraction(file, startPage, endPage);
+        return coreServerService.executeContentExtraction(file, startPage, endPage);
     }
 
 
@@ -149,8 +149,9 @@ public class DocumentService {
         final Document save = documentRepository.save(document);
 
         //폴더 생성
-        final String folder = Folder.DOCUMENT.getDocumentFolderPath(projectId, save.getProjectFolder().getProjectFolderId(),
+        final String folder = Folder.Document.getInstance().getPath(projectId, save.getProjectFolder().getProjectFolderId(),
                 save.getDocId());
+
         final String absolutePath = fileService.createFolder(folder);
 
         return DocumentPathDto.builder()

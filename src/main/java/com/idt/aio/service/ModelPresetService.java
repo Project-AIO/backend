@@ -2,6 +2,7 @@ package com.idt.aio.service;
 
 import com.idt.aio.entity.LanguageModel;
 import com.idt.aio.entity.ModelPreset;
+
 import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.LanguageModelRepository;
 import com.idt.aio.repository.ModelPresetRepository;
@@ -23,6 +24,7 @@ public class ModelPresetService {
     public List<ModelPresetResponse> getModelPresetByProjectId(final Integer projectId) {
         final List<ModelPreset> modelPresets = modelPresetRepository.getModelPresetByLanguageModel_Project_ProjectId(
                 projectId);
+
         return ModelPresetResponse.from(modelPresets);
     }
 

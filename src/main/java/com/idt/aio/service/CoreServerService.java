@@ -64,7 +64,7 @@ public class CoreServerService {
     }
 
     @Transactional
-    public List<ContentResponse> executeExtraction(final Resource file, final int startPage, final int endPage) {
+    public List<ContentResponse> executeContentExtraction(final Resource file, final int startPage, final int endPage) {
         // 요청 본문 생성
         final MultiValueMap<String, Object> body = createRequest(file, startPage, endPage);
 

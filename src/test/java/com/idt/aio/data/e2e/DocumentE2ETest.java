@@ -6,8 +6,9 @@ import com.idt.aio.data.domain.ProjectFixture;
 import com.idt.aio.data.domain.ProjectFolderFixture;
 import com.idt.aio.entity.ConfigurationKnowledge;
 import com.idt.aio.entity.Project;
+import com.idt.aio.entity.sealed.Folder;
 import com.idt.aio.entity.ProjectFolder;
-import com.idt.aio.entity.constant.Folder;
+
 import com.idt.aio.repository.ConfigurationKnowledgeRepository;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
@@ -64,7 +65,7 @@ public class DocumentE2ETest {
     private final static String CREATED_FILE_NAME = "test_name";
     private final static Integer CREATED_PROJECT_FOLDER_ID = 1;
     private final static Integer CREATED_DOCUMENT_FOLDER_ID = 1;
-    private final static String FILE_CREATED_PATH = Folder.DOCUMENT.getDocumentFolderPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID, CREATED_DOCUMENT_FOLDER_ID);
+    private final static String FILE_CREATED_PATH = Folder.ProjectFolder.getInstance().getPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID);
 
 
     @BeforeEach
@@ -77,8 +78,8 @@ public class DocumentE2ETest {
         projectRepository.saveAll(projects);
         projectFolderRepository.saveAll(projectFolders);
         configurationKnowledgeRepository.saveAll(configs);
-
-        fileService.createFolder(Folder.PROJECT_FOLDER.getProjectFolderPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID));
+        final String path = Folder.ProjectFolder.getInstance().getPath(CREATED_PROJECT_ID, CREATED_PROJECT_FOLDER_ID);
+        fileService.createFolder(path);
     }
 
     @Test
