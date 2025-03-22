@@ -10,13 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,17 +26,21 @@ public class Account {
     @Column(name = "account_id")
     private String accountId;
 
-
-    @JoinColumn(name = "admin_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id", referencedColumnName = "admin_id")
     private Admin admin;
 
-
     @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Override
+    public String toString() {
+        return "Account{account_id='" + accountId + "', admin_id=" + admin.getAdminId() + "}";
+    }
 
 }

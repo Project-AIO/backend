@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,12 +17,25 @@ import lombok.NoArgsConstructor;
 public class ProjectDto {
     private Integer projectId;
     private String name;
+    private LocalDateTime createDt;
 
     public static ProjectDto from(final Project project) {
         return ProjectDto.builder()
                 .projectId(project.getProjectId())
                 .name(project.getName())
+                .createDt(project.getCreateDt())
                 .build();
+    }
+
+    public static List<ProjectDto> from(List<Project> project) {
+        return project.stream()
+                .map(p -> ProjectDto.builder()
+                        .projectId(p.getProjectId())
+                        .name(p.getName())
+                        .createDt(p.getCreateDt())
+                        .build()
+                )
+                .toList();
     }
 
     public Project toEntity() {

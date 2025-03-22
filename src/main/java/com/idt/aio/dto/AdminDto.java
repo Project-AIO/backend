@@ -1,6 +1,5 @@
 package com.idt.aio.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.idt.aio.entity.Admin;
 import lombok.*;
@@ -13,15 +12,14 @@ import jakarta.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginDto {
+public class AdminDto {
 
     @NotNull
     @JsonProperty(value = "adminId")
-    @Size(min = 3, max = 50)
     private String adminId;
 
-    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@NotNull
     @Size(min = 3, max = 100)
     private String pw;
 
@@ -29,24 +27,14 @@ public class LoginDto {
     @Size(min = 3, max = 100)
     private String licenseKey;
 
-    @JsonProperty(value = "accessToken")
-    private String accessToken;
-
-    @JsonProperty(value = "refreshToken")
-    private String refreshToken;
-
     @Builder
-    public static LoginDto from (Admin admin, TokenDto tokenDto) {
-        if (admin == null) {
-            return null;
-        }
+    public static AdminDto from (Admin admin) {
+        if(admin == null) return null;
 
-        return LoginDto.builder()
+        return AdminDto.builder()
                 .adminId(admin.getAdminId())
                 .pw(admin.getPw())
                 .licenseKey(admin.getLicenseKey())
-                .accessToken(tokenDto.getAccessToken())
-                .refreshToken(tokenDto.getRefreshToken())
                 .build();
     }
 

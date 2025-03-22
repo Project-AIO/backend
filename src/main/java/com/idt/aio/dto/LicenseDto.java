@@ -1,5 +1,6 @@
 package com.idt.aio.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +16,9 @@ import lombok.Setter;
 public class LicenseDto {
 
     @NonNull
-    private Integer userId;
-    @NonNull
-    private String username;
+    @JsonProperty(value = "adminId")
+    private String adminId;
     private String licenseKey;
+    private int term;
 
 }
