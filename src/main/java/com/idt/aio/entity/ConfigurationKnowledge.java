@@ -69,7 +69,7 @@ public class ConfigurationKnowledge {
             String embModelName,
             String rerkModelName,
             Integer rerktopN,
-            Float retvThreshholdScore,
+            Float retvThresholdScore,
             Integer retvTopK,
             Float keywordWeight
     ) {
@@ -80,7 +80,7 @@ public class ConfigurationKnowledge {
                 .embModelName(embModelName)
                 .rerkModelName(rerkModelName)
                 .rerktopN(rerktopN)
-                .retvThresholdScore(retvThreshholdScore)
+                .retvThresholdScore(retvThresholdScore)
                 .retvTopK(retvTopK)
                 .keywordWeight(keywordWeight)
                 .build();
