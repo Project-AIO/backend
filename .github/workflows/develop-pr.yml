@@ -2,7 +2,7 @@ name: Spring CI
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [ develop_2 ]
 
 jobs:
   build:
