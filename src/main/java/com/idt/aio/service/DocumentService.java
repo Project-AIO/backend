@@ -77,9 +77,6 @@ public class DocumentService {
         //파일 저장
         documentFileRepository.save(documentFile);
 
-        //물리 파일 저장
-        fileService.saveResourceToFolder(file, absoluteFilePath, fileName, extension);
-
         //경로+파일명
         final String savedFilePath = absoluteFilePath + File.separator + fileName + "." + extension;
         final ConfigurationKnowledgeDto configurationKnowledgeDto = configurationKnowledgeService.fetchConfigKnowledgeByProjectId(
@@ -94,6 +91,9 @@ public class DocumentService {
 
         //상태 변경
         extracted.updateState(State.READY);
+
+        //물리 파일 저장
+        fileService.saveResourceToFolder(file, absoluteFilePath, fileName, extension);
 
         return DocumentJob.builder()
                 .document(extracted)
