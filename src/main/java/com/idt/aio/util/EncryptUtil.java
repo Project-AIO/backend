@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Date;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -47,7 +46,7 @@ public class EncryptUtil {
         라이선스키 유효기간 설정 (생성일에 Term 일수 플러스)
      */
     public String expireDate(int Term) {
-        String expireDate = "";
+        String expireDate;
         LocalDate now = LocalDate.now().plusDays(Term);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -63,8 +62,7 @@ public class EncryptUtil {
     public String genLicenseKey(String adminId, int Term) throws Exception {
 
         String expireDate = expireDate(Term);  //180일
-        String encLicenseKey = "";
-        encLicenseKey = adminId + "|" + expireDate;
+        String encLicenseKey = adminId + "|" + expireDate;
         encLicenseKey = aesEncode(encLicenseKey);
 
         return encLicenseKey;
@@ -83,9 +81,8 @@ public class EncryptUtil {
         String strDate = array[1];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate date = LocalDate.parse(strDate, formatter);
 
-        return date;
+        return LocalDate.parse(strDate, formatter);
     }
 
 }

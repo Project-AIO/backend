@@ -1,7 +1,6 @@
 package com.idt.aio.repository;
 
 import com.idt.aio.entity.ProjectAccount;
-import com.idt.aio.entity.ProjectFolder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
