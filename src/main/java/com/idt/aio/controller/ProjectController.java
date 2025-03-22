@@ -29,6 +29,15 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+
+    @Operation(summary = "프로젝트 조회 API", description = """
+               프로젝트 조회
+            """)
+    @GetMapping("/projects")
+    public ResponseEntity<?> getProjectList() {
+        return ResponseEntity.ok(projectService.getProjectList());
+    }
+
     @Operation(summary = "프로젝트 생성 API", description = """
                프로젝트 생성
             """)

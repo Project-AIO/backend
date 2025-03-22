@@ -1,46 +1,41 @@
 package com.idt.aio.dto;
 
-import com.idt.aio.util.StringListConverter;
-import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Convert;
-import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.idt.aio.entity.Account;
+import com.idt.aio.entity.constant.Role;
 
+import lombok.*;
+
+import java.time.LocalDate;
 import java.util.List;
-import org.springframework.data.jpa.repository.Query;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto {
 
-    @NotNull
     private String accountId;
-
-    @NotNull
     private String adminId;
-
-    @NotNull
-    private String role;
-
-    @NotNull
+    private Role role;
     private String name;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> accountDtoSet;
+    private String licenseKey;
+    private LocalDate expiredDt;
 
-    public AccountDto(String accountId, String adminId, String role, String name) {
-        this.accountId = accountId;
-        this.adminId = adminId;
-        this.role = role;
-        this.name = name;
+    public static List<AccountDto> from(List<Account> account) {
+        return account.stream()
+            .map(a -> AccountDto.builder()
+                    .accountId(a.getAccountId())
+                    .adminId(a.getAdmin().getAdminId())
+                    .name(a.getName())
+                    .role(a.getRole())
+                    .licenseKey(a.getAdmin().getLicenseKey())
+                    .build()
+            )
+            .toList();
     }
 
 }

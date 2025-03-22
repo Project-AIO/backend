@@ -1,54 +1,53 @@
 package com.idt.aio.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.idt.aio.entity.Admin;
+import lombok.*;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginDto {
 
     @NotNull
+    @JsonProperty(value = "adminId")
     @Size(min = 3, max = 50)
-    private String username;
+    private String adminId;
 
     @NotNull
     @Size(min = 3, max = 100)
-    private String password;
+    private String pw;
 
+    @JsonProperty(value = "licenseKey")
     @Size(min = 3, max = 100)
     private String licenseKey;
 
+    @JsonProperty(value = "accessToken")
     private String accessToken;
+
+    @JsonProperty(value = "refreshToken")
     private String refreshToken;
 
-    /*public LoginDto(@Valid LoginDto loginDto) {
-        this.username = username;
-        this.password = password;
-        this.licenseKey = licenseKey;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }*/
-
-    public static LoginDto from(LoginDto loginDto) {
-        if (loginDto == null) {
+    @Builder
+    public static LoginDto from (Admin admin, TokenDto tokenDto) {
+        if (admin == null) {
             return null;
         }
 
         return LoginDto.builder()
-                .username(loginDto.getUsername())
-                .password(loginDto.getPassword())
-                .licenseKey(loginDto.getLicenseKey())
-                .accessToken(loginDto.getAccessToken())
-                .refreshToken(loginDto.getRefreshToken())
+                .adminId(admin.getAdminId())
+                .pw(admin.getPw())
+                .licenseKey(admin.getLicenseKey())
+                .accessToken(tokenDto.getAccessToken())
+                .refreshToken(tokenDto.getRefreshToken())
                 .build();
     }
+
 }
