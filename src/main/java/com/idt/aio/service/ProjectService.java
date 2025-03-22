@@ -11,12 +11,12 @@ import com.idt.aio.exception.DomainExceptionCode;
 import com.idt.aio.repository.ProjectFolderRepository;
 import com.idt.aio.repository.ProjectRepository;
 import com.idt.aio.request.ProjectFolderRequest;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +25,11 @@ public class ProjectService {
     private final FileService fileService;
     private final ProjectRepository projectRepository;
     private final ProjectFolderRepository projectFolderRepository;
+
+    @Transactional(readOnly = true)
+    public List<ProjectDto> getProjectList() {
+        return ProjectDto.from(projectRepository.findProjcet());
+    }
 
     @Transactional
     public void deleteProjectById(final Integer projectId) {
