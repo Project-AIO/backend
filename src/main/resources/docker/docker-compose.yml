@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "aio"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -12,3 +23,10 @@ services:
       RABBITMQ_DEFAULT_PASS: pass
     volumes:
       - ./data:/var/lib/rabbitmq
+  app:
+    image: youngkyonyou/aio:latest
+    ports:
+      - "8080:8080"
+    environment:
+      # 필요한 환경 변수 설정
+      - SPRING_PROFILES_ACTIVE=local
