@@ -40,7 +40,7 @@ public class ConfigurationKnowledgeService {
                 params.embModelName(),
                 params.rerkModelName(),
                 params.rerkTopN(),
-                params.retvThreshholdScore(),
+                params.retvThresholdScore(),
                 params.retvTopK(),
                 params.keywordWeight()
         );
@@ -59,7 +59,7 @@ public class ConfigurationKnowledgeService {
                 params.embModelName(),
                 params.rerkModelName(),
                 params.rerkTopN(),
-                params.retvThreshholdScore(),
+                params.retvThresholdScore(),
                 params.retvTopK(),
                 params.keywordWeight());
     }

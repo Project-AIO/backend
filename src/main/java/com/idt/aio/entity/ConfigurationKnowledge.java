@@ -69,7 +69,7 @@ public class ConfigurationKnowledge {
             String embModelName,
             String rerkModelName,
             Integer rerktopN,
-            Float retvThreshholdScore,
+            Float retvThresholdScore,
             Integer retvTopK,
             Float keywordWeight
     ) {
